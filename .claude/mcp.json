@@ -1,0 +1,34 @@
+{
+    "mcpServers": {
+      "next-devtools": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "next-devtools-mcp@latest"
+        ]
+      },
+      "mongodb": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "mongodb-mcp-server@latest",
+          "--readOnly"
+        ],
+        "env": {
+          "MDB_MCP_CONNECTION_STRING": "mongodb://localhost:27017/"
+        }
+      },
+      "clickup": {
+        "url": "https://mcp.clickup.com/mcp"
+      },
+      "Vercel": {
+        "url": "https://mcp.vercel.com",
+        "headers": {}
+      },
+      "Figma": {
+        "url": "https://mcp.figma.com/mcp",
+        "headers": {}
+      }
+    }
+  }
