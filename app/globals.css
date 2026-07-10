@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* Explicit source scan — restrict Tailwind's class detection to source
+   code only. Docs and README examples must not be scanned. */
+@source "./**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+
+/*
+ * ---------------------------------------------------------------------------
+ * Portfolio Design System — canonical Tailwind v4 tokens.
+ *
+ * Extracted from https://www.tobadesigner.com/ Webflow CSS (see docs/webflow/
+ * for the capture). Every entry becomes both a CSS custom property AND a
+ * generated Tailwind utility class (bg-bg, text-fg, rounded-md, etc.).
+ *
+ * When adding a token: add it here, keep the semantic name, then use the
+ * generated utility class in components. Never inline hex values.
+ *
+ * styles/tokens.css is a human-readable mirror of this block for reference
+ * only — this @theme block is the SOURCE OF TRUTH the build uses.
+ * ---------------------------------------------------------------------------
+ */
+
+@theme {
+  /* colors — near-monochrome, light-first */
+  --color-bg: #ffffff;
+  --color-bg-alt: #fafafa;
+  --color-bg-inset: #f5f5f5;
+
+  --color-fg: #191919;
+  --color-fg-secondary: #333333;
+  --color-fg-muted: #7b7b7b;
+  --color-fg-quiet: #bec0c2;
+
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.16);
+
+  --color-accent: #10d48e;
+  --color-accent-soft: #e6f6eb;
+
+  /* typography */
+  --font-display: var(--font-inter-tight, "Inter Tight"), system-ui, sans-serif;
+  --font-body: var(--font-inter-tight, "Inter Tight"), system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 5.625rem;
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;
+
+  /* spacing scale */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-32: 8rem;
+
+  /* radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  /* shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+  /* motion */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* layout */
+  --container-max: 1200px;
+}
+
+/* base styles */
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-fg);
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  ::selection {
+    background: var(--color-fg);
+    color: var(--color-bg);
+  }
+}
