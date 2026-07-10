@@ -1,0 +1,90 @@
+/*
+ * DOCUMENTATION MIRROR — read-only reference of the portfolio design tokens.
+ *
+ * The SOURCE OF TRUTH is the @theme block in app/globals.css. That block is
+ * what Tailwind v4 processes at build time to generate utility classes
+ * (bg-fg, text-muted, rounded-lg, etc.).
+ *
+ * This file exists purely so someone browsing the repo can find a single
+ * document that lists every token with its purpose, without having to hunt
+ * through app/globals.css.
+ *
+ * Keep this file in sync with app/globals.css whenever you add a token.
+ * If they drift, app/globals.css wins.
+ *
+ * Extracted from https://www.tobadesigner.com/ Webflow CSS. Source captures:
+ * docs/webflow/.
+ */
+
+:root {
+  /* Colors — near-monochrome, light-first */
+  --color-bg: #ffffff;             /* primary surface */
+  --color-bg-alt: #fafafa;         /* subtle elevated surface (Card default) */
+  --color-bg-inset: #f5f5f5;       /* recessed surface (input backgrounds) */
+
+  --color-fg: #191919;             /* primary text — near-black, not pure */
+  --color-fg-secondary: #333333;   /* body copy, secondary emphasis */
+  --color-fg-muted: #7b7b7b;       /* muted / captions / eyebrow labels */
+  --color-fg-quiet: #bec0c2;       /* disabled text, placeholders */
+
+  --color-border: rgba(0, 0, 0, 0.08);       /* soft dividers */
+  --color-border-strong: rgba(0, 0, 0, 0.16); /* button outlines */
+
+  --color-accent: #10d48e;         /* link hover accent (matches source) */
+  --color-accent-soft: #e6f6eb;    /* accent tinted background */
+
+  /* Typography — Inter Tight for both display + body (unified) */
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-body: "Inter Tight", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale */
+  --text-xs: 0.75rem;      /* 12px  — eyebrow / caption */
+  --text-sm: 0.875rem;     /* 14px  — small body */
+  --text-base: 1rem;       /* 16px  — body default */
+  --text-lg: 1.125rem;     /* 18px  — lead paragraph */
+  --text-xl: 1.25rem;      /* 20px  — subhead */
+  --text-2xl: 1.5rem;      /* 24px  — h3 / project title */
+  --text-3xl: 2rem;        /* 32px  — h2 (matches source) */
+  --text-4xl: 2.5rem;      /* 40px  — display-small */
+  --text-5xl: 3.75rem;     /* 60px  — display */
+  --text-6xl: 5.625rem;    /* 90px  — hero h1 (matches source) */
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-32: 8rem;
+
+  /* Radii — mixes soft rectangles + pills (source has both) */
+  --radius-sm: 6px;    /* small controls */
+  --radius-md: 10px;   /* buttons, chips */
+  --radius-lg: 12px;   /* cards */
+  --radius-xl: 20px;   /* large cards, hero elements */
+  --radius-full: 999px; /* pills, avatars */
+
+  /* Shadows — subtle by design */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Layout */
+  --container-max: 1200px;
+}
