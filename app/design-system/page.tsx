@@ -49,11 +49,11 @@ export default function DesignSystemPage() {
             <Swatch name="bg-alt" varName="--color-bg-alt" />
             <Swatch name="bg-inset" varName="--color-bg-inset" />
             <Swatch name="border" varName="--color-border" />
-            <Swatch name="fg" varName="--color-fg" dark />
-            <Swatch name="fg-secondary" varName="--color-fg-secondary" dark />
-            <Swatch name="fg-muted" varName="--color-fg-muted" dark />
+            <Swatch name="fg" varName="--color-fg" />
+            <Swatch name="fg-secondary" varName="--color-fg-secondary" />
+            <Swatch name="fg-muted" varName="--color-fg-muted" />
             <Swatch name="fg-quiet" varName="--color-fg-quiet" />
-            <Swatch name="accent" varName="--color-accent" dark />
+            <Swatch name="accent" varName="--color-accent" />
             <Swatch name="accent-soft" varName="--color-accent-soft" />
           </div>
         </Section>
@@ -86,8 +86,8 @@ export default function DesignSystemPage() {
             </TypeSample>
             <TypeSample label="text-base · 16px · 400 · body">
               <span className="text-base text-fg-secondary">
-                I can solve a Rubik's cube in 1:15, but that's just one way I keep
-                my hands busy.
+                I can solve a Rubik&rsquo;s cube in 1:15, but that&rsquo;s just
+                one way I keep my hands busy.
               </span>
             </TypeSample>
             <TypeSample label="text-sm · 14px · 400 · caption">
@@ -264,12 +264,10 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 function Swatch({
   name,
-  varName,
-  dark
+  varName
 }: {
   name: string;
   varName: string;
-  dark?: boolean;
 }) {
   return (
     <div className="rounded-lg overflow-hidden border border-border">
