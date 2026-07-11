@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
-import { Inter_Tight } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/patterns/Nav";
 import { Footer } from "@/components/patterns/Footer";
 import { NAV_LINKS, FOOTER_LINK_GROUPS } from "@/lib/data/nav";
 import { SITE } from "@/lib/data/site";
 
-const interTight = Inter_Tight({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-inter-tight",
+  variable: "--font-geist",
+  display: "swap"
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
   display: "swap"
 });
 
@@ -26,7 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={interTight.variable}>
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable}`}
+    >
       <body>
         <Nav logoMark={SITE.logoMark} links={NAV_LINKS} />
         {children}

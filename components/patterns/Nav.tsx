@@ -11,9 +11,10 @@ export type NavProps = {
 };
 
 /**
- * Site navigation. Client component because it owns mobile drawer open state.
- * Server parents pass `logoMark` and `links` as plain data — the client
- * boundary stays tight around this component only.
+ * Site navigation. Sticky top bar with warm off-white background matching
+ * the Figma spec (`rgba(245,245,245,0.9)` + subtle shadow). Client
+ * component because it owns mobile drawer open state — desktop layout
+ * has no client state.
  */
 export function Nav({ logoMark, links }: NavProps) {
   const [open, setOpen] = useState(false);
@@ -21,7 +22,6 @@ export function Nav({ logoMark, links }: NavProps) {
   const close = useCallback(() => setOpen(false), []);
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
-  // Lock body scroll while the drawer is open.
   useEffect(() => {
     if (!open) return;
     const original = document.body.style.overflow;
@@ -32,18 +32,24 @@ export function Nav({ logoMark, links }: NavProps) {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 bg-bg/80 backdrop-blur-md border-b border-border">
-      <div className="mx-auto flex h-16 max-w-[var(--container-max)] items-center justify-between px-6 md:px-8">
+    <header
+      className={clsx(
+        "sticky top-0 z-40",
+        "bg-[rgba(245,245,245,0.9)] backdrop-blur-md",
+        "shadow-[var(--shadow-nav)]"
+      )}
+    >
+      <div className="mx-auto flex h-[86px] items-center justify-between px-6 md:px-16">
         <NextLink
           href="/"
-          className="text-lg font-semibold tracking-tight hover:text-accent transition-colors"
+          className="text-2xl font-extrabold tracking-tight text-fg hover:opacity-80 transition-opacity"
           onClick={close}
         >
           {logoMark}
         </NextLink>
 
         {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden md:flex items-center gap-2">
           {links.map((link) => (
             <li key={link.href}>
               <NavItem link={link} onNavigate={close} />
@@ -68,7 +74,7 @@ export function Nav({ logoMark, links }: NavProps) {
       <div
         id="mobile-nav"
         className={clsx(
-          "md:hidden fixed inset-x-0 top-16 bottom-0 z-30 bg-bg transition-opacity duration-[var(--duration-normal)] ease-[var(--ease-standard)]",
+          "md:hidden fixed inset-x-0 top-[86px] bottom-0 z-30 bg-bg-warm transition-opacity duration-[var(--duration-normal)] ease-[var(--ease-standard)]",
           open
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -96,8 +102,10 @@ function NavItem({
   mobile?: boolean;
 }) {
   const classes = clsx(
-    "hover:text-accent transition-colors",
-    mobile ? "block py-4 text-2xl font-medium border-b border-border" : "text-sm font-medium"
+    "hover:text-accent transition-colors text-fg",
+    mobile
+      ? "block py-4 text-2xl font-medium border-b border-border"
+      : "text-base font-normal px-5 py-2"
   );
 
   if (link.external) {

@@ -1,5 +1,5 @@
 /**
- * Project data — source: docs/webflow/homepage.md.
+ * Project data — source: docs/webflow/homepage.md + Figma design.
  * Text and images captured VERBATIM from tobadesigner.com. Do not paraphrase.
  */
 
@@ -20,8 +20,8 @@ const CDN =
   "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd";
 
 /**
- * Homepage "Selected Projects" grid — 10 rows in source order. Some link to
- * internal case study routes, some to external URLs (matches Webflow behavior).
+ * Homepage "Selected Projects" grid — 4 curated case studies matching the
+ * Figma design. Each links to a dedicated /projects/[slug] case study page.
  */
 export const HOMEPAGE_PROJECTS: readonly Project[] = [
   {
@@ -55,7 +55,15 @@ export const HOMEPAGE_PROJECTS: readonly Project[] = [
     imageAlt: "Dexla Case Study project card",
     ctaLabel: "View project",
     ctaHref: "/projects/dexla-case-study"
-  },
+  }
+] as const;
+
+/**
+ * External/experience projects — kept out of the homepage grid per the
+ * Figma design. Available for a future /work page if you want the full
+ * archive discoverable.
+ */
+export const EXTERNAL_PROJECTS: readonly Project[] = [
   {
     slug: "infragen-console",
     title: "Infragen — Console Dashboard",
@@ -129,7 +137,7 @@ export const HOMEPAGE_PROJECTS: readonly Project[] = [
   }
 ] as const;
 
-/** The 4 case studies with dedicated internal routes. Everything else external. */
+/** The 4 case studies with dedicated internal routes. */
 export const INTERNAL_CASE_STUDY_SLUGS = [
   "givn",
   "wise-young-explorer",

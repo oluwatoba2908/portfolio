@@ -9,50 +9,71 @@
  * ---------------------------------------------------------------------------
  * Portfolio Design System — canonical Tailwind v4 tokens.
  *
- * Extracted from https://www.tobadesigner.com/ Webflow CSS (see docs/webflow/
- * for the capture). Every entry becomes both a CSS custom property AND a
- * generated Tailwind utility class (bg-bg, text-fg, rounded-md, etc.).
- *
- * When adding a token: add it here, keep the semantic name, then use the
- * generated utility class in components. Never inline hex values.
- *
- * styles/tokens.css is a human-readable mirror of this block for reference
- * only — this @theme block is the SOURCE OF TRUTH the build uses.
+ * Source of truth: this @theme block. Values captured from the Figma
+ * "Oluwatoba's Portfolio" design (node 1607:20192). The mirror at
+ * styles/tokens.css is a documentation copy — this block is what
+ * Tailwind processes at build time.
  * ---------------------------------------------------------------------------
  */
 
 @theme {
-  /* colors — near-monochrome, light-first */
-  --color-bg: #ffffff;
-  --color-bg-alt: #fafafa;
-  --color-bg-inset: #f5f5f5;
+  /* ---------- colors ---------- */
+  /* surfaces */
+  --color-bg: #ffffff;             /* white */
+  --color-bg-warm: #efefef;        /* hero warm off-white */
+  --color-bg-page: #f5f5f5;        /* footer wrapper */
+  --color-bg-alt: #fafafa;         /* portrait card body */
+  --color-bg-inset: #f5f5f5;       /* inputs, muted surfaces */
+  --color-bg-inverse: #191919;     /* dark section (Selected Projects) */
+  --color-bg-footer: #202020;      /* footer dark panel */
 
-  --color-fg: #191919;
+  /* stacking testimonial backgrounds — darkening scale */
+  --color-testimonial-1: #242222;
+  --color-testimonial-2: #202020;
+  --color-testimonial-3: #1b1b1b;
+  --color-testimonial-4: #141414;
+  --color-testimonial-5: #141414;
+
+  /* foreground */
+  --color-fg: #191919;             /* primary text (light bg) */
+  --color-fg-heading: #333333;     /* hero/footer huge headings */
   --color-fg-secondary: #333333;
-  --color-fg-muted: #7b7b7b;
+  --color-fg-muted: #7b7b7b;       /* subhead, meta */
   --color-fg-quiet: #bec0c2;
+  --color-fg-on-dark: #ffffff;
+  --color-fg-on-dark-muted: #cac9c9;
+  --color-fg-footer-label: #717171;
+  --color-fg-footer-copy: rgba(255, 255, 255, 0.71);
 
+  /* borders */
   --color-border: rgba(0, 0, 0, 0.08);
   --color-border-strong: rgba(0, 0, 0, 0.16);
+  --color-border-olive: #454b02;   /* testimonial cards */
+  --color-border-glass: #ffffff;   /* glass pill outline */
+  --color-border-divider: #e4ebf3; /* footer divider */
 
-  --color-accent: #10d48e;
+  /* accents */
+  --color-accent: #10d48e;         /* link hover (legacy) */
   --color-accent-soft: #e6f6eb;
+  --color-accent-pulse: #12c971;   /* scroll indicator dot */
+  --color-accent-pulse-text: #088046;
 
-  /* typography */
-  --font-display: var(--font-inter-tight, "Inter Tight"), system-ui, sans-serif;
-  --font-body: var(--font-inter-tight, "Inter Tight"), system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* ---------- typography (Geist for everything, per design decision) ---------- */
+  --font-display: var(--font-geist), system-ui, sans-serif;
+  --font-body: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;
   --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 2rem;
-  --text-4xl: 2.5rem;
-  --text-5xl: 3.75rem;
-  --text-6xl: 5.625rem;
+  --text-2xl: 1.4rem;      /* 22.4px — portrait card / project card titles */
+  --text-3xl: 1.5rem;      /* 24px — testimonial names */
+  --text-4xl: 2rem;
+  --text-5xl: 2.5rem;
+  --text-h2: 4rem;         /* 64px — section H2 */
+  --text-h1: 5.625rem;     /* 90px — hero + footer display */
 
   --leading-tight: 1.1;
   --leading-snug: 1.25;
@@ -63,7 +84,7 @@
   --tracking-normal: 0;
   --tracking-wide: 0.06em;
 
-  /* spacing scale */
+  /* ---------- spacing ---------- */
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
   --spacing-3: 0.75rem;
@@ -78,31 +99,59 @@
   --spacing-24: 6rem;
   --spacing-32: 8rem;
 
-  /* radii */
+  /* ---------- radii ---------- */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 12px;
   --radius-xl: 20px;
+  --radius-2xl: 40px;      /* big cards (portrait, project, dark section) */
+  --radius-glass: 112px;   /* frosted pill container */
+  --radius-pill: 600px;    /* CTA buttons */
+  --radius-avatar: 200px;  /* testimonial avatars */
   --radius-full: 999px;
 
-  /* shadows */
+  /* ---------- shadows ---------- */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --shadow-nav: 0 22px 43px rgba(0, 0, 0, 0.02);
 
-  /* motion */
+  /* Multi-layer button shadow, from the Figma spec (matches "View projects") */
+  --shadow-button-heavy:
+    0 45px 31.5px rgba(0, 0, 0, 0.10),
+    0 22.77px 15.94px rgba(0, 0, 0, 0.07),
+    0 12.43px 8.705px rgba(0, 0, 0, 0.05),
+    0 7.14px 5px rgba(0, 0, 0, 0.04),
+    0 4.09px 2.865px rgba(0, 0, 0, 0.03),
+    0 2.16px 1.51px rgba(0, 0, 0, 0.03),
+    0 0.888px 0.615px rgba(0, 0, 0, 0.03);
+
+  /* Portrait card ambient shadow */
+  --shadow-portrait:
+    0 11px 0 rgba(206, 215, 222, 0.75),
+    0 7.027px 7.027px rgba(183, 181, 203, 0.27),
+    0 14.756px 9.135px rgba(183, 181, 203, 0.16),
+    0 26.702px 10.54px rgba(183, 181, 203, 0.05),
+    0 42.161px 11.946px rgba(183, 181, 203, 0.01);
+
+  /* Stacking testimonial top-glow */
+  --shadow-testimonial-top: 0 -8px 20px 1px rgba(255, 255, 255, 0.2);
+  --shadow-testimonial-first: 0 -8px 20px 1px rgba(0, 0, 0, 0.1);
+
+  /* ---------- motion ---------- */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
   --duration-normal: 300ms;
   --duration-slow: 500ms;
 
-  /* layout */
-  --container-max: 1200px;
+  /* ---------- layout ---------- */
+  --container-max: 1385px;   /* matches Figma outer container */
+  --container-content: 1185px;
 }
 
-/* base styles */
+/* Base styles */
 @layer base {
   html {
     color-scheme: light;
@@ -134,4 +183,14 @@
     background: var(--color-fg);
     color: var(--color-bg);
   }
+}
+
+/* Pulsing accent dot — used by ScrollIndicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.pulse-dot-glow {
+  animation: pulse-dot 2s var(--ease-standard) infinite;
 }
