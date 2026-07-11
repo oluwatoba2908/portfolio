@@ -1,45 +1,43 @@
 import { Hero } from "@/components/patterns/Hero";
+import { PortraitCard } from "@/components/patterns/PortraitCard";
 import { SelectedProjects } from "@/components/patterns/SelectedProjects";
-import { ReviewsSection } from "@/components/patterns/ReviewsSection";
-import { CtaPanel } from "@/components/patterns/CtaPanel";
+import { StackingTestimonials } from "@/components/patterns/StackingTestimonials";
+import { Container } from "@/components/ui/Container";
 import { SITE } from "@/lib/data/site";
 import { HOMEPAGE_PROJECTS } from "@/lib/data/projects";
 import { TESTIMONIALS } from "@/lib/data/testimonials";
 
 /**
  * Homepage — pure server component. Composes patterns; owns no state.
- * All content is imported from lib/data/ and traces back verbatim to
- * docs/webflow/homepage.md (the captured content bible).
+ * Layout matches the Figma design (node 1607:20192):
+ *   Hero → PortraitCard → dark Selected Projects → sticky-stack Reviews → Footer (via layout).
  */
 export default function HomePage() {
   return (
-    <main>
+    <main className="bg-bg-warm">
       <Hero
         title={SITE.tagline}
         subtitle={SITE.description}
         primaryCta={{ label: "View projects", href: "#projects" }}
+        centered
       />
 
-      <SelectedProjects
-        projects={HOMEPAGE_PROJECTS}
-        eyebrow="Selected work"
-        title="Selected projects"
-        id="projects"
-      />
+      <section className="pb-16 md:pb-24">
+        <Container>
+          <PortraitCard
+            portraitSrc={SITE.homepagePortrait.src}
+            portraitAlt={SITE.homepagePortrait.alt}
+            firstName={SITE.firstName}
+            fullName={SITE.name}
+            chipDefaultText="Hover to know my name"
+            cta={{ label: "More about me", href: "/about" }}
+          />
+        </Container>
+      </section>
 
-      <ReviewsSection testimonials={TESTIMONIALS} id="reviews" />
+      <SelectedProjects projects={HOMEPAGE_PROJECTS} id="projects" />
 
-      <CtaPanel
-        title="Let's work together"
-        actions={[
-          { label: "Behance", href: SITE.socials.behance },
-          {
-            label: "LinkedIn",
-            href: SITE.socials.linkedin,
-            variant: "secondary"
-          }
-        ]}
-      />
+      <StackingTestimonials testimonials={TESTIMONIALS} id="reviews" />
     </main>
   );
 }

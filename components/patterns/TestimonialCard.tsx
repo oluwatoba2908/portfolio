@@ -1,35 +1,62 @@
-import Image from "next/image";
-import { Card } from "@/components/ui/Card";
+import { Avatar } from "@/components/ui/Avatar";
+import { clsx } from "clsx";
 import type { Testimonial } from "@/lib/data/testimonials";
+
+export type TestimonialShade = 1 | 2 | 3 | 4 | 5;
 
 export type TestimonialCardProps = {
   testimonial: Testimonial;
+  /** 1 (lightest) through 5 (darkest) — matches the stacking scale. */
+  shade?: TestimonialShade;
+  /** First card has a subtle inner-glow; others have a top-glow. */
+  isFirst?: boolean;
+  className?: string;
 };
 
-export function TestimonialCard({ testimonial }: TestimonialCardProps) {
+const shadeClasses: Record<TestimonialShade, string> = {
+  1: "bg-testimonial-1",
+  2: "bg-testimonial-2 border border-border-olive",
+  3: "bg-testimonial-3 border border-border-olive",
+  4: "bg-testimonial-4 border border-border-olive",
+  5: "bg-testimonial-5 border border-border-olive"
+};
+
+export function TestimonialCard({
+  testimonial,
+  shade = 1,
+  isFirst = false,
+  className
+}: TestimonialCardProps) {
   return (
-    <Card variant="outlined" padding="lg" className="h-full flex flex-col">
-      <blockquote className="text-base text-fg-secondary leading-relaxed flex-1">
-        &ldquo;{testimonial.quote}&rdquo;
-      </blockquote>
-      <div className="mt-6 flex items-center gap-3">
-        <div className="relative w-10 h-10 rounded-full overflow-hidden bg-bg-inset shrink-0">
-          <Image
-            src={testimonial.avatarSrc}
-            alt={testimonial.avatarAlt}
-            fill
-            sizes="40px"
-            className="object-cover"
-          />
-        </div>
+    <div
+      className={clsx(
+        "rounded-[30px] md:rounded-[18px] p-8 md:p-10 flex flex-col gap-8",
+        shadeClasses[shade],
+        isFirst
+          ? "shadow-[var(--shadow-testimonial-first)]"
+          : "shadow-[var(--shadow-testimonial-top)]",
+        className
+      )}
+    >
+      <p className="text-lg md:text-xl text-fg-on-dark leading-relaxed">
+        {testimonial.quote}
+      </p>
+      <div className="flex items-center gap-5">
+        <Avatar
+          src={testimonial.avatarSrc}
+          alt={testimonial.avatarAlt}
+          size={shade === 1 ? "md" : "lg"}
+        />
         <div className="min-w-0">
-          <p className="text-sm font-medium truncate">{testimonial.name}</p>
-          <p className="text-xs text-fg-muted truncate">
+          <p className="text-2xl md:text-3xl font-bold text-fg-on-dark tracking-wide">
+            {testimonial.name}
+          </p>
+          <p className="text-base text-fg-on-dark-muted tracking-wide truncate">
             {testimonial.role}
             {testimonial.company ? ` · ${testimonial.company}` : ""}
           </p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }

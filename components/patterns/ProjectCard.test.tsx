@@ -4,13 +4,14 @@ import { ProjectCard } from "./ProjectCard";
 import type { Project } from "@/lib/data/projects";
 
 // next/image tries to serve optimised images in tests — swap for a plain <img>.
-// We drop next-specific props (fill, sizes) so they don't warn on the DOM element.
+// Strip next-specific props (fill, sizes, priority) so they don't warn on
+// the DOM element. We rebuild `rest` by omitting those keys.
 vi.mock("next/image", () => ({
-  default: ({
-    fill: _fill,
-    sizes: _sizes,
-    ...rest
-  }: Record<string, unknown>) => {
+  default: (props: Record<string, unknown>) => {
+    const rest = { ...props };
+    delete rest.fill;
+    delete rest.sizes;
+    delete rest.priority;
     // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
     return <img {...rest} />;
   }

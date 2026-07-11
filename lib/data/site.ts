@@ -3,6 +3,7 @@
  */
 export const SITE = {
   name: "Toba Ofomiyonwon",
+  firstName: "Toba",
   role: "Product Designer",
   tagline: "Intuitive product design for software teams.",
   description:
@@ -13,5 +14,9 @@ export const SITE = {
     behance: "https://www.behance.net/tofomiyonwon",
     linkedin: "https://www.linkedin.com/in/tobao77/"
   },
-  copyright: "© 2026 Toba Ofomiyonwon. All rights reserved"
+  copyright: "© 2026 Toba Ofomiyonwon. All rights reserved",
+  homepagePortrait: {
+    src: "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd/696445226dd56111ebf8ceb2_IMG_9214.JPG",
+    alt: "Portrait of Toba Ofomiyonwon"
+  }
 } as const;
