@@ -27,17 +27,38 @@ yarn dev              # http://localhost:3000
 
 ```
 app/
-  layout.tsx           server component; loads Inter Tight via next/font
-  page.tsx             homepage (placeholder for now)
+  layout.tsx           server component; document shell only (fonts + metadata)
+  page.tsx             homepage — renders content/site/Homepage.dc.html
+  about-toba/          /about-toba
+  contact/             /contact
+  playground/          /playground
+  projects/[slug]/     case studies, one route per case study
+  dc/[component]/      serves the Nav/Footer/PreFooterCTA partials to the runtime
   design-system/       live token + primitive gallery — visit /design-system
   globals.css          @import "tailwindcss" + tokens
 components/
+  dc/DcPage.tsx        renders a prepared design-canvas document inside a route
   ui/                  primitives: Button, Link, Card, Tag, Section, Container, Eyebrow
-  patterns/            composed pieces (Nav, Footer, Hero, ProjectCard, ...) — coming next
+  patterns/            composed pieces (Nav, Footer, Hero, ProjectCard, ...)
+content/site/          design-canvas documents (.dc.html) — the live site pages
+lib/dc/                loads those documents and rewrites their links + asset URLs
+public/site/           their runtime (support.js), page scripts and image assets
 styles/
   tokens.css           canonical design tokens (@theme block for Tailwind v4)
 docs/webflow/          content bible captured from the live Webflow site
 ```
+
+## How the site pages are served
+
+The live pages are design-canvas documents. They live in `content/site/` —
+outside `public/`, so they are only reachable through a Next.js route and no
+`.html` URL is ever exposed. `lib/dc/document.ts` strips the document shell,
+rewrites links between documents to their route (`about.dc.html` →
+`/about-toba`), and absolutises asset URLs to `/site/…`.
+
+Re-exporting a document from the canvas means dropping the `.dc.html` file back
+into `content/site/` — no other change is needed. A new page needs a route in
+`app/` and an entry in `lib/dc/routes.ts`.
 
 ## Scripts
 
