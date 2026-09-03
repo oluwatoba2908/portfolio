@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Nav } from "@/components/patterns/Nav";
-import { Footer } from "@/components/patterns/Footer";
-import { NAV_LINKS, FOOTER_LINK_GROUPS } from "@/lib/data/nav";
 import { SITE } from "@/lib/data/site";
 
 const geist = Geist({
@@ -26,25 +23,28 @@ export const metadata: Metadata = {
   description: SITE.description
 };
 
+/*
+ * Root layout — document shell only. Site chrome (nav, footer) belongs to the
+ * page: the design-canvas pages render their own, and /design-system wraps
+ * itself in the React components via its own layout.
+ */
 export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
   return (
+    /*
+     * The design-canvas scripts write to the document shell before React
+     * hydrates — vw.js sets a --vw custom property on <html> — so the shell
+     * opts out of hydration attribute checks.
+     */
     <html
       lang="en"
       className={`${geist.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
-      <body>
-        <Nav logoMark={SITE.logoMark} links={NAV_LINKS} />
-        {children}
-        <Footer
-          logoMark={SITE.logoMark}
-          groups={FOOTER_LINK_GROUPS}
-          copyright={SITE.copyright}
-        />
-      </body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
