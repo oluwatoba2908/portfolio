@@ -14,11 +14,11 @@ import { Nav } from "@/components/patterns/Nav";
 import { Footer } from "@/components/patterns/Footer";
 import { PreFooterCTA } from "@/components/patterns/PreFooterCTA";
 import { BatLottie } from "@/components/ui/BatLottie";
+import { ABOUT } from "@/lib/data/about";
 
-const EXPERIENCES = [
-  { role: "Founding Product Designer", org: "Airstride", period: "2025 — present" },
-  { role: "UX/UI Designer, No-code Developer", org: "Dexla", period: "2023 — 2024" },
-];
+// Full work history lives in lib/data/about.ts, transcribed verbatim from the
+// source doc — use it rather than restating an abbreviated copy here.
+const EXPERIENCES = ABOUT.workHistory.roles;
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -79,11 +79,11 @@ export default function AboutPage() {
       {/* Experiences — right-aligned on desktop, left on mobile */}
       <section id="experience" style={{ maxWidth: 900, margin: "0 auto", padding: "clamp(64px, 8vw, 120px) 20px" }}>
         {EXPERIENCES.map((exp, i) => (
-          <Reveal key={exp.org} delay={i * 90}>
+          <Reveal key={exp.company} delay={i * 90}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", textAlign: "right", marginBottom: 32 }} className="exp-row">
               <p style={{ margin: 0, fontSize: 20, fontWeight: 600 }}>{exp.role}</p>
               <p style={{ margin: "4px 0 0", color: "#6b6b6b" }}>
-                {exp.org} · {exp.period}
+                {exp.company} · {exp.dates}
               </p>
             </div>
           </Reveal>
