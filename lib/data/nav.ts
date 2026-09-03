@@ -4,9 +4,9 @@ export type NavLink = {
   external?: boolean;
 };
 
-/** Top-nav links. Source: tobadesigner.com nav. Canonical /about. */
+/** Top-nav links. Source: tobadesigner.com nav. Canonical /about-toba. */
 export const NAV_LINKS: readonly NavLink[] = [
-  { label: "About me", href: "/about" },
+  { label: "About me", href: "/about-toba" },
   { label: "Contact", href: "/contact" }
 ];
 
@@ -16,8 +16,9 @@ export const FOOTER_LINK_GROUPS = [
     heading: "Sitemap",
     links: [
       { label: "Home", href: "/" },
-      { label: "About me", href: "/about" },
-      { label: "Contact", href: "/contact" }
+      { label: "About me", href: "/about-toba" },
+      { label: "Contact", href: "/contact" },
+      { label: "Playground", href: "/playground" }
     ]
   },
   {

@@ -5,23 +5,12 @@ const nextConfig = {
       { protocol: "https", hostname: "cdn.prod.website-files.com" }
     ]
   },
-  async rewrites() {
-    return [
-      { source: "/", destination: "/site/Homepage.dc.html" },
-      { source: "/about-toba", destination: "/site/about.dc.html" },
-      { source: "/contact", destination: "/site/contact.dc.html" },
-      { source: "/playground", destination: "/site/playground.dc.html" }
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: "/projects/:slug",
-        destination: "/site/project.dc.html?slug=:slug",
-        permanent: false
-      }
-    ];
-  }
 };
+
+// The static DC build is still served verbatim from /site/*.dc.html, but it no
+// longer backs the public routes — every route below is now a real App Router
+// page. The old rewrites were dead once those pages existed (rewrites resolve
+// after filesystem routes), and the /projects/:slug redirect actively shadowed
+// the new case-study route, so both were removed.
 
 export default nextConfig;

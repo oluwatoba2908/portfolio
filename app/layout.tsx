@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Nav } from "@/components/patterns/Nav";
-import { Footer } from "@/components/patterns/Footer";
-import { NAV_LINKS, FOOTER_LINK_GROUPS } from "@/lib/data/nav";
 import { SITE } from "@/lib/data/site";
 
 const geist = Geist({
@@ -36,15 +33,9 @@ export default function RootLayout({
       lang="en"
       className={`${geist.variable} ${geistMono.variable}`}
     >
-      <body>
-        <Nav logoMark={SITE.logoMark} links={NAV_LINKS} />
-        {children}
-        <Footer
-          logoMark={SITE.logoMark}
-          groups={FOOTER_LINK_GROUPS}
-          copyright={SITE.copyright}
-        />
-      </body>
+      {/* Nav and Footer are rendered per-page: each route composes its own so
+          the Nav background and the Footer's scroll-reveal can vary by page. */}
+      <body>{children}</body>
     </html>
   );
 }

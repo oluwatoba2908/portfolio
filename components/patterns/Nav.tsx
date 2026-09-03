@@ -1,154 +1,208 @@
 "use client";
 
-import NextLink from "next/link";
-import { useState, useCallback, useEffect } from "react";
-import { clsx } from "clsx";
-import type { NavLink } from "@/lib/data/nav";
-
-export type NavProps = {
-  logoMark: string;
-  links: readonly NavLink[];
-};
-
 /**
- * Site navigation. Sticky top bar with warm off-white background matching
- * the Figma spec (`rgba(245,245,245,0.9)` + subtle shadow). Client
- * component because it owns mobile drawer open state — desktop layout
- * has no client state.
+ * Ported from Nav.dc.html. Drop at components/patterns/Nav.tsx, replacing the
+ * existing Nav.tsx. Needs: framer-motion (npm i framer-motion) for the mobile
+ * drawer transition; everything else is plain React/Next.
+ *
+ * Assets referenced (place under public/):
+ *   /logo.png              — GT wordmark
+ *   /bat-halloween.lottie  — optional seasonal accent (safe to omit; guarded below)
  */
-export function Nav({ logoMark, links }: NavProps) {
-  const [open, setOpen] = useState(false);
 
+import NextLink from "next/link";
+import Image from "next/image";
+import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { NAV_LINKS } from "@/lib/data/nav";
+import { BatLottie } from "@/components/ui/BatLottie";
+
+const MENU_ITEMS = [
+  { label: "Home page", href: "/" },
+  ...NAV_LINKS,
+  { label: "Playground", href: "/playground" },
+];
+
+export function Nav({ background = "rgba(245,245,245,0.9)" }: { background?: string }) {
+  const [open, setOpen] = useState(false);
+  const [path, setPath] = useState("/");
+
+  useEffect(() => {
+    setPath(window.location.pathname);
+  }, []);
+
+  const toggle = useCallback(() => setOpen((v) => !v), []);
   const close = useCallback(() => setOpen(false), []);
-  const toggle = useCallback(() => setOpen((o) => !o), []);
 
   useEffect(() => {
     if (!open) return;
-    const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = original;
+      document.body.style.overflow = "";
     };
   }, [open]);
 
   return (
-    <header
-      className={clsx(
-        "sticky top-0 z-40",
-        "bg-[rgba(245,245,245,0.9)] backdrop-blur-md",
-        "shadow-[var(--shadow-nav)]"
-      )}
+    <nav
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 40,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "16px clamp(20px, 3vw, 40px)",
+        background,
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+      }}
     >
-      <div className="mx-auto flex h-[86px] items-center justify-between px-6 md:px-16">
+      <NextLink href="/" aria-label="Home" style={{ display: "flex", alignItems: "center" }}>
+        <Image src="/logo.png" alt="Toba Ofomiyonwon" width={96} height={28} priority style={{ height: 28, width: "auto" }} />
+      </NextLink>
+
+      {/* centered seasonal accent */}
+      <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", pointerEvents: "none" }}>
+        <BatLottie size={40} />
+      </div>
+
+      {/* desktop links */}
+      <div style={{ display: "flex", alignItems: "center", gap: 32 }} className="nav-links-desktop">
+        {NAV_LINKS.map((l) => (
+          <NextLink
+            key={l.href}
+            href={l.href}
+            target={l.external ? "_blank" : undefined}
+            rel={l.external ? "noreferrer noopener" : undefined}
+            style={{ fontSize: 15, fontWeight: 500, color: "#191919", textDecoration: "none" }}
+          >
+            {l.label}
+          </NextLink>
+        ))}
         <NextLink
-          href="/"
-          className="text-2xl font-extrabold tracking-tight text-fg hover:opacity-80 transition-opacity"
-          onClick={close}
+          href="/playground"
+          style={{ fontSize: 15, fontWeight: 500, color: "#191919", textDecoration: "none" }}
         >
-          {logoMark}
+          Playground
         </NextLink>
-
-        {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-2">
-          {links.map((link) => (
-            <li key={link.href}>
-              <NavItem link={link} onNavigate={close} />
-            </li>
-          ))}
-        </ul>
-
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-border hover:bg-bg-inset transition-colors"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={toggle}
-        >
-          <MenuIcon open={open} />
-        </button>
       </div>
 
-      {/* Mobile drawer */}
-      <div
-        id="mobile-nav"
-        className={clsx(
-          "md:hidden fixed inset-x-0 top-[86px] bottom-0 z-30 bg-bg-warm transition-opacity duration-[var(--duration-normal)] ease-[var(--ease-standard)]",
-          open
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+      {/* hamburger — visible below 1024px via the CSS below */}
+      <button
+        onClick={toggle}
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-expanded={open}
+        className="nav-hamburger"
+        style={{
+          display: "none",
+          width: 40,
+          height: 40,
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+          position: "relative",
+          zIndex: 60,
+        }}
+      >
+        <span
+          style={{
+            position: "absolute",
+            left: 8,
+            right: 8,
+            top: open ? 19 : 14,
+            height: 2,
+            background: "#191919",
+            transition: "all 0.3s cubic-bezier(0.65,0,0.35,1)",
+            transform: open ? "rotate(45deg)" : "none",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            left: 8,
+            right: 8,
+            top: open ? 19 : 26,
+            height: 2,
+            background: "#191919",
+            transition: "all 0.3s cubic-bezier(0.65,0,0.35,1)",
+            transform: open ? "rotate(-45deg)" : "none",
+          }}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.65, 0, 0.35, 1] }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 50,
+              background: "#e8e8e8",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 12,
+            }}
+          >
+            {MENU_ITEMS.map((item) => {
+              const active = path === item.href;
+              return (
+                <NextLink
+                  key={item.href}
+                  href={item.href}
+                  onClick={close}
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 500,
+                    padding: "12px 24px",
+                    borderRadius: 12,
+                    color: "#191919",
+                    textDecoration: "none",
+                    background: active ? "#ffffff" : "transparent",
+                    boxShadow: active ? "0 8px 24px rgba(0,0,0,0.08)" : "none",
+                    position: "relative",
+                  }}
+                  className="nav-drawer-link"
+                >
+                  {item.label}
+                </NextLink>
+              );
+            })}
+          </motion.div>
         )}
-      >
-        <ul className="flex flex-col p-6 gap-2">
-          {links.map((link) => (
-            <li key={link.href}>
-              <NavItem link={link} onNavigate={close} mobile />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </header>
-  );
-}
+      </AnimatePresence>
 
-function NavItem({
-  link,
-  onNavigate,
-  mobile
-}: {
-  link: NavLink;
-  onNavigate: () => void;
-  mobile?: boolean;
-}) {
-  const classes = clsx(
-    "hover:text-accent transition-colors text-fg",
-    mobile
-      ? "block py-4 text-2xl font-medium border-b border-border"
-      : "text-base font-normal px-5 py-2"
-  );
-
-  if (link.external) {
-    return (
-      <a
-        href={link.href}
-        target="_blank"
-        rel="noreferrer noopener"
-        className={classes}
-        onClick={onNavigate}
-      >
-        {link.label}
-      </a>
-    );
-  }
-  return (
-    <NextLink href={link.href} className={classes} onClick={onNavigate}>
-      {link.label}
-    </NextLink>
-  );
-}
-
-function MenuIcon({ open }: { open: boolean }) {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {open ? (
-        <>
-          <line x1="4" y1="4" x2="14" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="14" y1="4" x2="4" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </>
-      ) : (
-        <>
-          <line x1="2" y1="5" x2="16" y2="5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="2" y1="13" x2="16" y2="13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </>
-      )}
-    </svg>
+      <style jsx global>{`
+        .nav-drawer-link::after {
+          content: "";
+          position: absolute;
+          left: 24px;
+          right: 24px;
+          bottom: 6px;
+          height: 1px;
+          width: 0;
+          background: #10d48e;
+          transition: width 0.35s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .nav-drawer-link:hover::after {
+          width: calc(100% - 48px);
+        }
+        @media (max-width: 1024px) {
+          .nav-links-desktop {
+            display: none !important;
+          }
+          .nav-hamburger {
+            display: block !important;
+          }
+        }
+      `}</style>
+    </nav>
   );
 }
