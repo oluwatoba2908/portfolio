@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="/site/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Playground — Upcoming UI mockups | Toba Ofomiyonwon</title>
+  <meta name="description" content="A live look at upcoming UI mockups from Toba Ofomiyonwon. New product screens, explorations and case studies are on the way — check back soon.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Playground — Upcoming UI mockups | Toba Ofomiyonwon">
+  <meta property="og:description" content="A live look at upcoming UI mockups from Toba Ofomiyonwon. New product screens, explorations and case studies are on the way.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Playground — Upcoming UI mockups">
+  <meta name="twitter:description" content="Upcoming UI mockups from Toba Ofomiyonwon — coming soon.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script src="vw.js"></script>
+  <script src="scroll-in.js"></script>
+  <script src="link-fix.js"></script>
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+  <script src="bat-static.js"></script>
+  <style>
+    /* Why the Bat? section (moved from About page) */
+    .pg-bat-section { padding: clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 128px); }
+    .a-dark-panel { background: #1f1f1f; color: #ffffff; border-radius: 40px; margin: 0 20px; padding: 100px 20px; }
+    .a-dark-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(32px, 5vw, 56px); }
+    .a-dark-p { font-size: 1rem; line-height: 1.7; color: #a8a8a8; margin: 0; text-align: center; }
+    .bat-block { position: relative; padding-top: 0; }
+    .bat-block > .load-in { position: relative; z-index: 1; }
+    @media (max-width: 767px) {
+      .a-dark-panel { padding: 64px 16px; }
+    }
+    /* keep original playground styles below */
+    body { margin: 0; background: #efefef; color: #111111; font-family: "Geist", system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; text-decoration: none; }
+    html, body { height: auto !important; min-height: 100%; overflow-x: clip; background: #efefef; color-scheme: light only; }
+    #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
+
+    /* opaque page layer above the fixed footer; 100vh bottom margin is the footer's reveal window */
+    .pg-page { position: relative; z-index: 1; background: #efefef; margin-bottom: 100vh; min-height: 100vh; }
+    .pg-main { position: relative; display: flex; flex-direction: column; min-height: calc(100vh - 86px - 44px); padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; }
+    /* fit the viewport when it can; when the column is taller than the screen the
+       page scrolls instead of starving the mockups (user allowed a scroll here) */
+    @media (min-width: 768px) {
+      .pg-main { min-height: calc(100vh - 86px); }
+    }
+
+    /* small mono labels used across the layout */
+    .pg-mono { font: 500 11px/1.2 "Geist", system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #191919; }
+    .pg-mono--muted { color: #9a9a9a; }
+
+    /* corners */
+    .pg-topbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .pg-topbar__col { display: flex; flex-direction: column; gap: 12px; }
+    .pg-topbar__row { display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); }
+    .pg-brand { font: 800 15px/1 "Geist", system-ui, sans-serif; letter-spacing: 0.02em; font-style: italic; }
+    .pg-count { color: #9a9a9a; margin-left: 6px; font-weight: 500; }
+
+    .pg-look-badge { display: inline-flex; align-items: center; gap: 12px; padding: 6px 12px; border: 1px solid rgba(25,25,25,0.14); border-radius: 20px; }
+    .pg-look-badge__label { font-weight: 600; }
+    .pg-look-badge__thumbs { display: flex; gap: 4px; align-items: center; }
+    .pg-look-badge__thumb { width: 12px; height: 22px; background: linear-gradient(180deg, #d3d3d3, #b0b0b0); border: none; border-radius: 1px; opacity: 0.4; padding: 0; cursor: pointer; transition: opacity 200ms cubic-bezier(0.42,0,0.58,1); }
+    .pg-look-badge__thumb:hover { opacity: 0.7; }
+    .pg-look-badge__thumb.is-active { opacity: 1; outline: 2px solid #191919; }
+
+    /* left-column meta */
+    .pg-meta { position: relative; z-index: 20; flex: 0 0 auto; max-width: 480px; margin-top: clamp(4px, 1vh, 12px); display: flex; flex-direction: column; gap: clamp(4px, 0.8vh, 10px); }
+    .pg-look-index { display: flex; gap: 4px; }
+    .pg-title { font: 800 clamp(18px, min(4.6vw, 4vh), 36px)/0.95 "Geist", system-ui, sans-serif; letter-spacing: 0; margin: 0; max-width: 100%; overflow-wrap: normal; hyphens: none; }
+    .pg-angle { display: flex; align-items: center; gap: 16px; }
+    .pg-strip { position: relative; display: flex; align-items: center; gap: 2px; height: 26px; padding: 0 4px; }
+    .pg-strip__tick { width: 2px; height: 100%; background: #a8a8a8; opacity: 0.55; transition: opacity 320ms cubic-bezier(0.22,1,0.36,1); }
+    .pg-strip__tick.is-here { opacity: 1; background: #191919; }
+    .pg-strip__marker { position: absolute; top: -3px; bottom: -3px; width: 22px; border: 1px solid #191919; background: rgba(255,255,255,0.6); pointer-events: none; transition: transform 500ms cubic-bezier(0.22,1,0.36,1); }
+
+    .pg-specs { display: grid; grid-template-columns: 84px 1fr; row-gap: 2px; column-gap: 24px; }
+    .pg-specs__label { color: #9a9a9a; }
+    .pg-specs__value { color: #191919; font-weight: 600; white-space: nowrap; }
+
+    /* stage: the 5-slot carousel — sits BELOW the meta text, in normal flow */
+    /* the stage breaks out of the .pg-main gutter so mockups span the full
+       viewport width; --vw comes from vw.js so scrollbar-aware, falls back to 100vw
+       overflow-x: clip trims the far cards' sideways bleed; overflow-y stays
+       visible so each card's drop shadow can paint below it (hidden clipped it) */
+    .pg-stage { --pg-step: 320px; --pg-radius: 40px; position: relative; overflow-x: clip; overflow-y: visible; flex: 1 1 auto; min-height: min(560px, 68vh); width: var(--vw, 100vw); margin-left: calc((var(--vw, 100vw) - 100%) / -2); margin-right: calc((var(--vw, 100vw) - 100%) / -2); margin-top: clamp(6px, 1vh, 14px); display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: none; }
+    .pg-slot { position: absolute; top: 50%; left: 50%; pointer-events: auto; background: transparent; border: none; padding: 0; cursor: pointer;
+      transform-origin: center center;
+      /* smooth ease-in-out slider transition */
+      transition:
+        transform 900ms cubic-bezier(0.42, 0, 0.58, 1),
+        opacity 700ms cubic-bezier(0.42, 0, 0.58, 1),
+        filter 700ms cubic-bezier(0.42, 0, 0.58, 1);
+      opacity: 0.34;
+    }
+    /* height-driven so the card never distorts; the vw cap keeps the active card +
+       both ±1 ghosts (0.55 scale) + gaps inside the now-full-vw stage */
+    .pg-slot { height: min(100%, 56vw); max-height: 860px; width: auto; aspect-ratio: 2243 / 2240; filter: grayscale(0.2) brightness(1.02); }
+    .pg-slot:hover { opacity: 0.5; }
+    .pg-slot.is-active { filter: none; opacity: 1; cursor: zoom-in; z-index: 3; }
+    .pg-slot.is-active:hover { opacity: 1; }
+
+    /* click-to-zoom lightbox, same fit-then-1:1-toggle pattern used on the Airstride tours */
+    .pg-lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(10,10,10,0.85); display: flex; align-items: center; justify-content: center; padding: clamp(20px, 5vw, 64px); opacity: 0; pointer-events: none; transition: opacity 260ms cubic-bezier(0.42,0,0.58,1); }
+    .pg-lightbox.is-open { opacity: 1; pointer-events: auto; }
+    .pg-lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; cursor: zoom-out; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+    .pg-lightbox__close { position: absolute; top: 20px; right: 24px; width: 40px; height: 40px; border-radius: 999px; border: none; background: rgba(255,255,255,0.12); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .pg-lightbox__close:hover { background: rgba(255,255,255,0.22); }
+
+    /* disclaimer replacing the old "coming soon" note */
+    .pg-disclaimer { display: flex; align-items: center; gap: 10px; justify-content: center; }
+    .pg-pulse-dot { position: relative; width: 8px; height: 8px; border-radius: 999px; background: #10d48e; flex: 0 0 auto; }
+    .pg-pulse-dot::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: #10d48e; animation: pgPulse 1.8s cubic-bezier(0.42,0,0.58,1) infinite; }
+    @keyframes pgPulse { 0% { transform: scale(1); opacity: 0.7; } 70% { transform: scale(2.6); opacity: 0; } 100% { transform: scale(2.6); opacity: 0; } }
+
+    /* every slot renders a skeleton card, not an image — signals "upcoming" */
+    .sk-card { position: relative; width: 100%; height: 100%; border-radius: var(--pg-radius, 40px); background: #ffffff; box-shadow: 0 22px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(25,25,25,0.06); padding: 18px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; box-sizing: border-box; }
+    .sk-card--img { padding: 12px; align-items: center; justify-content: center; }
+    .sk-mockup-img { width: 100%; height: 100%; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+    .sk-block { position: relative; overflow: hidden; background: #ececec; border-radius: 8px; }
+    .sk-block--hero { flex: 1 1 auto; border-radius: 12px; }
+    .sk-block--line { height: 12px; }
+    .sk-block--line.w80 { width: 80%; }
+    .sk-block--line.w60 { width: 60%; }
+    .sk-block--line.w40 { width: 40%; }
+    .sk-block--pill { width: 92px; height: 22px; border-radius: 999px; background: #e0e0e0; }
+    .sk-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .sk-row--tags { gap: 8px; }
+    .sk-tag { flex: 1 1 auto; height: 10px; border-radius: 999px; background: #ececec; }
+    /* shimmer sweep — the shimmer itself is what conveys "loading" */
+    .sk-block::after, .sk-tag::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.65) 45%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.65) 55%, transparent 100%);
+      transform: translateX(-100%);
+      animation: skSweep 1800ms cubic-bezier(0.42, 0, 0.58, 1) infinite;
+    }
+    .sk-tag { position: relative; overflow: hidden; }
+    /* stagger each card's shimmer so they don't shimmer in lock-step */
+    .pg-slot:nth-child(1) .sk-block::after, .pg-slot:nth-child(1) .sk-tag::after { animation-delay: 0ms; }
+    .pg-slot:nth-child(2) .sk-block::after, .pg-slot:nth-child(2) .sk-tag::after { animation-delay: 220ms; }
+    .pg-slot:nth-child(3) .sk-block::after, .pg-slot:nth-child(3) .sk-tag::after { animation-delay: 440ms; }
+    .pg-slot:nth-child(4) .sk-block::after, .pg-slot:nth-child(4) .sk-tag::after { animation-delay: 660ms; }
+    .pg-slot:nth-child(5) .sk-block::after, .pg-slot:nth-child(5) .sk-tag::after { animation-delay: 880ms; }
+    @keyframes skSweep { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(120%); } }
+
+    /* "COMING SOON" ribbon on the active card */
+    .sk-badge { position: absolute; top: 14px; left: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.9); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(25,25,25,0.08); font: 600 10px/1 "Geist", system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #191919; }
+    .sk-badge__dot { width: 8px; height: 8px; border-radius: 999px; background: #10d48e; box-shadow: 0 0 0 3px rgba(16,212,142,0.28); }
+
+
+
+    /* disclaimer sits inline, just above the mockups where the user can see it */
+    .pg-bottom { display: flex; gap: 8px; padding: 8px 0 12px; background: transparent; }
+    .pg-product { display: flex; align-items: center; gap: 12px; min-width: 240px; flex: 0 0 auto; }
+    .pg-product__swatch { width: 28px; height: 28px; border-radius: 4px; background: #1a1a1a; }
+    .pg-product__swatch--olive { background: #6b7a3f; }
+    .pg-product__label { flex: 1; }
+    .pg-product__view { color: #9a9a9a; letter-spacing: 0.12em; padding: 4px 10px; border: 1px solid rgba(25,25,25,0.12); border-radius: 2px; }
+    .pg-product__view:hover { color: #191919; border-color: #191919; }
+
+    /* bottom bar: one centred note */
+    .pg-bottom { justify-content: center; }
+    .pg-bottom .pg-product { min-width: 0; }
+
+    /* ---------- responsive ---------- */
+    /* tablet: tighter slot spacing, narrower meta column */
+    /* the stage now sits below the text, so the meta column no longer needs to
+       dodge it — keep a comfortable reading width at every size */
+    @media (max-width: 1100px) {
+      .pg-stage { --pg-step: 250px; --pg-radius: 32px; }
+      .pg-meta { max-width: 440px; }
+    }
+    @media (max-width: 900px) {
+      .pg-stage { --pg-step: 205px; --pg-radius: 28px; }
+      .pg-meta { max-width: 420px; }
+    }
+
+    /* mobile: same top-to-bottom order, just its own scrollable, non-clipped flow */
+    @media (max-width: 767px) {
+      html, body { overflow-y: auto !important; }
+      .pg-main { height: auto; min-height: calc(100vh - 86px - 44px); overflow: visible; padding: 16px 20px 32px; }
+      .pg-topbar { align-items: center; gap: 12px; }
+      .pg-look-badge { justify-content: space-between; }
+
+      /* only the ±1 ghosts survive here — at phone widths the ±2 cards would
+         land entirely outside the viewport, so they are dropped rather than
+         silently clipped by overflow-x. */
+      .pg-stage { --pg-step: 215px; --pg-radius: 24px; flex: 0 0 auto; min-height: 0; height: clamp(300px, 48vh, 460px); margin: 20px 0 8px; }
+      .pg-slot { height: clamp(150px, 44vh, 320px); max-width: 74vw; }
+      .pg-slot.is-far { display: none; }
+
+      .pg-meta { max-width: 100%; margin-top: 8px; gap: 20px; }
+      .pg-title { font-size: clamp(32px, 11vw, 48px); }
+      .pg-angle { flex-wrap: wrap; gap: 12px; }
+      .pg-strip { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+      .pg-specs { grid-template-columns: 96px 1fr; }
+      .pg-bottom { padding: 12px 20px; }
+    }
+
+    @media (max-width: 420px) {
+      .pg-stage { --pg-step: 190px; --pg-radius: 20px; }
+      .pg-slot { height: clamp(140px, 40vh, 260px); max-width: 78vw; }
+      .sk-card { padding: 12px; gap: 10px; }
+    }
+  </style>
+</helmet>
+
+<div class="pg-page">
+<dc-import name="Nav" nav-background="#efefef" style="position: sticky; top: 0; z-index: 40; display: block; background: #efefef;" hint-size="100%,86px"></dc-import>
+
+<main data-screen-label="Playground" class="pg-main">
+  <div class="pg-topbar">
+    <div class="pg-topbar__col">
+      <div class="pg-topbar__row" style="align-items: flex-start; flex-direction: column; gap: clamp(6px, 0.8vh, 12px);">
+        <h1 class="pg-title">{{ copy.title }}</h1>
+        <p class="pg-mono pg-mono--muted" style="max-width: 34ch; line-height: 1.55; letter-spacing: 0.02em; text-transform: none; font-size: 13px; margin: 0;">{{ copy.blurb }}</p>
+        <div class="pg-angle" style="margin-top: 4px;">
+          <span class="pg-mono">{{ copy.axisLabel }}</span>
+          <div class="pg-strip" onClick="{{ jumpTo }}">
+            <span class="pg-strip__marker" style="transform: translateX({{ markerX }}px);"></span>
+            <sc-for list="{{ strip }}" as="s" hint-placeholder-count="30">
+              <span class="pg-strip__tick {{ s.cls }}"></span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pg-look-badge">
+      <span class="pg-mono pg-look-badge__label">MOCKUP</span>
+      <span class="pg-mono pg-count">{{ lookLabel }}</span>
+      <span class="pg-look-badge__thumbs">
+        <sc-for list="{{ badgeThumbs }}" as="t" hint-placeholder-count="5">
+          <button type="button" class="pg-look-badge__thumb {{ t.cls }}" onClick="{{ t.onSelect }}" aria-label="{{ t.aria }}"></button>
+        </sc-for>
+      </span>
+    </div>
+  </div>
+
+
+
+  <div class="pg-bottom">
+    <div class="pg-disclaimer">
+      <span class="pg-pulse-dot" aria-hidden="true"></span>
+      <span class="pg-mono pg-product__label" style="color: #6b6b6b; text-align: center; text-transform: none; letter-spacing: 0.02em; font-size: 12px;">{{ copy.footerNote }}</span>
+    </div>
+  </div>
+
+  <div class="pg-stage" ref="{{ stageRef }}">
+    <sc-for list="{{ slots }}" as="slot">
+      <button class="pg-slot {{ slot.cls }}" style="transform: {{ slot.transform }}; z-index: {{ slot.z }};" onClick="{{ slot.onSelect }}" aria-label="{{ slot.aria }}">
+        <div class="{{ slot.cardCls }}" aria-hidden="true">
+          <sc-if value="{{ slot.hasMockup }}" hint-placeholder-val="{{ false }}">
+            {{ slot.imgNode }}
+          </sc-if>
+          <sc-if value="{{ slot.showSkeleton }}" hint-placeholder-val="{{ false }}">
+            <div class="sk-block sk-block--hero"></div>
+            <div class="sk-row"><span class="sk-block sk-block--pill"></span></div>
+            <div class="sk-block sk-block--line w80"></div>
+            <div class="sk-block sk-block--line w60"></div>
+            <div class="sk-row sk-row--tags"><span class="sk-tag"></span><span class="sk-tag"></span><span class="sk-tag"></span></div>
+          </sc-if>
+        </div>
+      </button>
+    </sc-for>
+  </div>
+</main>
+
+<section class="pg-bat-section">
+  <div class="a-dark-panel">
+    <div class="bat-block">
+      <div style="position: absolute; left: 2%; top: 26%; width: 96px; transform: rotate(-8deg); pointer-events: none; z-index: 0;" aria-hidden="true"><dotlottie-player data-bat-static src="assets/bat-halloween.lottie" autoplay style="width: 100%; height: auto; display: block; filter: invert(38%);"></dotlottie-player></div>
+      <div style="position: absolute; right: 3%; top: 20%; width: 78px; transform: rotate(10deg); pointer-events: none; z-index: 0;" aria-hidden="true"><dotlottie-player data-bat-static src="assets/bat-halloween.lottie" autoplay style="width: 100%; height: auto; display: block; filter: invert(38%);"></dotlottie-player></div>
+      <div style="position: absolute; right: 12%; top: 62%; width: 56px; transform: rotate(-14deg); pointer-events: none; z-index: 0;" aria-hidden="true"><dotlottie-player data-bat-static src="assets/bat-halloween.lottie" autoplay style="width: 100%; height: auto; display: block; filter: invert(38%);"></dotlottie-player></div>
+      <div style="position: absolute; left: 8%; top: 74%; width: 46px; transform: rotate(16deg); pointer-events: none; z-index: 0;" aria-hidden="true"><dotlottie-player data-bat-static src="assets/bat-halloween.lottie" autoplay style="width: 100%; height: auto; display: block; filter: invert(38%);"></dotlottie-player></div>
+      <h2 class="a-dark-title load-in load-in-1" style="margin-top: 0;">Why the Bat?</h2>
+      <div class="load-in load-in-2" style="width: clamp(210px, 30vw, 380px); margin: clamp(-52px, -5vw, -28px) auto 0;">
+        <dotlottie-player src="/site/assets/bat-halloween.lottie" autoplay loop style="width: 100%; height: auto; display: block; pointer-events: none; filter: invert(55%);"></dotlottie-player>
+      </div>
+      <div class="load-in load-in-3" style="max-width: 380px; margin: clamp(20px, 3vw, 40px) auto 0; display: flex; flex-direction: column; gap: 22px;">
+        <p class="a-dark-p">Apart from black being my favourite colour, here is the real reason for the metaphor.</p>
+        <p class="a-dark-p">A bat navigates places it cannot see. It sends out a signal, listens to what comes back, and builds a picture from the response. It does not guess or wait for the lights to come on.</p>
+        <p class="a-dark-p">That is how I design. In startups, I often work with incomplete information: no requirements, few users, or little competitive context. Instead of guessing, I work in short cycles: research, design, collaborate, test, listen, and iterate. I use what comes back from real users to continuously refine the product.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
+
+<div class="pg-lightbox {{ lightboxCls }}" onClick="{{ closeLightbox }}">
+  <button class="pg-lightbox__close" onClick="{{ closeLightbox }}" aria-label="Close preview">&times;</button>
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    {{ zoomImg }}
+  </sc-if>
+</div>
+
+
+
+</div>
+<dc-import name="Footer" hint-size="100%,0px" style="display:block; height:0; overflow:visible;"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 }
+}">
+class Component extends DCLogic {
+  state = { activeIdx: 2, spinning: null, lightboxOpen: false, zoomSrc: "", cardW: 0 };
+
+  // measure the rendered (unscaled) card width so ghost offsets can be computed
+  // from real size + a gap, instead of a fixed step that lets cards overlap
+  _measure() {
+    const el = this._stageEl;
+    if (!el) return;
+    const active = el.querySelector(".pg-slot.is-active") || el.querySelector(".pg-slot");
+    if (!active) return;
+    const w = active.offsetWidth;
+    if (w > 0 && Math.abs(w - this.state.cardW) > 1) this.setState({ cardW: w });
+  }
+
+  componentDidMount() {
+    this._wheelLock = false;
+    // horizontal-only: vertical wheel/scroll always passes through to the page
+    this._onWheel = (e) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      if (this._wheelLock) return;
+      if (Math.abs(e.deltaX) < 12) return;
+      this._wheelLock = true;
+      setTimeout(() => { this._wheelLock = false; }, 380);
+      const dir = e.deltaX > 0 ? 1 : -1;
+      const total = this.ITEMS.length;
+      const next = Math.min(Math.max(this.state.activeIdx + dir, 0), total - 1);
+      if (next !== this.state.activeIdx) this._pickSlot(next);
+    };
+    this._touchStartX = 0;
+    this._touchStartY = 0;
+    this._onTouchStart = (e) => {
+      const t = e.touches[0];
+      this._touchStartX = t.clientX;
+      this._touchStartY = t.clientY;
+    };
+    // swipe: only horizontal swipes change slides; vertical swipes scroll the page
+    this._onTouchEnd = (e) => {
+      const t = e.changedTouches[0];
+      const dx = this._touchStartX - t.clientX;
+      const dy = this._touchStartY - t.clientY;
+      if (Math.abs(dx) <= Math.abs(dy)) return;
+      if (Math.abs(dx) < 40) return;
+      const dir = dx > 0 ? 1 : -1;
+      const total = this.ITEMS.length;
+      const next = Math.min(Math.max(this.state.activeIdx + dir, 0), total - 1);
+      if (next !== this.state.activeIdx) this._pickSlot(next);
+    };
+  }
+
+  componentWillUnmount() {
+    this._detachStage();
+  }
+
+  _detachStage() {
+    if (this._stageEl) {
+      this._stageEl.removeEventListener("wheel", this._onWheel);
+      this._stageEl.removeEventListener("touchstart", this._onTouchStart);
+      this._stageEl.removeEventListener("touchend", this._onTouchEnd);
+    }
+    if (this._ro) { this._ro.disconnect(); this._ro = null; }
+  }
+
+  // 5 looks — swap `src` for your own portrait images later.
+  // static copy — one fixed identity across all draft cards; only the index changes
+  COPY = {
+    title: "THE PLAYGROUND",
+    blurb: "A collection of UX and UI explorations, prototypes and digital product concepts.",
+    axisLabel: "UX / UI",
+    role: "UX DESIGN",
+    focus: "USER EXPERIENCE",
+    discipline: "INTERACTION DESIGN",
+    productA: "DIGITAL PRODUCT",
+    productB: "UI EXPLORATION",
+    footerNote: "Swipe to browse. Click a mockup to zoom in."
+  };
+
+  ITEMS = [
+    { hue: "#2a2a2a", accent: "#6b5b3a" },
+    { hue: "#4a3a2e", accent: "#c8a672" },
+    { hue: "#243645", accent: "#a9c1cf" },
+    { hue: "#3d2f45", accent: "#c69bc7" },
+    { hue: "#0f1a1a", accent: "#4ad9d9" },
+    { hue: "#1c1c1c", accent: "#8a8a8a" }
+  ];
+
+  // build a portrait-silhouette SVG data URI in place of real photos, so the
+  // interaction is testable immediately and can be swapped out later
+  _placeholder(i, item) {
+    const g = `\n      <defs>\n        <linearGradient id="g${i}" x1="0" y1="0" x2="0" y2="1">\n          <stop offset="0" stop-color="${item.accent}" stop-opacity="0.9"/>\n          <stop offset="1" stop-color="${item.hue}" stop-opacity="1"/>\n        </linearGradient>\n      </defs>`;
+    // stylised standing figure — head, torso, legs
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 720' preserveAspectRatio='xMidYMid meet'>${g}
+      <g fill='url(#g${i})'>
+        <ellipse cx='160' cy='80' rx='38' ry='46'/>
+        <path d='M112 128 Q160 118 208 128 L232 300 Q220 340 208 388 Q188 402 160 402 Q132 402 112 388 Q100 340 88 300 Z'/>
+        <path d='M120 402 L140 400 L156 700 L124 700 Z'/>
+        <path d='M200 402 L180 400 L164 700 L196 700 Z'/>
+      </g>
+      <text x='50%' y='96%' text-anchor='middle' font-family='Geist, system-ui' font-size='16' font-weight='700' fill='#191919' letter-spacing='2'>${String(i + 1).padStart(2, '0')} / ${this.ITEMS.length.toString().padStart(2, '0')}</text>
+    </svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  // horizontal position offset per slot given distance-from-centre
+  _slotTransform(offset) {
+    if (offset === 0) return "translate(-50%, -50%) scale(1)";
+    const scale = Math.abs(offset) === 1 ? 0.55 : 0.4;
+    const W = this.state.cardW;
+    if (W > 0) {
+      // centre-to-centre distances that leave a real gap between card edges:
+      // ±1: W/2 + gap + (0.55W)/2 = 0.775W + gap
+      // ±2: ±1 distance + (0.55W)/2 + gap + (0.4W)/2 = 1.25W + 2gap
+      const gap = Math.min(32, Math.max(16, (typeof window !== "undefined" ? window.innerWidth : 1280) * 0.02));
+      const dist = Math.abs(offset) === 1 ? (0.775 * W + gap) : (1.25 * W + 2 * gap);
+      const x = Math.sign(offset) * dist;
+      return `translate(calc(-50% + ${x.toFixed(1)}px), -50%) scale(${scale})`;
+    }
+    // fallback before first measurement: --pg-step is set per breakpoint in CSS
+    return `translate(calc(-50% + (${offset} * var(--pg-step))), -50%) scale(${scale})`;
+  }
+
+  _pickSlot(i) {
+    this.setState({ activeIdx: i });
+  }
+
+  renderVals() {
+    const { activeIdx, lightboxOpen } = this.state;
+    const items = this.ITEMS;
+    const active = items[activeIdx];
+
+    // slots keyed by index -> mockup src; any absent index renders as a skeleton
+    const MOCKUP_SRCS = {
+      0: "assets/playground-mockup-0.png",
+      1: "assets/playground-mockup-2.png",
+      2: "assets/playground-mockup-4.png",
+      3: "assets/playground-mockup-5.png",
+      4: "assets/playground-mockup-6.png",
+      5: "assets/playground-mockup-7.png"
+    };
+    const slots = items.map((it, i) => {
+      const off = i - activeIdx;
+      const src = MOCKUP_SRCS[i] || "";
+      const hasMockup = !!src;
+      return {
+        slotId: "pg-slot-" + i,
+        slotPointer: i === activeIdx ? "auto" : "none", // let the button own the click when ghosted
+        aria: hasMockup ? "Featured mockup" : "Coming soon draft",
+        cls: (i === activeIdx ? "is-active" : "") + (Math.abs(off) >= 2 ? " is-far" : ""),
+        z: i === activeIdx ? 3 : (Math.abs(off) === 1 ? 2 : 1),
+        transform: this._slotTransform(off),
+        hasMockup,
+        showSkeleton: !hasMockup,
+        cardCls: hasMockup ? "sk-card sk-card--img" : "sk-card",
+        mockupSrc: src,
+        imgNode: hasMockup
+          ? React.createElement("img", { className: "sk-mockup-img", src: src, alt: "" })
+          : null,
+        onSelect: () => {
+          if (i !== activeIdx) this._pickSlot(i);
+          if (hasMockup) this.setState({ lightboxOpen: true, zoomSrc: src });
+        }
+      };
+    });
+
+    // badge thumbs beside "LOOK 09 / 11" — 5 mini tallies matching the slots
+    const badgeThumbs = items.map((_, i) => ({
+      cls: i === activeIdx ? "is-active" : "",
+      aria: i === activeIdx ? "Current mockup" : "Show mockup " + (i + 1),
+      onSelect: () => { if (i !== activeIdx) this._pickSlot(i); }
+    }));
+
+    // long tick strip beside the angle label — 30 ticks total, current one highlighted
+    const TICK_COUNT = 30;
+    const strip = Array.from({ length: TICK_COUNT }, (_, i) => {
+      const centre = Math.round((activeIdx / (items.length - 1)) * (TICK_COUNT - 1));
+      return { cls: i === centre ? "is-here" : "" };
+    });
+    const tickPitch = 4; // width(2) + gap(2)
+    const markerX = Math.round((activeIdx / (items.length - 1)) * (TICK_COUNT - 1)) * tickPitch;
+
+    const total = items.length;
+    const angle = Math.round((activeIdx / (total - 1)) * 360);
+
+    return {
+      activeItem: active,
+      copy: this.COPY,
+      lookLabel: `${String(activeIdx + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`,
+      angleLabel: `${angle}° / 360°`,
+      badgeThumbs,
+      strip,
+      markerX,
+      slots,
+      lightboxOpen,
+      lightboxCls: lightboxOpen ? "is-open" : "",
+      zoomImg: lightboxOpen
+        ? React.createElement("img", {
+            src: this.state.zoomSrc || "assets/playground-mockup-1.png",
+            alt: "Mockup preview, zoomed",
+            onClick: (e) => e.stopPropagation()
+          })
+        : null,
+      closeLightbox: () => this.setState({ lightboxOpen: false }),
+      stopBubble: (e) => e.stopPropagation(),
+      stageRef: (el) => {
+        if (el === this._stageEl) return;
+        this._detachStage();
+        this._stageEl = el;
+        if (el) {
+          el.addEventListener("wheel", this._onWheel, { passive: false });
+          el.addEventListener("touchstart", this._onTouchStart, { passive: true });
+          el.addEventListener("touchend", this._onTouchEnd, { passive: true });
+          if (typeof ResizeObserver !== "undefined") {
+            this._ro = new ResizeObserver(() => this._measure());
+            this._ro.observe(el);
+          }
+          requestAnimationFrame(() => this._measure());
+        }
+      },
+      jumpTo: (e) => {
+        const strip = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - strip.left;
+        const p = Math.min(Math.max(x / strip.width, 0), 1);
+        const i = Math.round(p * (total - 1));
+        if (i !== activeIdx) this._pickSlot(i);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

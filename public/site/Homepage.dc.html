@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="/site/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    
+    html, body { overflow-x: clip; }
+    body { margin: 0; background: #efefef; color: #191919; font-family: "Geist", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1); }
+    a:hover { color: inherit; }
+    ::selection { background: #191919; color: #ffffff; }
+    .subtext { font-size: clamp(16px, 1.8vw, 20px); color: #6b6b6b; line-height: 1.5; max-width: 62ch; }
+    @keyframes pulseDot { 0%, 100% { transform: scale(1.1); } 50% { transform: scale(1.6); } }
+    /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .load-in { opacity: 0; }
+    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in-1 { animation-delay: 0ms; }
+    .load-in-2 { animation-delay: 90ms; }
+    .load-in-3 { animation-delay: 180ms; }
+    .load-in-4 { animation-delay: 270ms; }
+    .load-in-5 { animation-delay: 360ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .load-in { opacity: 1; }
+      .load-in.in-view { animation: none !important; }
+    } to { opacity: 1; transform: translateY(0); } }
+    @keyframes floatTL { 0%,100% { transform: translate(0,0) rotate(-6deg); } 50% { transform: translate(-22px,-16px) rotate(-2deg); } }
+    @keyframes floatBL { 0%,100% { transform: translate(0,0) rotate(5deg); } 50% { transform: translate(-18px,20px) rotate(9deg); } }
+    @keyframes floatTR { 0%,100% { transform: translate(0,0) rotate(6deg); } 50% { transform: translate(24px,-14px) rotate(2deg); } }
+    @keyframes floatBR { 0%,100% { transform: translate(0,0) rotate(-5deg); } 50% { transform: translate(20px,18px) rotate(-9deg); } }
+    .hero-float { position: absolute; z-index: 20; pointer-events: none; width: clamp(32px, 4vw, 60px); will-change: transform; }
+    .hero-float img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; filter: drop-shadow(0 10px 14px rgba(0,0,0,0.22)); }
+    @media (max-width: 900px) { .hero-float { display: none; } }
+    @media (max-width: 700px) { .hero-br { display: none; } }
+    /* Rule for ALL pages: any black-background section (except footers) gets this class */
+    .dark-section { background: #191919; color: #ffffff; margin-left: 10px; margin-right: 10px; }
+    .dark-section .section-container { padding-left: 15px; padding-right: 15px; }
+    .section-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
+    /* dotted grid guides for light-background sections */
+    .dotted-v { border-left: 1px dashed rgba(25,25,25,0.12); border-right: 1px dashed rgba(25,25,25,0.12); }
+    .dotted-h { border-top: 1px dashed rgba(25,25,25,0.12); }
+    .grid-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .gg-v { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(25,25,25,0.12); }
+    .gg-h { position: absolute; left: 50%; right: auto; width: var(--vw, 100vw); transform: translateX(-50%); height: 0; border-top: 1px dashed rgba(25,25,25,0.12); }
+    .gg-dot { position: absolute; width: 8px; height: 8px; border-radius: 999px; background: rgba(25,25,25,0.25); margin: -4px 0 0 -4px; }
+    @keyframes ggDotV { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+    @keyframes ggDotH { 0% { left: 0; } 50% { left: 100%; } 100% { left: 0; } }
+    .gg-dot-v { animation: ggDotV 28s ease-in-out infinite; }
+    .gg-dot-h { animation: ggDotH 34s ease-in-out infinite; }
+    .projects-grid { margin-top: clamp(48px, 6vw, 80px); display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(20px, 3vw, 40px); }
+    @media (max-width: 767px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      /* taller cards, pill always visible (no hover on touch) — never on coming-soon cards */
+      .proj-card { aspect-ratio: 572 / 700 !important; }
+      .proj-card:not(.proj-card--soon) .proj-pill { transform: translateY(0) !important; }
+      .proj-pill h3 { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; font-size: 18px !important; font-weight: 600 !important; line-height: 1.25; }
+      .proj-pill { bottom: 12px !important; left: 12px !important; right: 12px !important; }
+    }
+    @media (max-width: 1279px) { .section-container { max-width: 1100px; } }
+    @media (max-width: 767px) { .section-container { max-width: 900px; } }
+    html, body { height: auto !important; min-height: 100%; background: #efefef; color-scheme: light only; }
+    #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
+    /* testimonials: uniform card height, ellipsis for longer quotes */
+    .t-quote {
+      font-size: 1rem; color: #ffffff; line-height: 1.65; margin: 0;
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
+      overflow: hidden; text-overflow: ellipsis;
+      height: calc(4 * 1.65em); /* fixed box: short quotes no longer shrink the card */
+    }
+    @media (max-width: 767px) { .t-quote { -webkit-line-clamp: 6; height: calc(6 * 1.65em); } }
+    .t-sticky { transition: transform 0.35s cubic-bezier(0.645,0.045,0.355,1); transform-origin: center top; }
+    /* portrait chip label uses the body text class and scales down on mobile */
+    .chip-label { font-size: clamp(14px, 3.4vw, 1rem); font-weight: 500; color: #191919; }
+  </style>
+  <script src="scroll-in.js"></script>
+  <script src="vw.js"></script>
+  <script src="link-fix.js"></script>
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+</helmet>
+
+<div class="page-layer" style="position: relative; z-index: 1; background: #efefef; margin-bottom: 100vh; min-height: 100vh;">
+<dc-import name="Nav" nav-background="{{ navBackground }}" logo-height="{{ logoHeight }}" style="position: sticky; top: 0; z-index: 40; display: block; background: #efefef;" hint-size="100%,86px"></dc-import>
+
+<main data-screen-label="Homepage" style="background: #efefef;">
+  <section style="position: relative; padding: clamp(160px, 16vw, 220px) 0 128px;">
+    <div class="grid-guides" aria-hidden="true">
+      <div class="gg-v" style="left: 25%;"></div>
+      <div class="gg-v" style="left: 50%;"></div>
+      <div class="gg-v" style="left: 75%;"></div>
+      <div class="gg-h" style="top: 33%;"><div class="gg-dot gg-dot-h" style="top: 0;"></div></div>
+      <div class="gg-h" style="top: 66%;"></div>
+      <div class="gg-dot gg-dot-v" style="left: 50%;"></div>
+      </div>
+    <div class="hero-float" id="float-figma" style="top: 24%; left: 12%;"><img src="assets/s-i-figma.png" alt="Figma" style="animation: floatTL 7s ease-in-out infinite;"></div>
+    <div class="hero-float" id="float-claude" style="bottom: 18%; left: 16%;"><img src="assets/s-i-claude.png" alt="Claude" style="animation: floatBL 8.5s ease-in-out infinite;"></div>
+    <div class="hero-float" id="float-vscode" style="top: 21%; right: 11%;"><img src="assets/s-i-vscode.png" alt="VS Code" style="animation: floatTR 7.8s ease-in-out infinite;"></div>
+    <div class="hero-float" id="float-lovable" style="bottom: 22%; right: 15%;"><img src="assets/s-i-lovable.png" alt="Lovable" style="animation: floatBR 9s ease-in-out infinite;"></div>
+    <div class="section-container dotted-v" style="position: relative; z-index: 2;">
+      <div style="text-align: center; margin: 0 auto; max-width: 1240px;">
+        <h1 class="load-in load-in-1" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; max-width: 20ch; margin-left: auto; margin-right: auto; text-wrap: balance; color: #333333; margin: 0; font-family: 'Geist', system-ui, sans-serif;"><span id="w-i">I</span>ntuitive product <span id="w-design">design</span><br class="hero-br"> for software team<span id="w-s">s</span>.</h1>
+        <p class="subtext load-in load-in-2" style="margin: 24px auto 0; max-width: 672px;">Helping startups design products and build websites for over 3 years.</p>
+        <div class="load-in load-in-3" style="margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center;">
+          <a href="#projects" onClick="{{ goProjects }}" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;">View projects</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dotted-h" style="position: relative; padding: 0 0 96px;">
+    <div class="grid-guides" aria-hidden="true">
+      <div class="gg-v" style="left: 25%;"></div>
+      <div class="gg-v" style="left: 50%;"></div>
+      <div class="gg-v" style="left: 75%;"></div>
+      <div class="gg-h" style="top: 50%;"><div class="gg-dot gg-dot-h" style="top: 0;"></div></div>
+      <div class="gg-dot gg-dot-v" style="left: 50%;"></div>
+      </div>
+    <div class="section-container dotted-v" style="position: relative;">
+      <div id="portrait-card" class="reveal-item" style="position: relative; width: 100%; max-width: 969px; margin: 0 auto; opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);" onMouseEnter="{{ chipEnter }}" onMouseLeave="{{ chipLeave }}">
+        <div style="position: relative; border-radius: 40px; background: #fafafa; padding: 4px; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); overflow: hidden;">
+          <div style="position: relative; aspect-ratio: 969 / 861; border-radius: 40px; overflow: hidden; background: #f5f5f5;">
+            <img src="https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd/696445226dd56111ebf8ceb2_IMG_9214.JPG" alt="Portrait of Toba Ofomiyonwon" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale({{ imgScale }}); transition: transform 0.5s ease;">
+          </div>
+          <div style="position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 0; background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+            <dotlottie-player src="/site/assets/bat-halloween.lottie" autoplay loop style="width: 40px; height: 40px; pointer-events: none;"></dotlottie-player>
+            <span class="chip-label">{{ chipText }}</span>
+          </div>
+          <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; transform: translateY({{ pillOffset }}px); transition: transform 0.5s ease;">
+            <div style="background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid #ffffff; border-radius: 112px; padding: 8px 8px 8px 24px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                <h3 style="font-size: clamp(17px, 2.4vw, 24px); font-weight: 700; color: #191919; margin: 0;">Hi, I am Toba</h3>
+                <a href="about.dc.html" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;">More about me</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" style="width: 100%; box-sizing: border-box;">
+    <div class="dark-section" style="border-radius: 40px; padding: clamp(56px, 8vw, 96px) 0;">
+      <div class="section-container">
+      <div class="reveal-item" style="max-width: 672px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);">
+        <div style="display: inline-flex; align-items: center; gap: 12px;">
+          <span style="position: relative; display: inline-block; width: 12px; height: 12px; animation: pulseDot 1.2s ease-in-out infinite;">
+            <span style="position: absolute; inset: 0; border-radius: 999px; background: #12c971; filter: blur(8px);"></span>
+            <span style="position: absolute; inset: 2px; border-radius: 999px; background: #12c971;"></span>
+          </span>
+          <span style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; color: #088046;">Open to work</span>
+        </div>
+        <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; line-height: 1.15; margin: 0 auto; max-width: 22ch; text-wrap: balance; color: #ffffff; font-family: 'Geist', system-ui, sans-serif;">Selected Projects</h2>
+        <p class="subtext" style="margin: 0;">Quick note, these case studies include visuals and content that show how I think through problems, backed by real research. I hope you find something useful.</p>
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: clamp(32px, 4vw, 48px);">
+        <div style="display: inline-flex; gap: 4px; padding: 5px; background: #ffffff; border-radius: 600px; box-shadow: 0 8px 20px rgba(0,0,0,0.18);">
+          <button onClick="{{ showLive }}" style="border: none; cursor: pointer; font-family: 'Geist', system-ui, sans-serif; font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 600px; transition: background 0.3s cubic-bezier(0.4,0,0.2,1), color 0.3s cubic-bezier(0.4,0,0.2,1); background: {{ liveBg }}; color: {{ liveColor }};">Enterprise</button>
+          <button onClick="{{ showPersonal }}" style="border: none; cursor: pointer; font-family: 'Geist', system-ui, sans-serif; font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 600px; transition: background 0.3s cubic-bezier(0.4,0,0.2,1), color 0.3s cubic-bezier(0.4,0,0.2,1); background: {{ personalBg }}; color: {{ personalColor }};">Personal</button>
+        </div>
+      </div>
+      <div class="projects-grid">
+        <sc-for list="{{ projects }}" as="project" hint-placeholder-count="4">
+          <a href="{{ project.ctaHref }}" class="reveal-item proj-card {{ project.soonClass }}" onMouseEnter="{{ project.enter }}" onMouseLeave="{{ project.leave }}" onClick="{{ project.onClick }}" style="position: relative; display: block; overflow: hidden; border-radius: 40px; aspect-ratio: 572 / 560; background: #f5f5f5; opacity: 0; transform: translateY(28px); cursor: {{ project.cursor }}; transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) {{ project.revealDelay }}s, transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) {{ project.revealDelay }}s;">
+            <img src="{{ project.imageSrc }}" alt="{{ project.imageAlt }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale({{ project.imgScale }}); transition: transform 0.5s ease;">
+            <sc-if value="{{ project.comingSoon }}" hint-placeholder-val="{{ false }}">
+              <div style="position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: rgba(15,15,15,0.55); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);">
+                <span style="font-size: clamp(20px, 2.6vw, 30px); font-weight: 700; letter-spacing: 0.02em; color: #ffffff;">Coming soon</span>
+              </div>
+            </sc-if>
+            <div class="proj-pill" style="position: absolute; bottom: 20px; left: 20px; right: 20px; transform: translateY({{ project.pillOffset }}px); transition: transform 0.5s ease;">
+              <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid #ffffff; border-radius: 112px; padding: 8px 8px 8px 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                  <h3 style="font-size: 24px; font-weight: 700; color: #191919; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ project.title }}</h3>
+                  <span class="proj-cta" aria-label="{{ project.ctaLabel }}" title="{{ project.ctaLabel }}" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03);"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 14.5L14.5 5.5M14.5 5.5H7.5M14.5 5.5V12.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" class="section-container dotted-v" style="position: relative; padding-top: 128px; padding-bottom: 128px;">
+    <div class="grid-guides" aria-hidden="true">
+      <div class="gg-v" style="left: 25%;"></div>
+      <div class="gg-v" style="left: 50%;"></div>
+      <div class="gg-v" style="left: 75%;"></div>
+      <div class="gg-h" style="top: 20%;"><div class="gg-dot gg-dot-h" style="top: 0;"></div></div>
+      <div class="gg-h" style="top: 60%;"></div>
+      <div class="gg-dot gg-dot-v" style="left: 50%;"></div>
+      </div>
+    <div class="reveal-item" style="position: relative; margin-bottom: 80px; text-align: center; opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);">
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; line-height: 1.15; margin: 0 auto; max-width: 22ch; text-wrap: balance; color: #191919; font-family: 'Geist', system-ui, sans-serif;">Take their words for it.</h2>
+    </div>
+    <div style="margin: 0 auto; max-width: 600px; display: flex; flex-direction: column; gap: 32px;">
+      <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="8">
+        <div class="t-sticky" data-t-card style="position: sticky; top: {{ t.topOffset }}px;">
+          <div class="reveal-item" style="border-radius: 18px; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 32px; background: {{ t.bg }}; border: {{ t.border }}; box-shadow: {{ t.shadow }}; opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);">
+            <p class="t-quote">{{ t.quote }}</p>
+            <div style="display: flex; align-items: center; gap: 20px;">
+              <img src="{{ t.avatarSrc }}" alt="{{ t.avatarAlt }}" style="width: {{ t.avatarSize }}px; height: {{ t.avatarSize }}px; border-radius: 200px; object-fit: cover; flex-shrink: 0;">
+              <div style="min-width: 0;">
+                <p style="font-size: 1rem; font-weight: 700; color: #ffffff; letter-spacing: 0.06em; margin: 0;">{{ t.name }}</p>
+                <p style="font-size: 16px; color: #cac9c9; letter-spacing: 0.06em; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ t.roleLine }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</main>
+
+<dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
+</div>
+<dc-import name="Footer" hint-size="100%,0px" style="display:block; height:0; overflow:visible;"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;navBackground&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;rgba(245,245,245,0.9)&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;rgba(245,245,245,0.9)&quot;, &quot;#f5f5f5&quot;, &quot;#efefef&quot;, &quot;#ffffff&quot;], &quot;section&quot;: &quot;Navigation&quot; },
+  &quot;logoHeight&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 30, &quot;min&quot;: 20, &quot;max&quot;: 56, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Navigation&quot; }
+}">
+class Component extends DCLogic {
+  state = { hovered: false, hoverProj: null, projectTab: 'live', isTouch: false };
+
+  componentDidMount() {
+    const NAV_H = 86;
+    const WINDOW = 600; // scroll range (px) over which the choreography plays
+    const getY = () => window.scrollY || document.documentElement.scrollTop || 0;
+    const $ = (id) => document.getElementById(id);
+    const docRect = (el) => {
+      const r = el.getBoundingClientRect();
+      const y = getY();
+      const x = window.scrollX || 0;
+      return { left: r.left + x, top: r.top + y, width: r.width, height: r.height,
+               cx: r.left + x + r.width / 2, cy: r.top + y + r.height / 2 };
+    };
+
+    const state = { floats: {}, ready: false };
+
+    const layout = () => {
+      const ids = ['float-figma', 'float-claude', 'float-vscode', 'float-lovable'];
+      const els = ids.map($);
+      if (els.some((e) => !e)) return;
+      // reset transforms to measure true base positions
+      els.forEach((e) => { e.style.transform = 'none'; });
+
+      const figma = els[0], claude = els[1], vscode = els[2], lovable = els[3];
+      const wI = $('w-i'), wDesign = $('w-design'), wS = $('w-s'), card = $('portrait-card');
+      if (!wI || !wDesign || !wS || !card) return;
+
+      // pin Figma's rest position just left of the "I" in "Intuitive"
+      const section = figma.parentElement;
+      const secR = docRect(section);
+      const iR = docRect(wI);
+      const fw = figma.getBoundingClientRect().width;
+      figma.style.left = Math.max(8, iR.left - secR.left - fw - 20) + 'px';
+      figma.style.top = (iR.cy - secR.top - fw / 2) + 'px';
+      figma.style.right = 'auto';
+      figma.style.bottom = 'auto';
+
+      const base = {};
+      els.forEach((e) => { base[e.id] = docRect(e); });
+      const designR = docRect(wDesign), sR = docRect(wS), cardR = docRect(card);
+
+      // staggered scroll windows + curved arc paths + rotation per logo
+      state.floats = {
+        'float-figma': { el: figma,
+          dx: designR.cx - base['float-figma'].cx,
+          dy: designR.cy - base['float-figma'].cy,
+          s0: 0, s1: 520, arcX: 50, arcY: -90, rot: -28,
+          p: 0, v: 0 },
+        'float-vscode': { el: vscode, dx: 0, dy: -240, baseTop: base['float-vscode'].top,
+          navClamp: true,
+          s0: 40, s1: 560, arcX: 70, arcY: 0, rot: 20,
+          p: 0, v: 0 },
+        'float-claude': { el: claude,
+          dx: 0,
+          dy: (cardR.top - 12 - base['float-claude'].height) - base['float-claude'].top,
+          s0: 90, s1: 620, arcX: -95, arcY: 0, rot: -22,
+          p: 0, v: 0 },
+        'float-lovable': { el: lovable,
+          dx: sR.cx - base['float-lovable'].cx,
+          dy: sR.cy - base['float-lovable'].cy,
+          s0: 150, s1: 680, arcX: 85, arcY: 25, rot: 32,
+          p: 0, v: 0 }
+      };
+      state.ready = true;
+    };
+
+    let lastT = performance.now();
+    const tick = (now) => {
+      this._raf = requestAnimationFrame(tick);
+      if (!state.ready) return;
+      const dt = Math.min(((now || performance.now()) - lastT) / 1000, 0.05);
+      lastT = now || performance.now();
+      const y = getY();
+      const k = 1 - Math.exp(-7 * dt); // time-based smoothing, no overshoot
+      Object.values(state.floats).forEach((f) => {
+        // staggered progress along this logo's own scroll window
+        const raw = Math.min(Math.max((y - f.s0) / (f.s1 - f.s0), 0), 1);
+        const target = raw * (2 - raw); // easeOutQuad
+        f.p += (target - f.p) * k;
+        const arc = Math.sin(Math.min(Math.max(f.p, 0), 1) * Math.PI);
+        let gx = f.p * f.dx + arc * f.arcX;
+        let gy = f.p * f.dy + arc * f.arcY;
+        if (f.navClamp) {
+          // never let motion carry it into the sticky navbar
+          const limit = Math.min(0, (NAV_H + 10) - (f.baseTop - y));
+          gy = Math.max(gy, limit);
+        }
+        const rot = arc * f.rot;
+        const scale = 1 + arc * 0.14;
+        f.el.style.transform = `translate(${gx.toFixed(2)}px, ${gy.toFixed(2)}px) rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      });
+
+    };
+
+    this._onResize = () => layout();
+    window.addEventListener('resize', this._onResize);
+    cancelAnimationFrame(this._raf);
+    this._raf = requestAnimationFrame(tick);
+    // fonts shift the title metrics — lay out after they're ready
+    layout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => layout());
+    setTimeout(layout, 800);
+    setTimeout(layout, 2000); // re-measure after load/reveal animations settle
+
+    // touch devices get tap-to-reveal copy and behaviour
+    const touch = window.matchMedia('(hover: none)').matches || 'ontouchstart' in window;
+    if (touch) this.setState({ isTouch: true });
+    const card = document.getElementById('portrait-card');
+    if (card && touch) {
+      this._onCardTap = () => this.setState((s) => ({ hovered: !s.hovered }));
+      card.addEventListener('click', this._onCardTap);
+    }
+
+    // testimonials: each covered card scales down relative to the one above it
+    const fadeCards = () => {
+      const cards = [...document.querySelectorAll('[data-t-card]')];
+      const STEP = 0.04; // how much smaller each covered card gets
+      cards.forEach((el, i) => {
+        const next = cards[i + 1];
+        el.style.opacity = '1';
+        if (!next) { el.style.transform = 'scale(1)'; return; }
+        const inner = el.firstElementChild;
+        const h = inner ? inner.getBoundingClientRect().height : el.getBoundingClientRect().height;
+        const gap = next.getBoundingClientRect().top - el.getBoundingClientRect().top;
+        // 1 = fully uncovered, 0 = next card sitting on top
+        const p = Math.min(Math.max(gap / Math.max(h, 1), 0), 1);
+        const eased = p * p * (3 - 2 * p);
+        // cumulative: cards further down the stack shrink relative to the previous one
+        const depth = (cards.length - 1 - i);
+        const scale = 1 - STEP * (1 - eased) * Math.min(depth, 3);
+        el.style.transform = `scale(${scale.toFixed(4)})`;
+      });
+    };
+    this._onFadeScroll = () => { cancelAnimationFrame(this._fadeRaf); this._fadeRaf = requestAnimationFrame(fadeCards); };
+    window.addEventListener('scroll', this._onFadeScroll, { passive: true });
+    window.addEventListener('resize', this._onFadeScroll);
+    fadeCards();
+
+    // scroll-reveal: fade + rise elements as they enter the viewport
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'translateY(0px)';
+          this._io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal-item').forEach((el) => this._io.observe(el));
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._onResize) window.removeEventListener('resize', this._onResize);
+    if (this._io) this._io.disconnect();
+    if (this._onFadeScroll) {
+      window.removeEventListener('scroll', this._onFadeScroll);
+      window.removeEventListener('resize', this._onFadeScroll);
+      cancelAnimationFrame(this._fadeRaf);
+    }
+    const card = document.getElementById('portrait-card');
+    if (card && this._onCardTap) card.removeEventListener('click', this._onCardTap);
+  }
+
+  componentDidUpdate() {
+    // Re-observe cards created by a tab switch so they never stay stuck hidden
+    if (this._io) document.querySelectorAll('.reveal-item').forEach((el) => {
+      if (getComputedStyle(el).opacity === '0') this._io.observe(el);
+    });
+  }
+  renderVals() {
+    const CDN = "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd";
+    const projects = [
+      { title: "Carmen AI", tab: "live", imageSrc: "assets/carmen-cover-m.png", imageAlt: "Carmen AI project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=carmen-ai" },
+      { title: "Airstride", tab: "live", imageSrc: "assets/airstride-cover.png", imageAlt: "Airstride platform project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=airstride" },
+      { title: "Givn", tab: "personal", imageSrc: `${CDN}/696419408ae9c71635102bb8_Frame%20(3).png`, imageAlt: "Givn project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=givn" },
+      { title: "Wise-Young Explorer", tab: "personal", imageSrc: `${CDN}/696814aed97d34d6fb202662_Frame%203.png`, imageAlt: "Wise-Young Explorer project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=wise-young-explorer" },
+      { title: "Dexla Design System", tab: "live", imageSrc: `${CDN}/696c0b57a4fd13b0c8e26b52_dexla_case%20study%20(5).png`, imageAlt: "Dexla Design System project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-design-system" },
+      { title: "Dexla Case Study", tab: "live", imageSrc: `${CDN}/67c20c0e879a5292bc19afd3_Dexla%20Mockup%20(1).png`, imageAlt: "Dexla Case Study project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-case-study" },
+      { title: "Auditory Wayfinder", tab: "personal", comingSoon: true, imageSrc: "assets/proj-wayfinder-m.png", imageAlt: "Auditory Wayfinder project card", ctaLabel: "Coming soon", ctaHref: "#" },
+      { title: "Accord", tab: "personal", comingSoon: true, imageSrc: "assets/proj-accord-trim.png", imageAlt: "Accord project card", ctaLabel: "Coming soon", ctaHref: "#" }
+    ].filter((p) => !p.hidden && p.tab === this.state.projectTab).map((p, i) => ({
+      ...p,
+      enter: () => this.setState({ hoverProj: i }),
+      leave: () => this.setState({ hoverProj: null }),
+      pillOffset: p.comingSoon ? 164 : (this.state.hoverProj === i ? 0 : 164),
+      imgScale: p.comingSoon ? 1 : (this.state.hoverProj === i ? 1.1 : 1),
+      comingSoon: !!p.comingSoon,
+      soonClass: p.comingSoon ? "proj-card--soon" : "",
+      cursor: p.comingSoon ? "default" : "pointer",
+      onClick: p.comingSoon ? ((e) => e.preventDefault()) : undefined,
+      revealDelay: (i % 2) * 0.12
+    }));
+    const shadeBg = ["#2c2929", "#262323", "#242222", "#202020", "#1b1b1b", "#171717", "#141414", "#111111"];
+    const raw = [
+      { name: "Thomas McDonough", role: "CTO & Founding Engineer", company: "Airstride", avatarSrc: "assets/avatar-thomas.jpeg", avatarAlt: "Thomas McDonough", quote: "I've had the pleasure of working with Toba across two companies first at Dexla, and then I was fortunate enough to bring him with me to Airstride. That decision to bring him along says everything you need to know about the calibre of person and professional Toba is. As a Product Designer, Toba consistently delivers work that is thoughtful, user-centred, and beautifully executed. He has a rare ability to combine strong visual sensibility with a deep understanding of user needs, and he communicates his design thinking clearly and confidently to stakeholders at all levels." },
+      { name: "Hugo Rawlinson", role: "Co-Founder & CRO", company: "Airstride", avatarSrc: "assets/avatar-hugo.jpeg", avatarAlt: "Hugo Rawlinson", quote: "I've had the pleasure of working with Toba on product design and UX, and he brings a really strong combination of creativity, structure, and user-focused thinking. What stands out most is his ability to take an idea, understand the problem behind it, and turn it into a clear, intuitive product experience. Toba is thoughtful, collaborative, and brings a high level of care to his work. I'd highly recommend Toba to anyone looking for a product designer who can bring clarity, creativity, and strong user experience thinking to a project." },
+      { name: "Max Edwards", role: "Co-Founder & CEO", company: "Airstride", avatarSrc: "assets/avatar-max.jpeg", avatarAlt: "Max Edwards", quote: "I loved working with Toba whilst he was at Airstride. He consistently demonstrated exceptional UX design skills and a genuine focus on creating intuitive, user centred experiences. He has a strong ability to turn complex ideas into simple, elegant designs while always keeping the end user in mind. Beyond his design talent, Toba was collaborative, proactive, and a pleasure to work with. I'd highly recommend him to any team looking for a thoughtful and highly capable UX designer." },
+      { name: "Ali Ashfaq", role: "Senior UX/UI designer", avatarSrc: `${CDN}/67c49d4538c39d6a755e0e10_ALI%20ASHFAQ.jpeg`, avatarAlt: "Ali Ashfaq", quote: "I am delighted to provide a recommendation for Toba, with whom I had the privilege of collaborating closely during his tenure at letsremotify. Throughout this period, I had the chance to observe his extraordinary talents and unwavering commitment. Toba is an exceptional UI/UX professional, possessing remarkable problem-solving abilities, leadership skills, and technical expertise. He consistently exhibited a deep understanding of the remote work environment." },
+      { name: "Victor Emokpare", role: "Product designer", company: "Zummit Africa", avatarSrc: `${CDN}/67c490f99a93e78ca667e694_victor%20zummit.jpeg`, avatarAlt: "Victor Emokpare", quote: "I had the pleasure of working alongside Toba during our tenure at Zummit Africa. Toba is an innovative designer, consistently introducing fresh ideas to our projects. His dedication to learning and exceptional listening skills set him apart, and he consistently pushed boundaries to ensure the best possible outcomes. I wholeheartedly recommend Toba for any endeavor he takes on" },
+      { name: "Onyeka Kingsley", role: "No code developer", avatarSrc: `${CDN}/67c49d5d9a93e78ca6716466_Onyeka%20Kingsley.jpeg`, avatarAlt: "Onyeka Kingsley", quote: "Great to work with and very quick to implement changes at any time. Top mentality and a great fit for any company." },
+      { name: "Mehria Akhtar", role: "Senior growth executive", company: "letsremotify", avatarSrc: `${CDN}/67c49d7095569284b6b59e29_Mehria.jpeg`, avatarAlt: "Mehria Akhtar", quote: "I am pleased to write a recommendation for Toba, whom I had the pleasure of working closely with at letsremotify. , I had the opportunity to witness his exceptional skills and dedication firsthand. Toba is an outstanding UI/UX with a remarkable ability to problem-solving, leadership, technical proficiency. He consistently demonstrated a keen understanding of the remote work landscape." },
+      { name: "Williams Balogun", role: "Full stack engineer", company: "Dexla Inc", avatarSrc: `${CDN}/67dd91f0bf2521db0a3021ef_Ellipse%20670.png`, avatarAlt: "Williams Balogun", quote: "Working with Toba at Dexla Inc was a pleasure. As a Product Designer and No-Code Developer, he brought a rare balance of creativity and practicality to every project. His designs weren't just visually polished—they were thoughtful, prioritizing user needs while staying aligned with technical constraints. Toba's no-code expertise streamlined workflows for our team, and his willingness to bridge design and development made him a trusted partner for engineers and PMs alike. If you value designers who care as much about functionality as aesthetics, Toba is a perfect fit." }
+    ];
+    const testimonials = raw.map((t, i) => ({
+      quote: t.quote,
+      name: t.name,
+      roleLine: t.role + (t.company ? ` · ${t.company}` : ""),
+      avatarSrc: t.avatarSrc,
+      avatarAlt: t.avatarAlt,
+      avatarSize: i === 0 ? 64 : 80,
+      bg: shadeBg[Math.min(i, shadeBg.length - 1)],
+      border: i === 0 ? "none" : "1px solid #454b02",
+      shadow: i === 0 ? "0 -8px 20px 1px rgba(0,0,0,0.1)" : "0 -8px 20px 1px rgba(255,255,255,0.2)",
+      topOffset: 192 + i * 32
+    }));
+    return {
+      navBackground: this.props.navBackground ?? "rgba(245,245,245,0.9)",
+      logoHeight: this.props.logoHeight ?? 30,
+      chipText: this.state.hovered ? "Toba Ofomiyonwon" : (this.state.isTouch ? "Click to know my name" : "Hover to know my name"),
+      pillOffset: this.state.hovered ? 0 : 164,
+      imgScale: this.state.hovered ? 1.1 : 1,
+      chipEnter: () => this.setState({ hovered: true }),
+      chipLeave: () => this.setState({ hovered: false }),
+      goProjects: (e) => {
+        e.preventDefault();
+        const target = document.getElementById('projects');
+        if (!target) return;
+        const startY = window.scrollY || document.documentElement.scrollTop || 0;
+        const endY = target.getBoundingClientRect().top + startY - 96;
+        const dist = endY - startY;
+        const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
+        const t0 = performance.now();
+        const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const step = (now) => {
+          const t = Math.min((now - t0) / duration, 1);
+          window.scrollTo(0, startY + dist * easeInOutCubic(t));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      },
+      projects,
+      projectTab: this.state.projectTab,
+      isLive: this.state.projectTab === 'live',
+      isPersonal: this.state.projectTab === 'personal',
+      liveBg: this.state.projectTab === 'live' ? '#191919' : 'transparent',
+      liveColor: this.state.projectTab === 'live' ? '#ffffff' : '#191919',
+      personalBg: this.state.projectTab === 'personal' ? '#191919' : 'transparent',
+      personalColor: this.state.projectTab === 'personal' ? '#ffffff' : '#191919',
+      showLive: () => this.setState({ projectTab: 'live', hoverProj: null }),
+      showPersonal: () => this.setState({ projectTab: 'personal', hoverProj: null }),
+      testimonials
+    };
+  }
+}
+</script>
+</body>
+</html>

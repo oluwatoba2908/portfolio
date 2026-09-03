@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="/site/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    
+    html, body { overflow-x: clip; }
+    body { margin: 0; background: #efefef; color: #191919; font-family: "Geist", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1); }
+    a:hover { color: #10d48e; }
+    ::selection { background: #191919; color: #ffffff; }
+    html, body { height: auto !important; min-height: 100%; background: #efefef; color-scheme: light only; }
+    #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
+    /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .load-in { opacity: 0; }
+    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in-1 { animation-delay: 0ms; }
+    .load-in-2 { animation-delay: 90ms; }
+    .load-in-3 { animation-delay: 180ms; }
+    .load-in-4 { animation-delay: 270ms; }
+    .load-in-5 { animation-delay: 360ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .load-in { opacity: 1; }
+      .load-in.in-view { animation: none !important; }
+    }
+    .cs-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
+    @media (max-width: 1279px) { .cs-container { max-width: 1100px; } }
+    @media (max-width: 767px) { .cs-container { max-width: 900px; } }
+    /* Calendly stacks vertically on narrow screens; give it room so nothing clips */
+    /* iframe sized big enough to show the whole calendar; postMessage listener
+       below hugs it to real content height once Calendly reports it */
+    .cal-frame { display: block; width: 100%; border: none; height: 750px; }
+    @media (max-width: 767px) { .cal-frame { height: 1080px; } }
+    .grid-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .gg-v { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(25,25,25,0.10); }
+    .gg-h { position: absolute; left: 50%; right: auto; width: var(--vw, 100vw); transform: translateX(-50%); height: 0; border-top: 1px dashed rgba(25,25,25,0.10); }
+    .gg-dot { position: absolute; width: 8px; height: 8px; border-radius: 999px; background: rgba(25,25,25,0.25); margin: -4px 0 0 -4px; }
+    @keyframes ggDotV { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+    @keyframes ggDotH { 0% { left: 0; } 50% { left: 100%; } 100% { left: 0; } }
+    .gg-dot-v { animation: ggDotV 28s ease-in-out infinite; }
+    .gg-dot-h { animation: ggDotH 34s ease-in-out infinite; }
+    input, textarea { font-family: "Geist", system-ui, sans-serif; }
+    input:focus, textarea:focus { outline: 2px solid #191919; outline-offset: 0; border-color: #191919 !important; }
+  </style>
+  <script src="scroll-in.js"></script>
+  <script src="vw.js"></script>
+  <script src="link-fix.js"></script>
+</helmet>
+
+<div class="page-layer" style="position: relative; z-index: 1; background: #efefef; margin-bottom: 100vh; min-height: 100vh;">
+<dc-import name="Nav" style="position: sticky; top: 0; z-index: 40; display: block; background: #efefef;" hint-size="100%,86px"></dc-import>
+
+<main data-screen-label="Contact" style="background: #efefef; min-height: 70vh;">
+  <section style="padding: clamp(64px, 8vw, 128px) 0 clamp(32px, 4vw, 48px); position: relative;">
+    <div class="grid-guides" aria-hidden="true">
+      <div class="gg-v" style="left: 25%;"></div>
+      <div class="gg-v" style="left: 50%;"></div>
+      <div class="gg-v" style="left: 75%;"></div>
+      <div class="gg-h" style="top: 50%;"></div>
+      </div>
+    <div class="cs-container" style="max-width: 900px; position: relative; z-index: 1;">
+      <p class="load-in load-in-1" style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 24px; font-weight: 500;">Get in touch</p>
+      <h1 class="load-in load-in-2" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(36px, 5vw, 72px); line-height: 1.12; color: #333333; margin: 0;">Let's build something together.</h1>
+      <p class="load-in load-in-3" style="font-size: clamp(18px, 2vw, 22px); color: #6b6b6b; line-height: 1.5; margin: 24px 0 0; max-width: 640px;">Have a product in mind, a role to fill, or just want to chat? Book a time below and we can talk it through.</p>
+    </div>
+  </section>
+
+  <section style="padding-bottom: clamp(64px, 8vw, 128px);">
+    <div class="cs-container" style="max-width: 1100px;">
+      <div style="border-radius: 24px; overflow: hidden; background: #ffffff; border: 1px solid rgba(25,25,25,0.08);">
+        <iframe class="cal-frame" src="https://calendly.com/tofomiyonwon/30min?hide_gdpr_banner=1&amp;hide_landing_page_details=1&amp;background_color=ffffff&amp;text_color=191919&amp;primary_color=191919&amp;embed_domain=portfolio&amp;embed_type=Inline" title="Book a 30-minute call with Toba" loading="lazy" scrolling="no"></iframe>
+      </div>
+      <p style="font-size: 15px; color: #9a9a9a; margin: 24px 0 0;">Prefer email? Reach me at <a href="mailto:tofomiyonwon@gmail.com" style="text-decoration: underline; color: #191919;">tofomiyonwon@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
+</div>
+<dc-import name="Footer" hint-size="100%,0px" style="display:block; height:0; overflow:visible;"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    // Calendly reports its real content height via postMessage. Hug the iframe
+    // to that height so no dead space sits below the calendar on any breakpoint.
+    this._onMessage = (e) => {
+      if (typeof e.origin !== 'string' || e.origin.indexOf('calendly.com') === -1) return;
+      const d = e.data;
+      if (!d || typeof d !== 'object') return;
+      // Calendly fires several event types; page_height carries the current
+      // rendered height for the currently-showing view
+      const h = (d.payload && d.payload.height) || (d.event === 'calendly.page_height' && d.height);
+      if (typeof h === 'number' && h > 100) {
+        const f = document.querySelector('.cal-frame');
+        if (f) f.style.height = Math.ceil(h) + 'px';
+      }
+    };
+    window.addEventListener('message', this._onMessage);
+  }
+  componentWillUnmount() {
+    if (this._onMessage) window.removeEventListener('message', this._onMessage);
+  }
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

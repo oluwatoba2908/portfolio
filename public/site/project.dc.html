@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="/site/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    
+    html, body { overflow-x: clip; }
+    body { margin: 0; background: #efefef; color: #191919; font-family: "Geist", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1); }
+    a:hover { color: #10d48e; }
+    ::selection { background: #191919; color: #ffffff; }
+    html, body { height: auto !important; min-height: 100%; background: #efefef; color-scheme: light only; }
+    #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
+    /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .load-in { opacity: 0; }
+    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in-1 { animation-delay: 0ms; }
+    .load-in-2 { animation-delay: 90ms; }
+    .load-in-3 { animation-delay: 180ms; }
+    .load-in-4 { animation-delay: 270ms; }
+    .load-in-5 { animation-delay: 360ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .load-in { opacity: 1; }
+      .load-in.in-view { animation: none !important; }
+    }
+    .cs-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
+    @media (max-width: 1279px) { .cs-container { max-width: 1100px; } }
+    @media (max-width: 767px) { .cs-container { max-width: 900px; } }
+    .cs-gallery { display: grid; gap: 40px; grid-template-columns: repeat(2, 1fr); width: 70%; max-width: 1040px; margin: 0 auto; }
+    .cs-gallery.cols-2, .cs-gallery.cols-3, .cs-gallery.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    .cs-gallery.g-outcome { grid-template-columns: repeat(3, 1fr); }
+    .cs-gallery.g-outcome .g-figimg { max-width: 100%; margin: 0; background: transparent; }
+    .cs-gallery:not(.g-outcome) > figure:not(.span-2) .g-figimg { height: clamp(300px, 34vh, 460px); object-fit: cover; }
+    .cs-gallery > figure.span-2 .g-figimg { height: auto; object-fit: cover; }
+    .cs-gallery:not(.g-outcome) > figure:not(.span-2):last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .cs-gallery:not(.g-outcome) > figure:not(.span-2):last-child:nth-child(odd) .g-figimg { height: auto; }
+    @media (max-width: 900px) { .cs-gallery.g-outcome { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 767px) { .cs-gallery, .cs-gallery.cols-2, .cs-gallery.cols-3, .cs-gallery.cols-4, .cs-gallery.g-outcome { grid-template-columns: 1fr; width: 100%; } }
+    @media (max-width: 767px) {
+      /* never crop on small screens: fit the whole frame, fill the parent width */
+      .cs-gallery .g-figimg,
+      .cs-gallery:not(.g-outcome) > figure:not(.span-2) .g-figimg,
+      .cs-gallery > figure.span-2 .g-figimg { width: 100%; height: auto; max-width: 100%; object-fit: contain; }
+      .cs-gallery > figure { width: 100%; }
+      /* walkthrough video: the 70% desktop cap leaves it tiny on phones */
+      .g-walkthrough { max-width: 100% !important; }
+      .pair-img, .g-figimg { width: 100%; }
+    }
+    .more-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; align-items: stretch; }
+    .more-grid > a { display: block; height: 100%; border-radius: 32px; overflow: hidden; background: #eef7ee; }
+    @media (max-width: 767px) { .more-grid { grid-template-columns: 1fr; } }
+    .section-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
+    @media (max-width: 1279px) { .section-container { max-width: 1100px; } }
+    @media (max-width: 767px) { .section-container { max-width: 900px; } }
+    .g-panel { background: #191919; color: #ffffff; margin-left: 10px; margin-right: 10px; border-radius: 40px; padding: 100px 0; }
+    .g-panel .g-container, .g-panel .section-container { padding-left: 15px; padding-right: 15px; }
+    .g-pill { display: inline-block; background: transparent; color: #191919; font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; padding: 0; margin: 0; }
+    .g-textrow { display: flex; justify-content: center; align-items: stretch; gap: clamp(40px, 6vw, 120px); position: relative; z-index: 1; }
+    .grid-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .gg-v { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(25,25,25,0.10); }
+    .gg-h { position: absolute; left: 50%; right: auto; width: var(--vw, 100vw); transform: translateX(-50%); height: 0; border-top: 1px dashed rgba(25,25,25,0.10); }
+    .gg-dot { position: absolute; width: 8px; height: 8px; border-radius: 999px; background: rgba(25,25,25,0.25); margin: -4px 0 0 -4px; }
+    @keyframes ggDotV { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+    @keyframes ggDotH { 0% { left: 0; } 50% { left: 100%; } 100% { left: 0; } }
+    .gg-dot-v { animation: ggDotV 28s ease-in-out infinite; }
+    .gg-dot-h { animation: ggDotH 34s ease-in-out infinite; }
+    .g-title-wrap { flex: 0 0 30%; width: 30%; max-width: 30%; min-width: 0; }
+    .g-title-wrap .g-pill { position: sticky; top: 100px; white-space: normal; overflow-wrap: break-word; text-wrap: balance; }
+    .g-prose { flex: 0 0 30%; max-width: 30%; }
+    @media (max-width: 1023px) { .g-title-wrap { flex: 0 0 40%; width: 40%; max-width: 40%; } .g-prose { flex-basis: 48%; max-width: 48%; } }
+    @media (max-width: 767px) { .g-textrow { flex-direction: column; gap: 20px; align-items: stretch; } .g-title-wrap { flex: 1 1 100%; width: 100%; max-width: 100%; } .g-title-wrap .g-pill { position: static; } .g-prose { flex-basis: auto; max-width: 100%; } }
+    @keyframes globeTurn {
+      0%   { transform: rotate(0deg) rotateY(0deg) rotateX(0deg) translateY(0) scale(1); }
+      25%  { transform: rotate(7deg) rotateY(14deg) rotateX(5deg) translateY(-10px) scale(1.03); }
+      50%  { transform: rotate(0deg) rotateY(0deg) rotateX(0deg) translateY(0) scale(1); }
+      75%  { transform: rotate(-7deg) rotateY(-14deg) rotateX(4deg) translateY(-10px) scale(1.03); }
+      100% { transform: rotate(0deg) rotateY(0deg) rotateX(0deg) translateY(0) scale(1); }
+    }
+    figure:has(> img[src$="as-impact-globe.png"]) { perspective: 1200px; }
+    img[src$="as-impact-globe.png"] { border-radius: 0 !important; box-shadow: none !important; background: transparent !important; max-width: min(100%, 680px); margin: 0 auto; animation: globeTurn 14s cubic-bezier(0.645, 0.045, 0.355, 1) infinite; will-change: transform; transform-style: preserve-3d; }
+    @media (prefers-reduced-motion: reduce) { img[src$="as-impact-globe.png"] { animation: none; } }
+    .g-figimg { display: block; width: 100%; height: auto; border-radius: 16px; background: #ffffff; object-fit: cover; }
+    .more-card img { transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); }
+    .more-card:hover img { transform: scale(1.1); }
+    .more-pill-wrap { position: absolute; bottom: 16px; left: 16px; right: 16px; transform: translateY(164px); transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); }
+    .more-card:hover .more-pill-wrap { transform: translateY(0); }
+    .toc-rail { position: fixed; left: 24px; top: 50%; transform: translateY(-50%) translateX(-16px); z-index: 45; display: flex; flex-direction: column; gap: 14px; opacity: 0; pointer-events: none; transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; }
+    .toc-rail.visible { opacity: 1; pointer-events: auto; transform: translateY(-50%) translateX(0); }
+    .toc-item { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; background: none; border: none; padding: 4px 0; text-align: left; }
+    .toc-tick { display: block; flex: 0 0 auto; margin-top: 9px; width: 20px; height: 2px; background: rgba(25,25,25,0.35); border-radius: 2px; transition: width 0.4s ease-in-out, background 0.4s ease-in-out; }
+    .toc-item.on-dark .toc-tick { background: rgba(245,245,245,0.75); }
+    .toc-item.active .toc-tick { width: 36px; background: #10d48e; }
+    .toc-rail:hover .toc-tick { background: rgba(245,245,245,0.75); }
+    .toc-rail:hover .toc-item.active .toc-tick { background: #10d48e; }
+    .toc-label { font-size: 15px; line-height: 1.35; color: #ffffff; font-family: 'Geist', system-ui, sans-serif; opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap; transition: opacity 0.45s ease-in-out; }
+    .toc-rail:hover .toc-label { opacity: 1; max-width: min(320px, calc(var(--vw, 100vw) - 140px)); white-space: normal; overflow-wrap: break-word; }
+    .toc-item.active .toc-label { color: #10d48e; font-weight: 600; }
+    @media (max-width: 1023px) { .toc-rail { display: none; } }
+    .toc-overlay { position: fixed; inset: 0; z-index: 44; background: rgba(10,10,10,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity 0.45s ease-in-out; }
+    .toc-rail.visible:hover + .toc-overlay { opacity: 1; }
+    .cs-gallery > figure.span-2 { grid-column: 1 / -1; }
+    .cs-gallery > figure { min-width: 0; }
+    .cs-gallery image-slot { max-width: 100%; }
+    .cs-gallery.g-bg .g-figimg { max-width: 100%; margin: 0 auto; }
+    .pair-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #ffffff; padding: 20px; border-radius: 16px; }
+    .pair-cell { position: relative; display: block; }
+    .pair-img { display: block; width: 100%; max-width: 100%; height: auto; border: 2px solid #000000; border-radius: 8px; background: #ffffff; }
+    .pair-cell { text-align: center; }
+    .pair-tag { position: absolute; left: 12px; top: 12px; padding: 5px 12px; border-radius: 999px; background: rgba(10,10,10,0.78); color: #ffffff; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .pair-tag-right { left: auto; right: 12px; }
+    .duo-wrap { grid-template-columns: 1fr; }
+    @media (max-width: 767px) { .duo-wrap { grid-template-columns: 1fr; } }
+    @media (max-width: 767px) { .pair-wrap { grid-template-columns: 1fr; } }
+    .g-cap { font-size: 0.875rem; line-height: 1.6; color: #cac9c9; margin: 12px 0 0; }
+    /* hero cover fills a wider container, and never looks small on mobile */
+    .hero-media { width: 70%; max-width: 1040px; margin-left: auto; margin-right: auto; }
+    .hero-media > img, .hero-media > * { display: block; width: 100%; height: auto; }
+    @media (max-width: 1023px) { .hero-media { width: 88%; } }
+    @media (max-width: 767px) { .hero-media { width: 100%; max-width: 100%; } }
+    /* section titles: readable measure, never one-word-per-line */
+    .g-pill { max-width: 22ch; text-wrap: balance; }
+    .g-panel .g-pill { max-width: 26ch; margin-left: auto; margin-right: auto; }
+    @media (max-width: 767px) { .g-pill { font-size: clamp(24px, 7.2vw, 34px); max-width: 100%; line-height: 1.15; } }
+    /* embedded stat widgets must never spill past their container */
+    .cs-gallery figure > *, .g-panel .section-container > * { max-width: 100%; }
+    carmen-funnel, carmen-beforeafter, airstride-tour, airstride-demo { display: block; width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; }
+  </style>
+  <script src="scroll-in.js"></script>
+  <script src="vw.js"></script>
+  <script src="link-fix.js"></script>
+  <script src="image-slot.js"></script>
+  <script src="ui-compare.js"></script>
+  <script src="airstride-demo.js"></script>
+  <script src="airstride-tour.js"></script>
+  <script src="airstride-vignettes.js"></script>
+  <script src="card-shuffle.js"></script>
+  <script src="screen-globe.js"></script>
+  <script src="screen-marquee.js"></script>
+  <script src="carmen-funnel.js"></script>
+  <script src="carmen-beforeafter.js"></script>
+</helmet>
+
+<div class="page-layer" style="position: relative; z-index: 1; background: #efefef; margin-bottom: 100vh; min-height: 100vh;">
+<dc-import name="Nav" style="position: sticky; top: 0; z-index: 40; display: block; background: #efefef;" hint-size="100%,86px"></dc-import>
+
+<main data-screen-label="Case study" style="background: #efefef;">
+  <nav class="toc-rail {{ railVisibleClass }}" aria-label="Section outline">
+    <sc-for list="{{ railItems }}" as="r">
+      <button class="toc-item {{ r.activeClass }}" onClick="{{ r.go }}">
+        <span class="toc-tick"></span>
+        <span class="toc-label">{{ r.heading }}</span>
+      </button>
+    </sc-for>
+  </nav>
+  <div class="toc-overlay" aria-hidden="true"></div>
+  <section style="padding: 0 0 clamp(24px, 3vw, 40px);">
+    <div class="g-panel" style="text-align: center; padding: 100px 0;">
+      <div class="section-container">
+        <div class="load-in load-in-1" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 24px;">
+          <sc-for list="{{ badges }}" as="b">
+            <span style="display: inline-block; background: rgba(255,255,255,0.14); color: #ffffff; font-size: 13px; letter-spacing: 0.02em; padding: 8px 18px; border-radius: 999px;">{{ b }}</span>
+          </sc-for>
+        </div>
+        <h1 class="load-in load-in-2" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; color: #ffffff; margin: 0 auto; max-width: 20ch; text-wrap: balance;">{{ title }}</h1>
+        <p class="load-in load-in-3" style="font-size: clamp(16px, 1.8vw, 20px); color: #cac9c9; line-height: 1.5; margin: 20px auto 0; max-width: 62ch;">{{ tagline }}</p>
+        <sc-if value="{{ showOutcomeBtn }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top: 32px;"><a href="#outcome" onClick="{{ goOutcome }}" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; padding: 17px 24px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 4.09px 2.865px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;">View outcome</a></div>
+        </sc-if>
+        <sc-if value="{{ showWebsiteBtn }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top: 32px;"><a href="{{ websiteUrl }}" target="_blank" rel="noreferrer noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; padding: 17px 24px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 4.09px 2.865px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;">{{ websiteLabel }}</a></div>
+        </sc-if>
+        <div class="hero-media" style="margin-top: clamp(48px, 8vw, 8rem); border-radius: 24px; overflow: hidden; background: transparent;">{{ heroImg }}</div>
+      </div>
+    </div>
+  </section>
+
+  <div style="display: flex; flex-direction: column; gap: 80px; padding: 80px 0;">
+  <sc-for list="{{ sections }}" as="s">
+    <section id="{{ s.railId }}" style="display: flex; flex-direction: column; gap: 80px; scroll-margin-top: 120px;">
+      <sc-if value="{{ s.hasProse }}" hint-placeholder-val="{{ true }}">
+        <div class="cs-container" style="position: relative;">
+          <div class="grid-guides" aria-hidden="true">
+            <div class="gg-v" style="left: 25%;"></div>
+            <div class="gg-v" style="left: 50%;"></div>
+            <div class="gg-v" style="left: 75%;"></div>
+            <div class="gg-h" style="top: 50%;"></div>
+          </div>
+          <div class="g-textrow">
+            <div class="g-title-wrap">
+              <h2 class="g-pill">{{ s.heading }}</h2>
+            </div>
+            <div class="g-prose">
+              <div style="display: flex; flex-direction: column; gap: 18px;">
+                <sc-for list="{{ s.blocks }}" as="b">
+                  <div>
+                    <sc-if value="{{ b.isPlainPara }}" hint-placeholder-val="{{ true }}"><p style="font-size: 1rem; line-height: 1.7; color: #6b6b6b; margin: 0;">{{ b.text }}</p></sc-if>
+                    <sc-if value="{{ b.isRichPara }}" hint-placeholder-val="{{ false }}">{{ b.node }}</sc-if>
+                    <sc-if value="{{ b.isSubheading }}" hint-placeholder-val="{{ false }}"><h3 style="font-size: 22px; font-weight: 600; margin: 8px 0 0;">{{ b.text }}</h3></sc-if>
+                    <sc-if value="{{ b.isList }}" hint-placeholder-val="{{ false }}">
+                      <ul style="margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 8px;">
+                        <sc-for list="{{ b.itemNodes }}" as="it" hint-placeholder-count="2"><li style="font-size: 1rem; line-height: 1.7; color: #6b6b6b;">{{ it }}</li></sc-for>
+                      </ul>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ s.hasGallery }}" hint-placeholder-val="{{ false }}">
+        <div id="{{ s.anchorId }}" style="scroll-margin-top: 96px;">
+          <div class="g-panel">
+            <div class="section-container">
+              <div style="text-align: center; margin-bottom: clamp(40px, 5vw, 64px);">
+                <sc-if value="{{ s.docLabel }}" hint-placeholder-val="{{ false }}"><p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 16px; font-weight: 500;">{{ s.docLabel }}</p></sc-if>
+                <span class="g-pill" style="color: #ffffff;">{{ s.panelTitle }}</span>
+              </div>
+              <div class="cs-gallery {{ s.colsClass }}">
+                <sc-for list="{{ s.gallery }}" as="g">
+                  <figure class="{{ g.figClass }}" style="margin: 0;">
+                    {{ g.imgNode }}
+                    <sc-if value="{{ g.caption }}" hint-placeholder-val="{{ false }}">
+                      <figcaption class="g-cap">{{ g.caption }}</figcaption>
+                    </sc-if>
+                  </figure>
+                </sc-for>
+              </div>
+              <sc-if value="{{ s.showWalkthrough }}" hint-placeholder-val="{{ false }}">
+                <div style="text-align: center; margin: 80px 0 clamp(40px, 5vw, 56px);"><span class="g-pill" style="color: #ffffff;">Walkthrough video</span></div>
+                <div class="g-walkthrough" style="max-width: 70%; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000;">{{ walkthroughFrame }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </section>
+  </sc-for>
+  </div>
+
+  <section id="more-projects" style="position: relative; padding: clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 128px);">
+    <div class="grid-guides" aria-hidden="true">
+      <div class="gg-v" style="left: 25%;"></div>
+      <div class="gg-v" style="left: 50%;"></div>
+      <div class="gg-v" style="left: 75%;"></div>
+      <div class="gg-h" style="top: 55%;"></div>
+    </div>
+    <div class="cs-container" style="position: relative; z-index: 1;">
+      <div style="padding-top: 32px; margin-bottom: 48px; text-align: center;">
+        <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; margin: 0 auto; max-width: 22ch; text-wrap: balance;">More projects</h2>
+      </div>
+      <div class="more-grid">
+        <sc-for list="{{ related }}" as="r">
+          <a class="more-card" href="{{ r.href }}" style="position: relative; display: block; border-radius: 32px; overflow: hidden; background: #eef7ee;">
+            <div style="aspect-ratio: 4 / 3; overflow: hidden;">{{ r.imgNode }}</div>
+            <div class="more-pill-wrap">
+              <div style="background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid #ffffff; border-radius: 112px; padding: 8px 8px 8px 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                  <h3 style="font-size: clamp(17px, 2vw, 24px); font-weight: 700; color: #191919; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.title }}</h3>
+                  <span style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 600px; background: #191919; color: #ffffff; font-size: 15px; padding: 14px 18px;">View project</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
+</div>
+<dc-import name="Footer" hint-size="100%,0px" style="display:block; height:0; overflow:visible;"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { cs: null, related: [], slug: 'givn', showTop: false, showRail: false, activeSec: 0 };
+
+  componentDidMount() {
+    this._railTimer = null;
+    this._onScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const show = y > window.innerHeight * 0.8;
+      if (show !== this.state.showTop) this.setState({ showTop: show });
+      // rail: show ~600ms after passing the hero, hide immediately when back at it
+      const hero = document.querySelector('.g-panel');
+      const pastHero = hero ? hero.getBoundingClientRect().bottom < 96 : y > window.innerHeight * 0.6;
+      // stop the rail before "More projects" scrolls into view
+      const more = document.getElementById('more-projects');
+      const reachedMore = more ? more.getBoundingClientRect().top < window.innerHeight * 0.85 : false;
+      if (pastHero && !reachedMore && !this.state.showRail && !this._railTimer) {
+        this._railTimer = setTimeout(() => { this._railTimer = null; this.setState({ showRail: true }); }, 600);
+      } else if (!pastHero || reachedMore) {
+        if (this._railTimer) { clearTimeout(this._railTimer); this._railTimer = null; }
+        if (this.state.showRail) this.setState({ showRail: false });
+      }
+      // scroll-spy: last section whose top is above the viewport's upper third
+      const secs = document.querySelectorAll('[id^="sec-"]');
+      let active = 0;
+      secs.forEach((el, i) => { if (el.getBoundingClientRect().top < window.innerHeight * 0.35) active = i; });
+      if (active !== this.state.activeSec) this.setState({ activeSec: active });
+      // per-tick background detection: offwhite over dark panels, grey over light bg
+      const panels = [...document.querySelectorAll('.g-panel')].map((p) => p.getBoundingClientRect());
+      document.querySelectorAll('.toc-item').forEach((item) => {
+        const r = item.getBoundingClientRect();
+        const cy = r.top + r.height / 2;
+        const onDark = panels.some((p) => cy >= p.top && cy <= p.bottom && r.left < p.right);
+        item.classList.toggle('on-dark', onDark);
+      });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    import('./case-studies.js').then((mod) => {
+      const all = mod.CASE_STUDIES;
+      const slug = new URLSearchParams(window.location.search).get('slug') || 'givn';
+      const cs = all[slug] || all['givn'];
+      const related = Object.values(all).filter((c) => c.slug !== cs.slug).map((c) => ({
+        title: c.title, imageSrc: c.hero.src, imageAlt: c.hero.alt,
+        href: `project.dc.html?slug=${c.slug}`
+      }));
+      document.title = `${cs.title} — Toba Ofomiyonwon`;
+      this.setState({ cs, related, slug: cs.slug });
+    });
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._railTimer) clearTimeout(this._railTimer);
+  }
+
+  easedScrollTo(endY) {
+    const startY = window.scrollY || document.documentElement.scrollTop || 0;
+    const dist = endY - startY;
+    const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
+    const t0 = performance.now();
+    const ease = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (now) => {
+      const t = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, startY + dist * ease(t));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  parseInline(text) {
+    const parts = [];
+    const pushText = (str) => {
+      const boldRe = /\*\*([^*]+)\*\*/g;
+      let l = 0, bm;
+      while ((bm = boldRe.exec(str))) {
+        if (bm.index > l) parts.push(str.slice(l, bm.index));
+        parts.push(React.createElement('strong', { key: parts.length, style: { color: '#1f1f1f', fontWeight: 600 } }, bm[1]));
+        l = bm.index + bm[0].length;
+      }
+      if (l < str.length) parts.push(str.slice(l));
+    };
+    const linkRe = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let last = 0, m;
+    while ((m = linkRe.exec(text))) {
+      if (m.index > last) pushText(text.slice(last, m.index));
+      parts.push(React.createElement('a', { key: parts.length, href: m[2], target: '_blank', rel: 'noreferrer noopener', style: { color: '#0a8f57', fontWeight: 700, textDecoration: 'underline' } }, m[1]));
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) pushText(text.slice(last));
+    return parts;
+  }
+
+  renderVals() {
+    const SMALL_COVERS = ["assets/s-carmen-cover.png"];
+    const PANEL_TITLES = { "the problem": "Artifacts", "my approach": "Artifacts" };
+    const cs = this.state.cs;
+    if (!cs) return { ready: false, title: '', tagline: '', meta: [], sections: [], related: [], heroSrc: '', heroAlt: '', walkthrough: false, showOutcomeBtn: false, showWebsiteBtn: false };
+    const WEBSITES = { 'dexla-case-study': { url: 'https://dexla-ai.webflow.io/', label: 'View website' }, 'airstride': { url: 'https://airstride.ai/', label: 'See live platform' }, 'carmen-ai': { url: 'https://app.airstride.ai/', label: 'See Carmen live' } };
+    const website = WEBSITES[this.state.slug];
+    const websiteUrl = website && website.url;
+    const WALKTHROUGHS = { 'givn': 'iCTfdTCkgT8', 'wise-young-explorer': 'vHdEKs58h-0' };
+    const vid = WALKTHROUGHS[this.state.slug];
+    const galleryCount = cs.sections.filter((x) => (x.gallery || []).length > 0).length;
+    let docNum = 0;
+    let hasOutcome = false;
+    const sections = cs.sections.map((s, i) => {
+      const blocks = (s.content || []).map((b) => {
+        if (b.type === 'paragraph') {
+          const txt = b.text || '';
+          const rich = /\*\*|\[[^\]]+\]\(/.test(txt);
+          return {
+            isPlainPara: !rich, isRichPara: rich, isSubheading: false, isList: false,
+            text: txt, items: [], itemNodes: [],
+            node: rich ? React.createElement('p', { style: { fontSize: '1rem', lineHeight: 1.7, color: '#6b6b6b', margin: 0 } }, ...this.parseInline(txt)) : null
+          };
+        }
+        return {
+          isPlainPara: false, isRichPara: false, isSubheading: b.type === 'subheading', isList: b.type === 'list',
+          text: b.text || '', items: b.items || [],
+          itemNodes: (b.items || []).map((it, i) =>
+            React.createElement(React.Fragment, { key: i }, ...this.parseInline(String(it)))),
+          node: null
+        };
+      });
+      const hasProse = blocks.length > 0;
+      const hasGallery = (s.gallery || []).length > 0;
+      const isOutcomeHeading = (s.heading || '').toLowerCase() === 'outcome';
+      if (isOutcomeHeading) hasOutcome = true;
+      let docLabel = false;
+      if (hasGallery) { docNum++; docLabel = `Documentation ${docNum} of ${galleryCount}`; }
+      const isOutcome = !!vid && isOutcomeHeading;
+      return {
+        eyebrow: s.eyebrow || false,
+        heading: s.heading,
+        panelTitle: PANEL_TITLES[(s.heading || '').toLowerCase()] || s.heading,
+        docLabel,
+        anchorId: isOutcomeHeading ? 'outcome' : '',
+        railId: 'sec-' + i,
+        showWalkthrough: isOutcome,
+        hasProse,
+        blocks,
+        hasGallery,
+        galleryOnly: hasGallery && !hasProse,
+        galleryTitle: hasProse ? false : s.heading,
+        gallery: (s.gallery || []).map((g, gi) => {
+          const isSlot = typeof g.src === 'string' && g.src.indexOf('slot:') === 0;
+          const isCompare = typeof g.src === 'string' && g.src.indexOf('compare:') === 0;
+          const isTour = typeof g.src === 'string' && g.src.indexOf('tour:') === 0;
+          const isVig = typeof g.src === 'string' && g.src.indexOf('vig:') === 0;
+          const isPair = typeof g.src === 'string' && g.src.indexOf('pair:') === 0;
+          const isDuo = typeof g.src === 'string' && g.src.indexOf('duo:') === 0;
+          const isShuffle = typeof g.src === 'string' && g.src.indexOf('shuffle:') === 0;
+          const isGlobe = typeof g.src === 'string' && g.src.indexOf('globe:') === 0;
+          const isMarquee = typeof g.src === 'string' && g.src.indexOf('marquee:') === 0;
+          const slotId = this.state.slug + '-s' + i + '-g' + gi;
+          return {
+          caption: g.caption || false,
+          figClass: (g.span || isTour || isVig || isPair || isDuo || isCompare || isShuffle || isGlobe || isMarquee) ? 'span-2' : '',
+          imgNode: isMarquee
+            ? React.createElement('screen-marquee', { 'data-frames': JSON.stringify(g.frames || []), 'data-speed': String(g.speed || 38) })
+            : isGlobe
+            ? React.createElement('screen-globe', { 'data-frames': JSON.stringify(g.frames || []), 'data-size': String(g.size || 560) })
+            : isShuffle
+            ? React.createElement('card-shuffle', { 'data-frames': JSON.stringify(g.frames || []), 'data-bg': g.bg || '#E3EEFD', 'data-interval': String(g.interval || 3200) })
+            : isDuo
+            ? React.createElement('div', { className: 'pair-wrap duo-wrap' },
+                React.createElement('div', { className: 'pair-cell' },
+                  React.createElement('img', { className: 'pair-img', src: g.src.slice(4), alt: g.alt || '' }),
+                  React.createElement('span', { className: 'pair-tag' }, 'Low fidelity'),
+                  React.createElement('span', { className: 'pair-tag pair-tag-right' }, 'High fidelity')
+                )
+              )
+            : isPair
+            ? React.createElement('div', { className: 'pair-wrap' },
+                React.createElement('div', { className: 'pair-cell' },
+                  React.createElement('img', { className: 'pair-img', src: g.wire, alt: (g.alt || '') + ' wireframe' }),
+                  React.createElement('span', { className: 'pair-tag' }, 'Low fidelity')
+                ),
+                React.createElement('div', { className: 'pair-cell' },
+                  React.createElement('img', { className: 'pair-img', src: g.hifi, alt: (g.alt || '') + ' high fidelity' }),
+                  React.createElement('span', { className: 'pair-tag' }, 'High fidelity')
+                )
+              )
+            : isCompare
+            ? React.createElement('ui-compare', { 'data-id': g.src.slice(8) || slotId, 'data-count': String(g.count || 4), 'data-new': g.newHint || 'Drop the redesigned screen', 'data-old': g.oldHint || 'Drop the previous screen', 'data-seed': JSON.stringify(g.seed || {}) })
+            : isVig
+            ? React.createElement(g.src.slice(4))
+            : isTour
+            ? React.createElement('airstride-tour', { 'data-frames': JSON.stringify(g.frames || []), 'data-labels': JSON.stringify(g.labels || []), 'data-cursors': JSON.stringify(g.cursors || []), 'data-holds': JSON.stringify(g.holds || []), 'data-aspects': JSON.stringify(g.aspects || []), 'data-viewport': g.viewport || '', 'data-bar': g.bar || 'app.airstride.ai', 'data-aspect': g.aspect || '16/10' })
+            : isSlot
+            ? React.createElement('image-slot', { className: 'g-figimg', id: slotId, theme: 'dark', shape: 'rounded', radius: '16', placeholder: g.alt || 'Add image', style: { width: '100%', maxWidth: '100%', minWidth: 0, aspectRatio: 'auto', height: '360px', minHeight: '360px', borderRadius: '16px' } })
+            : React.createElement('img', {
+            className: 'g-figimg', src: g.src, alt: g.alt,
+            onLoad: (e) => {
+              const img = e.target;
+              const fig = img.closest && img.closest('figure');
+              // full-width rows: never render past the source pixels (upscaling is what
+              // reads as "low resolution"); grid cards keep their uniform height.
+              if (fig && fig.classList.contains('span-2')) {
+                // full-width rows span the container; sharpness comes from the export
+                // resolution, not from capping the render width
+                img.style.maxWidth = '100%';
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.objectFit = 'contain';
+                img.style.margin = '0 auto';
+                return;
+              }
+              if (!fig) return;
+              const grid = fig.parentElement;
+              const cols = grid && getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+              if (!(cols >= 2) || !img.naturalWidth || !img.naturalHeight) return;
+              const boxW = img.clientWidth, boxH = img.clientHeight;
+              if (!boxW || !boxH) return;
+              const imgA = img.naturalWidth / img.naturalHeight;
+              const boxA = boxW / boxH;
+              if (Math.abs(imgA - boxA) / boxA > 0.12) fig.classList.add('span-2');
+            }
+          })
+        };
+        }),
+        colsClass: isOutcome ? 'g-outcome' : ((s.heading || '').toLowerCase() === 'background' ? 'g-bg' : ('cols-' + (s.galleryColumns || 2)))
+      };
+    });
+    return {
+      ready: true,
+      showTop: this.state.showTop,
+      railVisibleClass: this.state.showRail ? 'visible' : '',
+      railItems: sections.map((s, i) => ({
+        heading: s.heading,
+        activeClass: this.state.activeSec === i ? 'active' : '',
+        go: () => {
+          const el = document.getElementById('sec-' + i);
+          if (el) this.easedScrollTo(el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop || 0) - 110);
+        }
+      })),
+      title: cs.title, tagline: cs.tagline, meta: cs.meta,
+      badges: (cs.meta || []).reduce((acc, m) => { String(m.value).split(',').forEach((v) => { const t = v.trim(); if (t) acc.push(t); }); return acc; }, []),
+      heroSrc: cs.hero.src, heroAlt: cs.hero.alt,
+      heroImg: this.state.slug === 'airstride'
+        ? React.createElement('airstride-demo')
+        : React.createElement('img', { src: cs.hero.src, alt: cs.hero.alt, style: { display: 'block', width: '100%', height: 'auto', borderRadius: '24px' } }),
+      sections,
+      showOutcomeBtn: hasOutcome && this.state.slug !== 'airstride' && this.state.slug !== 'carmen-ai',
+      showWebsiteBtn: !!websiteUrl,
+      websiteUrl: websiteUrl || '#',
+      websiteLabel: (website && website.label) || 'View website',
+      backToTop: () => {
+        const startY = window.scrollY || document.documentElement.scrollTop || 0;
+        const t0 = performance.now();
+        const duration = Math.min(1400, Math.max(500, startY * 0.5));
+        const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const step = (now) => {
+          const t = Math.min((now - t0) / duration, 1);
+          window.scrollTo(0, startY * (1 - easeInOutCubic(t)));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      },
+      goOutcome: (e) => {
+        e.preventDefault();
+        const target = document.getElementById('outcome');
+        if (!target) return;
+        const startY = window.scrollY || document.documentElement.scrollTop || 0;
+        const endY = target.getBoundingClientRect().top + startY - 96;
+        const dist = endY - startY;
+        const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
+        const t0 = performance.now();
+        const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const step = (now) => {
+          const t = Math.min((now - t0) / duration, 1);
+          window.scrollTo(0, startY + dist * easeInOutCubic(t));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      },
+      walkthrough: !!vid,
+      walkthroughFrame: vid ? React.createElement('iframe', { src: `https://www.youtube.com/embed/${vid}`, title: 'Walkthrough video', frameBorder: '0', allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', referrerPolicy: 'strict-origin-when-cross-origin', allowFullScreen: true, style: { width: '100%', height: '100%', border: 'none', display: 'block' } }) : null,
+      related: this.state.related.map((r) => ({
+        title: r.title, href: r.href,
+        imgNode: React.createElement('img', {
+          src: (function (s) {
+            if (!s) return s;
+            if (/^assets\//.test(s) && !/^assets\/s-/.test(s)) {
+              const local = s.replace('assets/', 'assets/s-');
+              if (SMALL_COVERS.indexOf(local) >= 0) return local;
+              return s;
+            }
+            if (/_next\/image/.test(s)) return s.replace(/[&?]w=\d+/, '&w=1080');
+            return s;
+          })(r.imageSrc),
+          alt: r.imageAlt, decoding: 'async', loading: 'lazy', width: 1080,
+          style: { display: 'block', width: '100%', height: '100%', objectFit: 'cover' }
+        })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

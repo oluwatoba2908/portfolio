@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    .cta-roll { color: #3d3d3d; transition: color 0.45s cubic-bezier(0.645, 0.045, 0.355, 1); }
+    .cta-roll:hover { color: #6b6b6b; }
+    .foot-link { position: relative; }
+    .foot-link::after { content: ""; position: absolute; left: 0; bottom: -3px; height: 1px; width: 0; background: #10d48e; transition: width 0.35s cubic-bezier(0.645, 0.045, 0.355, 1); }
+    .foot-link:hover::after { width: 100%; }
+    .ft-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .ft-v { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(255,255,255,0.12); }
+    .ft-h { position: absolute; left: 0; right: 0; height: 0; border-top: 1px dashed rgba(255,255,255,0.12); }
+    .ft-dot { position: absolute; width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.3); margin: -4px 0 0 -4px; }
+    @keyframes ftDotV { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+    @keyframes ftDotH { 0% { left: 0; } 50% { left: 100%; } 100% { left: 0; } }
+    .ft-dot-v { animation: ftDotV 28s ease-in-out infinite; }
+    .ft-dot-h { animation: ftDotH 34s ease-in-out infinite; }
+  </style>
+  <script src="vw.js"></script>
+  <script src="link-fix.js"></script>
+</helmet>
+
+<footer data-screen-label="Footer" id="footer-fixed" style="position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 100vh; z-index: 0; background: transparent; opacity: 0; transition: opacity 0.4s ease; font-family: 'Geist', system-ui, sans-serif; box-sizing: border-box; padding: clamp(40px, 5vw, 72px) clamp(24px, 6vw, 80px); display: flex; flex-direction: column;">
+  <div class="ft-guides" aria-hidden="true">
+    <div class="ft-v" style="left: 25%;"></div>
+    <div class="ft-v" style="left: 50%;"></div>
+    <div class="ft-v" style="left: 75%;"></div>
+    <div class="ft-h" style="top: 50%;"></div>
+    <div class="ft-dot ft-dot-v" style="left: 50%;"></div>
+    <div class="ft-dot ft-dot-h" style="top: 50%;"></div>
+  </div>
+
+  <div style="position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 48px; max-width: 1251px; width: 100%; margin: 0 auto;">
+    <a class="cta-roll" href="contact.dc.html" style="text-decoration: none; font-size: clamp(44px, 6.5vw, 92px); font-weight: 700; letter-spacing: 0rem; line-height: 1.05;">Let&rsquo;s work together</a>
+    <div style="display: flex; gap: clamp(32px, 5vw, 64px); flex-shrink: 0;">
+      <div>
+        <p style="font-size: 13px; letter-spacing: 0.06em; color: #8a8a8a; margin: 0;">/SITE MAP</p>
+        <ul style="margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px;">
+          <li><a class="foot-link" href="Homepage.dc.html" style="font-size: 18px; color: #ffffff; text-decoration: none;">Home</a></li>
+          <li><a class="foot-link" href="about.dc.html" style="font-size: 18px; color: #ffffff; text-decoration: none;">About me</a></li>
+          <li><a class="foot-link" href="contact.dc.html" style="font-size: 18px; color: #ffffff; text-decoration: none;">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size: 13px; letter-spacing: 0.06em; color: #8a8a8a; margin: 0;">/ELSEWHERE</p>
+        <ul style="margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px;">
+          <li><a class="foot-link" href="https://www.behance.net/tofomiyonwon" target="_blank" rel="noreferrer noopener" style="font-size: 18px; color: #ffffff; text-decoration: none;">Behance</a></li>
+          <li><a class="foot-link" href="https://www.linkedin.com/in/tobao77/" target="_blank" rel="noreferrer noopener" style="font-size: 18px; color: #ffffff; text-decoration: none;">LinkedIn</a></li>
+          <li><a class="foot-link" href="https://dribbble.com/Tobs007" target="_blank" rel="noreferrer noopener" style="font-size: 18px; color: #ffffff; text-decoration: none;">Dribbble</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: relative; z-index: 1; margin-top: 40px; height: 1px; width: 100%; background: rgba(255,255,255,0.14);"></div>
+  <div style="position: relative; z-index: 1; margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; max-width: 1251px; width: 100%; margin-left: auto; margin-right: auto;">
+    <a href="mailto:Tofomiyonwon@gmail.com" class="foot-link" style="font-size: 15px; font-weight: 400; color: #b0b0b0; margin: 0; text-decoration: none;">Tofomiyonwon@gmail.com</a>
+    <p style="font-size: 15px; font-weight: 300; color: #b0b0b0; margin: 0;">&copy; 2026 Toba Ofomiyonwon</p>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 760 }
+}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const el = document.getElementById('footer-fixed');
+    if (el) requestAnimationFrame(() => { el.style.background = '#1f1f1f'; el.style.opacity = '1'; });
+  }
+}
+</script>
+</body>
+</html>
