@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="/site/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { overflow-x: clip; }
+    body { margin: 0; background: #efefef; color: #191919; font-family: "Geist", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1); }
+    a:hover { color: #10d48e; }
+    ::selection { background: #191919; color: #ffffff; }
+    html, body { height: auto !important; min-height: 100%; background: #efefef; color-scheme: light only; }
+    #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
+    /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .load-in { opacity: 0; }
+    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in-1 { animation-delay: 0ms; }
+    .load-in-2 { animation-delay: 90ms; }
+    .load-in-3 { animation-delay: 180ms; }
+    .load-in-4 { animation-delay: 270ms; }
+    .load-in-5 { animation-delay: 360ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .load-in { opacity: 1; }
+      .load-in.in-view { animation: none !important; }
+    }
+    .cs-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
+    @media (max-width: 1279px) { .cs-container { max-width: 1100px; } }
+    @media (max-width: 767px) { .cs-container { max-width: 900px; } }
+    .grid-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .gg-v { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(25,25,25,0.10); }
+    .gg-h { position: absolute; left: 50%; right: auto; width: var(--vw, 100vw); transform: translateX(-50%); height: 0; border-top: 1px dashed rgba(25,25,25,0.10); }
+    /* section: sticky label left, prose right (matches the case-study pages) */
+    .a-split { display: grid; grid-template-columns: minmax(0, 34%) minmax(0, 420px); gap: clamp(24px, 5vw, 72px); align-items: start; justify-content: center; max-width: 1000px; margin: 0 auto; }
+    @media (max-width: 900px) { .a-split { grid-template-columns: 1fr; gap: 24px; } }
+    /* dark rounded panel sections (Life beyond, Work experience) */
+    .a-dark-panel { background: #1f1f1f; color: #ffffff; border-radius: 40px; margin: 0 20px; padding: 100px 20px; }
+    .a-dark-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(32px, 5vw, 56px); }
+    .a-gal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 2.5vw, 24px); max-width: 900px; margin: 0 auto; }
+    @media (max-width: 700px) { .a-gal-grid { grid-template-columns: 1fr; } }
+    .a-dark-p { font-size: 1rem; line-height: 1.7; color: #a8a8a8; margin: 0; text-align: center; }
+    .bat-block { position: relative; padding-top: clamp(72px, 12vw, 180px); }
+    .bat-block > .load-in { position: relative; z-index: 1; }
+    .a-exp-rows { max-width: 700px; margin: 0 auto; }
+    /* two fixed columns, so every role/date block shares one left edge */
+    .a-exp-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 16px 24px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.14); text-align: left; }
+    .a-exp-meta { text-align: right; }
+    /* mobile: role drops to its own line, everything centred */
+    @media (max-width: 767px) {
+      .a-exp-row { grid-template-columns: 1fr; gap: 6px; justify-items: center; }
+      .a-exp-co, .a-exp-role, .a-exp-meta { text-align: center; }
+    }
+    .a-title { position: sticky; top: 100px; font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; line-height: 1.15; margin: 0; color: #1f1f1f; overflow-wrap: break-word; text-wrap: balance; }
+    @media (max-width: 900px) { .a-title { position: static; } }
+    .a-p { font-size: 1rem; line-height: 1.7; color: #6b6b6b; margin: 0; }
+    .a-eyebrow { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 12px; font-weight: 500; }
+    /* dark hero panel, matching the reference: rounded near-black card with white text */
+    .a-hero-panel { background: #1f1f1f; border-radius: 40px; margin: 0 20px; padding: clamp(64px, 9vw, 140px) 20px clamp(48px, 7vw, 110px); text-align: center; }
+    .a-hero-h1 { font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; margin: 0 auto; max-width: 16ch; text-wrap: balance; color: #ffffff; }
+    .a-hero-sub { font-size: clamp(16px, 1.8vw, 20px); color: #b5b5b5; line-height: 1.5; margin: 20px auto 0; max-width: 42ch; }
+    .a-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; padding: 17px 28px; border-radius: 600px; background: #ffffff; color: #191919; min-height: 44px; box-sizing: border-box; box-shadow: 0 24px 40px rgba(0,0,0,0.35); transition: opacity 200ms cubic-bezier(0.645,0.045,0.355,1), transform 200ms cubic-bezier(0.645,0.045,0.355,1); }
+    /* square video card inside the dark panel (per the reference layout) */
+    .a-video-frame { position: relative; border-radius: 24px; overflow: hidden; background: #101010; aspect-ratio: 1 / 1; width: 100%; max-width: 520px; margin: clamp(48px, 7vw, 96px) auto 0; }
+    .a-video-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .a-video-toggle { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 44px; height: 44px; border-radius: 999px; border: none; cursor: pointer; background: rgba(10,10,10,0.75); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; transition: transform 200ms cubic-bezier(0.645,0.045,0.355,1); }
+    .a-video-toggle:hover { transform: scale(1.06); }
+    .about-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    @media (max-width: 700px) { .about-gallery { grid-template-columns: 1fr; } }
+    .a-gal-frame { border-radius: 16px; overflow: hidden; background: #f5f5f5; border: 1px solid rgba(25,25,25,0.08); aspect-ratio: 1 / 1; }
+    .a-gal-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 767px) { .a-gal-frame { aspect-ratio: auto; } .a-gal-frame img { height: auto; object-fit: contain; } }
+    .exp-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto; align-items: baseline; gap: 16px 24px; padding: 24px 0; border-top: 1px solid rgba(25,25,25,0.12); }
+    @media (max-width: 700px) { .exp-row { grid-template-columns: 1fr; gap: 6px; } }
+  </style>
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+  <script src="scroll-in.js"></script>
+  <script src="vw.js"></script>
+  <script src="bat-static.js"></script>
+  <script src="link-fix.js"></script>
+</helmet>
+
+<div class="page-layer" style="position: relative; z-index: 1; background: #efefef; margin-bottom: 100vh; min-height: 100vh;">
+<dc-import name="Nav" style="position: sticky; top: 0; z-index: 40; display: block; background: #efefef;" hint-size="100%,86px"></dc-import>
+
+<main data-screen-label="About me" style="background: #efefef;">
+  <section style="padding: 12px 0 clamp(56px, 7vw, 112px); position: relative;">
+    <div class="a-hero-panel">
+      <h1 class="a-hero-h1 load-in load-in-1">Meet Toba</h1>
+      <p class="a-hero-sub load-in load-in-2">With over 3 years of experience, I help startups design products and build websites.</p>
+      <div class="load-in load-in-3" style="margin-top: 36px;">
+        <a class="a-btn" href="#experience" style-hover="opacity: 0.92; transform: translateY(-2px); color: #191919;">View experiences</a>
+      </div>
+      <div class="a-video-frame load-in load-in-4">
+        <video ref="{{ videoRef }}" data-src="assets/about-toba.mp4" poster="assets/about-toba-poster.png" preload="auto" onClick="{{ toggleVideo }}" aria-label="Toba introduction video" style="cursor: pointer;"></video>
+        <button class="a-video-toggle" onClick="{{ toggleVideo }}" aria-label="{{ videoToggleLabel }}">{{ videoToggleIcon }}</button>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-bottom: clamp(56px, 7vw, 112px); position: relative;">
+    <div class="cs-container">
+      <div class="a-split">
+        <h2 class="a-title load-in load-in-1">My story</h2>
+        <div class="load-in load-in-2" style="display: flex; flex-direction: column; gap: 24px;">
+          <p class="a-p">Hey, I&rsquo;m Toba! My full name is Oluwatoba Ofomiyonwon, but most people just call me Toba. I&rsquo;m currently based in Farnham, Surrey, in the UK, where I&rsquo;m studying for my Master&rsquo;s in UX Design at the University for the Creative Arts. It&rsquo;s been a great experience so far, allowing me to deepen my understanding of human-centered design and apply it to real-world projects.</p>
+          <p class="a-p">Before this, I studied Surveying and Geoinformatics at Obafemi Awolowo University (O.A.U) in Nigeria. That gave me a solid foundation in problem-solving and spatial thinking, but my real passion has always been in design, technology, and building digital experiences. Outside of work and school, I enjoy pushing myself in different ways.</p>
+          <p class="a-p">I hit the gym three times a week, deepen my knowledge in front-end technologies, HTML, CSS &amp; JavaScript, and spend time on charcoal drawing and painting as a creative outlet. I&rsquo;m also still trying to beat my 1:15 Rubik&rsquo;s Cube record (not there yet!).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-bottom: clamp(56px, 7vw, 112px);">
+    <div class="a-dark-panel">
+      <h2 class="a-dark-title load-in load-in-1">Life beyond design screens</h2>
+      <div class="a-gal-grid load-in load-in-2">
+        <div class="a-gal-frame">
+          <img src="https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd/67e1cf6cbdda114c3251cc7f_RUNTOWN.png" alt="Charcoal portrait drawing of a man wearing a hat">
+        </div>
+        <div class="a-gal-frame">
+          <img src="https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd/67e1cf518d057855d8ac9c79_671bc76c47c709bd6ff7f113_IMG_4821%201.png" alt="Charcoal portrait drawing of a man in a pinstripe suit">
+        </div>
+        <div class="a-gal-frame">
+          <img src="https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd/696a57b1eb8c82d7f972bf4d_IMG_1411.JPG" alt="Toba standing beside a marble sculpture in a museum">
+        </div>
+        <div class="a-gal-frame">
+          <img src="https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd/696a55edfffd11082ac29c52_IMG_9604.jpg" alt="Charcoal portrait drawing of a woman with an afro and hoop earrings">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="experience" style="padding-bottom: clamp(56px, 7vw, 112px); position: relative; scroll-margin-top: 110px;">
+    <div class="cs-container">
+      <div class="a-split">
+        <h2 class="a-title load-in load-in-1">Experience</h2>
+        <div class="load-in load-in-2" style="display: flex; flex-direction: column; gap: 24px;">
+          <p class="a-p">Currently, I work as a UX Designer at Airstride, a VC-backed startup helping companies scale their sales through automated partner channels. The product uses AI to help businesses build and manage distribution partnerships more efficiently. At Airstride, I focus on improving the user experience across the platform by conducting research, mapping user journeys, testing prototypes, and designing clear interfaces that support real user needs. It&rsquo;s a fast-paced, global team, and I enjoy shaping a product that enables growth in a meaningful way.</p>
+          <p class="a-p">Across my experience, I&rsquo;ve worked closely with founders, engineers, and product teams to turn complex problems into simple, usable solutions. I enjoy working end to end, from understanding users and defining problems to designing systems, flows, and interfaces that scale. I care deeply about clarity, consistency, and building products that feel intuitive, useful, and well considered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-bottom: clamp(64px, 8vw, 128px);">
+    <div class="a-dark-panel">
+      <h2 class="a-dark-title load-in load-in-1">Work experience</h2>
+      <div class="a-exp-rows load-in load-in-2">
+        <sc-for list="{{ roles }}" as="r" hint-placeholder-count="5">
+          <div class="a-exp-row">
+            <p class="a-exp-co" style="font-size: 1rem; font-weight: 700; color: #ffffff; margin: 0;">{{ r.company }}</p>
+            <div class="a-exp-meta">
+              <p class="a-exp-role" style="font-size: 1rem; font-weight: 400; color: #ffffff; margin: 0;">{{ r.role }}</p>
+              <p style="font-size: 0.875rem; color: #9a9a9a; margin: 14px 0 0;">{{ r.dates }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
+</div>
+<dc-import name="Footer" hint-size="100%,0px" style="display:block; height:0; overflow:visible;"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { playing: true };
+
+  // called from the ref callback: componentDidMount fires BEFORE the template
+  // delivers the element in this runtime, so wiring there never attaches.
+  _wireVideo(v) {
+    // iOS (esp. Low Power Mode) can reject autoplay even when muted: reflect the
+    // REAL state in the toggle instead of assuming it is playing, so the user
+    // gets a play affordance over the poster rather than a dead black box.
+    const start = () => {
+      const p = v.play();
+      if (p && p.then) p.then(() => this.setState({ playing: true })).catch(() => this.setState({ playing: false }));
+    };
+    v.addEventListener('play', () => this.setState({ playing: true }));
+    v.addEventListener('pause', () => this.setState({ playing: false }));
+    if (v.readyState >= 2) start();
+    else v.addEventListener('loadeddata', start, { once: true });
+    // belt and braces: if a browser ignores loop, restart on end
+    v.addEventListener('ended', () => { v.currentTime = 0; start(); });
+    // retry on the events iOS fires as the clip becomes playable
+    ['loadedmetadata', 'canplay', 'canplaythrough'].forEach((ev) =>
+      v.addEventListener(ev, () => { if (v.paused) start(); }));
+    // a blocked autoplay can still be started by any user gesture: keep listening
+    // until playback actually begins, then stop (Low Power Mode needs this)
+    this._kick = () => {
+      if (!v.paused) return;
+      v.muted = true;
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {});
+    };
+    this._kickEvents = ['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'];
+    this._kickEvents.forEach((ev) => window.addEventListener(ev, this._kick, { passive: true }));
+    v.addEventListener('playing', () => {
+      this._kickEvents.forEach((ev) => window.removeEventListener(ev, this._kick));
+    }, { once: true });
+    // resume when the tab/page comes back into view
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && v.paused && this.state.playing !== false) start();
+    });
+  }
+
+  componentWillUnmount() {
+    if (this._kick && this._kickEvents) this._kickEvents.forEach((ev) => window.removeEventListener(ev, this._kick));
+  }
+
+  renderVals() {
+    const CDN = "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd";
+    return {
+      videoRef: (el) => {
+        this._video = el;
+        if (!el || el.__wired) return;
+        el.__wired = true;
+        // iOS decides autoplay eligibility from the ATTRIBUTES at load time, and
+        // React only sets muted as a property, so set them all BEFORE the src.
+        el.setAttribute('muted', '');
+        el.setAttribute('playsinline', '');
+        el.setAttribute('webkit-playsinline', '');
+        el.setAttribute('autoplay', '');
+        el.setAttribute('loop', '');
+        el.muted = true;
+        el.defaultMuted = true;
+        el.volume = 0;
+        el.playsInline = true;
+        el.loop = true;
+        el.autoplay = true;
+        const src = el.getAttribute('data-src');
+        if (src && !el.src) { el.src = src; el.load(); }
+        this._wireVideo(el);
+      },
+      toggleVideo: () => {
+        const v = this._video;
+        if (!v) return;
+        if (v.paused) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); this.setState({ playing: true }); }
+        else { v.pause(); this.setState({ playing: false }); }
+      },
+      videoToggleLabel: this.state.playing ? "Pause video" : "Play video",
+      videoToggleIcon: React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'currentColor', 'aria-hidden': true },
+        this.state.playing
+          ? [React.createElement('rect', { key: 'a', x: 3, y: 2, width: 3.4, height: 12, rx: 1 }), React.createElement('rect', { key: 'b', x: 9.6, y: 2, width: 3.4, height: 12, rx: 1 })]
+          : React.createElement('path', { d: 'M4 2.5v11l9-5.5z' })),
+
+      roles: [
+        { company: "Airstride", role: "UX designer", dates: "May, 2025 \u2014 present" },
+        { company: "Dexla", role: "UX designer | no code developer", dates: "November, 2023 \u2014 May, 2025" },
+        { company: "LetsRemotify", role: "UI designer intern", dates: "August \u2014 November, 2023" },
+        { company: "Zummit Africa", role: "Product designer", dates: "December, 2023 \u2014 April, 2023" },
+        { company: "Zuri", role: "UX/UI Designer intern", dates: "September, 2022 \u2014 February, 2023" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

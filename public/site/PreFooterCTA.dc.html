@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    @keyframes ctaFloatA { 0%, 100% { transform: translate(0,0) rotate(-8deg); } 50% { transform: translate(-14px,-12px) rotate(-2deg); } }
+    @keyframes ctaFloatB { 0%, 100% { transform: translate(0,0) rotate(10deg); } 50% { transform: translate(12px,14px) rotate(4deg); } }
+    @keyframes ctaFloatC { 0%, 100% { transform: translate(0,0) rotate(38deg); } 50% { transform: translate(16px,-10px) rotate(46deg); } }
+    .cta-sec { position: relative; z-index: 2; background: #efefef; padding: clamp(80px, 12vw, 180px) 20px; text-align: center; font-family: 'Geist', system-ui, sans-serif; overflow: clip; }
+    .cta-inner { position: relative; z-index: 2; margin: 0 auto; max-width: 1440px; }
+    .cta-h2 { font-size: clamp(44px, 7vw, 96px); font-weight: 800; letter-spacing: 0rem; line-height: 1.05; margin: 0 auto; max-width: 20ch; text-wrap: balance; color: #1f1f1f; }
+    .cta-p { font-size: clamp(16px, 1.8vw, 20px); color: #6b6b6b; line-height: 1.5; margin: 20px auto 0; max-width: 46ch; }
+    .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; padding: 17px 28px; border-radius: 600px; background: #191919; color: #ffffff; text-decoration: none; min-height: 44px; box-sizing: border-box; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04); transition: opacity 200ms cubic-bezier(0.645,0.045,0.355,1), transform 200ms cubic-bezier(0.645,0.045,0.355,1); }
+    .cta-float { position: absolute; z-index: 3; pointer-events: none; width: clamp(28px, 3.4vw, 52px); }
+    .cta-float img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; filter: drop-shadow(0 10px 14px rgba(0,0,0,0.18)); }
+    /* side floats live in the gap outside the text measure, never on the copy */
+    .cta-float-left { top: 56%; right: auto; left: clamp(16px, calc(50% - 23ch - 76px), 42%); }
+    .cta-float-right { top: 44%; left: auto; right: clamp(16px, calc(50% - 23ch - 76px), 42%); }
+    @media (max-width: 767px) { .cta-float { display: none; } }
+    /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .load-in { opacity: 0; }
+    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in-1 { animation-delay: 0ms; }
+    .load-in-2 { animation-delay: 90ms; }
+    .load-in-3 { animation-delay: 180ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .load-in { opacity: 1; }
+      .load-in.in-view { animation: none !important; }
+    }
+    /* continue the site's grid guides through this section so lines don't stop dead */
+    .cta-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .cta-guides .gv { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(25,25,25,0.10); }
+    .cta-guides .gh { position: absolute; left: 50%; right: auto; width: var(--vw, 100vw); transform: translateX(-50%); height: 0; border-top: 1px dashed rgba(25,25,25,0.10); }
+  </style>
+</helmet>
+
+<section class="cta-sec" data-screen-label="Pre-footer CTA">
+  <div class="cta-guides" aria-hidden="true">
+    <div class="gv" style="left: 25%;"></div>
+    <div class="gv" style="left: 50%;"></div>
+    <div class="gv" style="left: 75%;"></div>
+    <div class="gh" style="top: 62%;"></div>
+  </div>
+  <div class="cta-float" style="top: 26%; left: 30%; animation: ctaFloatA 9s ease-in-out infinite;"><img src="assets/s-i-figma.png" alt=""></div>
+  <div class="cta-float cta-float-left" style="animation: ctaFloatB 10.5s ease-in-out infinite;"><img src="assets/s-i-vscode.png" alt=""></div>
+  <div class="cta-float cta-float-right" style="animation: ctaFloatC 11s ease-in-out infinite;"><img src="assets/s-i-claude.png" alt=""></div>
+  <div class="cta-inner">
+    <h1 class="cta-h2 load-in load-in-1">If you scrolled this far, let&rsquo;s talk</h1>
+    <p class="cta-p load-in load-in-2">If you&rsquo;re building something impactful and need a designer focused on clarity and results, let&rsquo;s connect.</p>
+    <div class="load-in load-in-3" style="margin-top: 36px;">
+      <a class="cta-btn" href="https://calendly.com/tofomiyonwon/30min" target="_blank" rel="noreferrer noopener" style-hover="opacity: 0.9; transform: translateY(-2px); color: #ffffff;">Contact me</a>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 520 }
+}"></script>
+</body>
+</html>

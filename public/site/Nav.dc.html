@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+  <style>
+    @keyframes navIn { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
+    .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; }
+    .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; padding: 0; border: none; background: transparent; cursor: pointer; }
+    .nav-burger span { display: block; width: 22px; height: 2px; background: #191919; border-radius: 2px; margin: 0 auto; transition: transform 0.4s cubic-bezier(0.645,0.045,0.355,1), opacity 0.3s cubic-bezier(0.645,0.045,0.355,1); }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    /* overlays the page instead of pushing it down */
+    /* full-height glass sheet that overlays the page instead of pushing it down */
+    .nav-drawer { display: none; position: absolute; top: 100%; left: 0; right: 0; height: calc(100vh - 86px); height: calc(100dvh - 86px); z-index: 60; overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none; background: #E8E8E8; box-shadow: 0 22px 43px rgba(0,0,0,0.06); transform: translateY(-8px); transition: opacity 0.42s cubic-bezier(0.645,0.045,0.355,1), transform 0.42s cubic-bezier(0.645,0.045,0.355,1), visibility 0s linear 0.42s; }
+    .nav-drawer.open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition: opacity 0.42s cubic-bezier(0.645,0.045,0.355,1), transform 0.42s cubic-bezier(0.645,0.045,0.355,1), visibility 0s linear 0s; }
+    .nav-drawer ul { list-style: none; margin: 0; padding: 24px clamp(16px, 4.5vw, 64px) 40px; display: flex; flex-direction: column; gap: 4px; }
+    /* inline-block so the underline hugs the text, not the full row */
+    .nav-drawer a { position: relative; font-size: 18px; font-weight: 500; letter-spacing: 0rem; padding: 13px 0; color: #191919; text-decoration: none; min-height: 44px; box-sizing: border-box; }
+    /* current page: full-width white pill with a soft lift */
+    .nav-drawer li { display: flex; }
+    /* every label shares one indent, so the active pill can bleed outward around it */
+    .nav-drawer a { display: block; width: 100%; padding-left: clamp(16px, 4vw, 24px); padding-right: clamp(16px, 4vw, 24px); box-sizing: border-box; }
+    .nav-drawer a.is-active { background: #ffffff; border-radius: 999px; padding-top: 15px; padding-bottom: 15px; box-shadow: 0 10px 24px rgba(15,15,15,0.07), 0 2px 6px rgba(15,15,15,0.04); }
+    @media (max-width: 1023px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-drawer { display: block; }
+
+    }
+  </style>
+  <script src="link-fix.js"></script>
+</helmet>
+
+<header data-screen-label="Nav" style="animation: navIn 0.6s cubic-bezier(0.645, 0.045, 0.355, 1) both; background: {{ navBackground }}; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 22px 43px rgba(0,0,0,0.02); font-family: 'Geist', system-ui, sans-serif; position: relative; z-index: 50;">
+  <div style="position: relative; margin: 0 auto; display: flex; height: 86px; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 4.5vw, 64px);">
+    <dotlottie-player src="/site/assets/bat-halloween.lottie" autoplay loop style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; pointer-events: none;"></dotlottie-player>
+    <a href="Homepage.dc.html" style="display: inline-flex; align-items: center; opacity: 1; transition: opacity 150ms cubic-bezier(0.4,0,0.2,1); color: #191919; text-decoration: none;" style-hover="opacity: 0.8;">
+      <img src="assets/logo.png" alt="GT logo" style="height: {{ logoHeight }}px; width: auto; display: block;">
+    </a>
+    <ul class="nav-links">
+      <li>
+        <a href="about.dc.html" style="font-size: 16px; font-weight: 400; padding: 8px 20px; color: #191919; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="color: #10d48e;">About me</a>
+      </li>
+      <li>
+        <a href="contact.dc.html" style="font-size: 16px; font-weight: 400; padding: 8px 20px; color: #191919; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="color: #10d48e;">Contact</a>
+      </li>
+      <li>
+        <a href="playground.dc.html" style="font-size: 16px; font-weight: 400; padding: 8px 20px; color: #191919; text-decoration: none; transition: color 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="color: #10d48e;">Playground</a>
+      </li>
+    </ul>
+    <button class="nav-burger {{ burgerClass }}" onClick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  <nav class="nav-drawer {{ burgerClass }}">
+    <ul>
+      <li><a href="Homepage.dc.html" class="{{ homeClass }}">Home page</a></li>
+      <li><a href="about.dc.html" class="{{ aboutClass }}">About me</a></li>
+      <li><a href="contact.dc.html" class="{{ contactClass }}">Contact</a></li>
+      <li><a href="playground.dc.html" class="{{ playgroundClass }}">Playground</a></li>
+    </ul>
+  </nav>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 86 },
+  &quot;navBackground&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;rgba(245,245,245,0.9)&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;rgba(245,245,245,0.9)&quot;, &quot;#f5f5f5&quot;, &quot;#efefef&quot;, &quot;#ffffff&quot;] },
+  &quot;logoHeight&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 30, &quot;min&quot;: 20, &quot;max&quot;: 56, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot; }
+}">
+class Component extends DCLogic {
+  state = { menuOpen: false };
+
+  componentDidMount() {
+    // above 1023px the drawer AND the burger are display:none, so an open menu
+    // would leave the page locked with no way to close it. Close on breakpoint exit.
+    this._mq = window.matchMedia('(max-width: 1023px)');
+    this._onMq = () => {
+      if (!this._mq.matches && this.state.menuOpen) {
+        this.setState({ menuOpen: false }, () => this.syncScrollLock());
+      }
+    };
+    if (this._mq.addEventListener) this._mq.addEventListener('change', this._onMq);
+    else this._mq.addListener(this._onMq);
+  }
+
+  // mark the item for the page currently being viewed
+  _activeClass(key) {
+    let file = '';
+    try { file = (window.location.pathname.split('/').pop() || '').toLowerCase(); } catch (e) {}
+    const isHome = !file || file.indexOf('homepage') === 0 || file === 'index.html';
+    const active = key === 'homepage' ? isHome : file.indexOf(key) === 0;
+    return active ? 'is-active' : '';
+  }
+
+  // lock/unlock the page behind the sheet, from the committed state
+  syncScrollLock() {
+    const de = document.documentElement;
+    if (this.state.menuOpen) {
+      de.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      de.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._mq && this._onMq) {
+      if (this._mq.removeEventListener) this._mq.removeEventListener('change', this._onMq);
+      else this._mq.removeListener(this._onMq);
+    }
+    document.documentElement.style.removeProperty('overflow');
+    document.body.style.removeProperty('overflow');
+  }
+  renderVals() {
+    return {
+      navBackground: this.props.navBackground ?? "rgba(245,245,245,0.9)",
+      logoHeight: this.props.logoHeight ?? 30,
+      homeClass: this._activeClass('homepage'),
+      playgroundClass: this._activeClass('playground'),
+      aboutClass: this._activeClass('about'),
+      contactClass: this._activeClass('contact'),
+      menuOpen: this.state.menuOpen,
+      burgerClass: this.state.menuOpen ? "open" : "",
+      toggleMenu: () => this.setState(
+        (s) => ({ menuOpen: !s.menuOpen }),
+        () => this.syncScrollLock()
+      )
+    };
+  }
+}
+</script>
+</body>
+</html>
