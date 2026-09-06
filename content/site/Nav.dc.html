@@ -22,7 +22,9 @@
     .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     /* overlays the page instead of pushing it down */
     /* full-height glass sheet that overlays the page instead of pushing it down */
-    .nav-drawer { display: none; position: absolute; top: 100%; left: 0; right: 0; height: calc(100vh - 86px); height: calc(100dvh - 86px); z-index: 60; overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none; background: #E8E8E8; box-shadow: 0 22px 43px rgba(0,0,0,0.06); transform: translateY(-8px); transition: opacity 0.42s cubic-bezier(0.645,0.045,0.355,1), transform 0.42s cubic-bezier(0.645,0.045,0.355,1), visibility 0s linear 0.42s; }
+    /* the sheet scrolls itself and contains the scroll, so the page behind it
+       stays put without locking the document — see the note in the logic below */
+    .nav-drawer { display: none; position: absolute; top: 100%; left: 0; right: 0; height: calc(100vh - 86px); height: calc(100dvh - 86px); z-index: 60; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; opacity: 0; visibility: hidden; pointer-events: none; background: #E8E8E8; box-shadow: 0 22px 43px rgba(0,0,0,0.06); transform: translateY(-8px); transition: opacity 0.42s cubic-bezier(0.645,0.045,0.355,1), transform 0.42s cubic-bezier(0.645,0.045,0.355,1), visibility 0s linear 0.42s; }
     .nav-drawer.open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition: opacity 0.42s cubic-bezier(0.645,0.045,0.355,1), transform 0.42s cubic-bezier(0.645,0.045,0.355,1), visibility 0s linear 0s; }
     .nav-drawer ul { list-style: none; margin: 0; padding: 24px clamp(16px, 4.5vw, 64px) 40px; display: flex; flex-direction: column; gap: 4px; }
     /* inline-block so the underline hugs the text, not the full row */
@@ -89,11 +91,22 @@ class Component extends DCLogic {
     this._mq = window.matchMedia('(max-width: 1023px)');
     this._onMq = () => {
       if (!this._mq.matches && this.state.menuOpen) {
-        this.setState({ menuOpen: false }, () => this.syncScrollLock());
+        this.setState({ menuOpen: false });
       }
     };
     if (this._mq.addEventListener) this._mq.addEventListener('change', this._onMq);
     else this._mq.addListener(this._onMq);
+
+    // hold the page still behind an open sheet — see the note above componentWillUnmount
+    this._blockScroll = (e) => {
+      if (!this.state.menuOpen) return;
+      const sheet = document.querySelector('.nav-drawer');
+      const scrollable = sheet && sheet.scrollHeight > sheet.clientHeight;
+      if (scrollable && sheet.contains(e.target)) return;
+      e.preventDefault();
+    };
+    window.addEventListener('wheel', this._blockScroll, { passive: false });
+    window.addEventListener('touchmove', this._blockScroll, { passive: false });
   }
 
   // mark the item for the page currently being viewed
@@ -105,25 +118,23 @@ class Component extends DCLogic {
     return active ? 'is-active' : '';
   }
 
-  // lock/unlock the page behind the sheet, from the committed state
-  syncScrollLock() {
-    const de = document.documentElement;
-    if (this.state.menuOpen) {
-      de.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-    } else {
-      de.style.removeProperty('overflow');
-      document.body.style.removeProperty('overflow');
-    }
-  }
+  // NOTE: do not hold the page still with overflow:hidden on <html>/<body>.
+  // The header sits in a position:sticky wrapper and the sheet is positioned
+  // against the header. Making the document non-scrollable drops the sticky
+  // offset, so anywhere below the top of the page the header — and the sheet
+  // with it — snap back to their static position, off screen: the menu opens
+  // where nobody can see it. Swallowing the scroll gestures instead keeps the
+  // page still AND leaves the header stuck to the top where it belongs.
 
   componentWillUnmount() {
     if (this._mq && this._onMq) {
       if (this._mq.removeEventListener) this._mq.removeEventListener('change', this._onMq);
       else this._mq.removeListener(this._onMq);
     }
-    document.documentElement.style.removeProperty('overflow');
-    document.body.style.removeProperty('overflow');
+    if (this._blockScroll) {
+      window.removeEventListener('wheel', this._blockScroll);
+      window.removeEventListener('touchmove', this._blockScroll);
+    }
   }
   renderVals() {
     return {
@@ -135,10 +146,7 @@ class Component extends DCLogic {
       contactClass: this._activeClass('contact'),
       menuOpen: this.state.menuOpen,
       burgerClass: this.state.menuOpen ? "open" : "",
-      toggleMenu: () => this.setState(
-        (s) => ({ menuOpen: !s.menuOpen }),
-        () => this.syncScrollLock()
-      )
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen }))
     };
   }
 }
