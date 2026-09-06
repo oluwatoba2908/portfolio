@@ -156,7 +156,7 @@
 
 
     /* disclaimer sits inline, just above the mockups where the user can see it */
-    .pg-bottom { display: flex; gap: 8px; padding: 8px 0 12px; background: transparent; }
+    .pg-bottom { display: flex; gap: 8px; padding: clamp(16px, 2vh, 24px) 0 12px; background: transparent; }
     .pg-product { display: flex; align-items: center; gap: 12px; min-width: 240px; flex: 0 0 auto; }
     .pg-product__swatch { width: 28px; height: 28px; border-radius: 4px; background: #1a1a1a; }
     .pg-product__swatch--olive { background: #6b7a3f; }
@@ -185,8 +185,12 @@
     @media (max-width: 767px) {
       html, body { overflow-y: auto !important; }
       .pg-main { height: auto; min-height: calc(100vh - 86px - 44px); overflow: visible; padding: 16px 20px 32px; }
-      .pg-topbar { align-items: center; gap: 12px; }
-      .pg-look-badge { justify-content: space-between; }
+      /* the badge cannot sit beside the title at phone widths — it ran off the
+         screen — so the top bar stacks and the badge spans the column instead */
+      .pg-topbar { flex-direction: column; align-items: stretch; gap: 16px; }
+      .pg-topbar__col { min-width: 0; }
+      .pg-look-badge { display: flex; justify-content: space-between; gap: 8px; }
+      .pg-look-badge__thumbs { flex-wrap: wrap; justify-content: flex-end; }
 
       /* only the ±1 ghosts survive here — at phone widths the ±2 cards would
          land entirely outside the viewport, so they are dropped rather than
@@ -200,7 +204,9 @@
       .pg-angle { flex-wrap: wrap; gap: 12px; }
       .pg-strip { flex: 1 1 auto; min-width: 0; overflow: hidden; }
       .pg-specs { grid-template-columns: 96px 1fr; }
-      .pg-bottom { padding: 12px 20px; }
+      /* keep the note off the axis strip above it, and let it wrap on narrow screens */
+      .pg-bottom { padding: 24px 0 12px; }
+      .pg-disclaimer { flex-wrap: wrap; row-gap: 4px; }
     }
 
     @media (max-width: 420px) {
