@@ -189,13 +189,18 @@
          screen — so the top bar stacks and the badge spans the column instead */
       .pg-topbar { flex-direction: column; align-items: stretch; gap: 16px; }
       .pg-topbar__col { min-width: 0; }
-      .pg-look-badge { display: flex; justify-content: space-between; gap: 8px; }
+      /* the 24px only applies once the badge has dropped onto its own row —
+         beside the title it keeps the row's own spacing */
+      .pg-look-badge { display: flex; justify-content: space-between; gap: 8px; margin-top: 24px; }
       .pg-look-badge__thumbs { flex-wrap: wrap; justify-content: flex-end; }
 
       /* only the ±1 ghosts survive here — at phone widths the ±2 cards would
          land entirely outside the viewport, so they are dropped rather than
          silently clipped by overflow-x. */
-      .pg-stage { --pg-step: 215px; --pg-radius: 24px; flex: 0 0 auto; min-height: 0; height: clamp(300px, 48vh, 460px); margin: 20px 0 8px; }
+      /* the side margins have to stay negative here: the stage is a viewport
+         wide, so zeroing them parks it against the page gutter and pushes the
+         whole carousel off centre by the width of that gutter */
+      .pg-stage { --pg-step: 215px; --pg-radius: 24px; flex: 0 0 auto; min-height: 0; height: clamp(300px, 48vh, 460px); margin: 20px calc((var(--vw, 100vw) - 100%) / -2) 8px; }
       .pg-slot { height: clamp(150px, 44vh, 320px); max-width: 74vw; }
       .pg-slot.is-far { display: none; }
 
