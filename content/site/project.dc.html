@@ -238,7 +238,10 @@
                 </sc-for>
               </div>
               <sc-if value="{{ s.showWalkthrough }}" hint-placeholder-val="{{ false }}">
-                <div style="text-align: center; margin: 80px 0 clamp(40px, 5vw, 56px);"><span class="g-pill" style="color: #ffffff;">Walkthrough video</span></div>
+                <div style="text-align: center; margin: 80px 0 clamp(40px, 5vw, 56px);">
+                  <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 16px; font-weight: 500;">{{ walkthroughLabel }}</p>
+                  <span class="g-pill" style="color: #ffffff;">Walkthrough video</span>
+                </div>
                 <div class="g-walkthrough" style="max-width: 70%; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000;">{{ walkthroughFrame }}</div>
               </sc-if>
             </div>
@@ -386,6 +389,9 @@ class Component extends DCLogic {
     const WALKTHROUGHS = { 'givn': 'iCTfdTCkgT8', 'wise-young-explorer': 'vHdEKs58h-0', 'accord': 'sy2g1zp1Uzc' };
     const vid = WALKTHROUGHS[this.state.slug];
     const galleryCount = cs.sections.filter((x) => (x.gallery || []).length > 0).length;
+    // the walkthrough is a documented block in its own right, so it counts
+    // towards the total and takes the last number
+    const docTotal = galleryCount + (vid ? 1 : 0);
     let docNum = 0;
     let hasOutcome = false;
     const sections = cs.sections.map((s, i) => {
@@ -412,7 +418,7 @@ class Component extends DCLogic {
       const isOutcomeHeading = (s.heading || '').toLowerCase() === 'outcome';
       if (isOutcomeHeading) hasOutcome = true;
       let docLabel = false;
-      if (hasGallery) { docNum++; docLabel = `Documentation ${docNum} of ${galleryCount}`; }
+      if (hasGallery) { docNum++; docLabel = `Documentation ${docNum} of ${docTotal}`; }
       const isOutcome = !!vid && isOutcomeHeading;
       return {
         eyebrow: s.eyebrow || false,
@@ -560,6 +566,7 @@ class Component extends DCLogic {
         requestAnimationFrame(step);
       },
       walkthrough: !!vid,
+      walkthroughLabel: vid ? `Documentation ${docTotal} of ${docTotal}` : '',
       walkthroughFrame: vid ? React.createElement('iframe', { src: `https://www.youtube.com/embed/${vid}`, title: 'Walkthrough video', frameBorder: '0', allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', referrerPolicy: 'strict-origin-when-cross-origin', allowFullScreen: true, style: { width: '100%', height: '100%', border: 'none', display: 'block' } }) : null,
       related: this.state.related.map((r) => ({
         title: r.title, href: r.href,

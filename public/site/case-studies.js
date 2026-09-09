@@ -1398,6 +1398,10 @@ const ACCORD = {
         {
           type: "paragraph",
           text: "Informal lending is huge and almost invisible. A third of UK adults are owed money by friends or family (Starling Bank, 2023), and one in five people have borrowed to cover essential bills (Money and Pensions Service, 2023). Yet almost none of it is written down."
+        },
+        {
+          type: "paragraph",
+          text: "[View project proposal](https://drive.google.com/file/d/1tXDXB_y-8tWaEPXZObVyX7wt9sFyJQ-M/view?usp=sharing)"
         }
       ],
       gallery: [
@@ -1427,6 +1431,10 @@ const ACCORD = {
         {
           type: "paragraph",
           text: "Lenders also wanted real consequences, not just a record. When repayment failed, they demanded accountability and consequences."
+        },
+        {
+          type: "paragraph",
+          text: "[View full research](https://drive.google.com/file/d/1apq62ee0-r6gquQDBTBMBhBGJvblJ_ui/view?usp=sharing)"
         }
       ],
       gallery: [
@@ -1450,6 +1458,10 @@ const ACCORD = {
         {
           type: "paragraph",
           text: "A heuristic audit of Splitwise showed a tool built to display who owes whom, and little more. It crams owed and owing into one figure, hides its main actions, and never ties an action to a clear amount. Even a clear balance still leaves one friend to chase another."
+        },
+        {
+          type: "paragraph",
+          text: "[View live case study](https://toba-task-3.figma.site/)"
         }
       ],
       gallery: [
@@ -1471,6 +1483,10 @@ const ACCORD = {
         {
           type: "paragraph",
           text: "Substitute replaced the form with a fill-in sentence (\"Lending Sam £200, paid back by 5 August\"), so the loan reads like a message. Reverse let the borrower propose the plan, while the lender keeps the final call, so a request never becomes a demand. Adapt produced the Loan Companion, a photo that develops with each repayment, so progress is something to look forward to."
+        },
+        {
+          type: "paragraph",
+          text: "[View full SCAMPER](https://drive.google.com/file/d/18Vrxi9oesA9MIxAd2ps9pNAg4L9ftLMU/view?usp=sharing)"
         }
       ],
       gallery: [
@@ -1559,7 +1575,7 @@ const ACCORD = {
         {
           src: "assets/accord-testing-remote.webp",
           alt: "A remote testing session on the Accord prototype",
-          caption: "User 4 testing the flows on the app in remotely"
+          caption: "User 4 testing the flows on the app remotely"
         },
         {
           src: "assets/accord-testing-tour.webp",
@@ -1592,6 +1608,10 @@ const ACCORD = {
           items: [
             "The outcome is a tested design proposition, not a validated financial product."
           ]
+        },
+        {
+          type: "paragraph",
+          text: "[View full scenario](https://drive.google.com/file/d/1qj7ZFdZpuPBSPDzhj9lqweOco1xbzNYr/view?usp=sharing)"
         }
       ],
       gallery: [
