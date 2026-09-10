@@ -37,11 +37,11 @@
     /* opaque page layer above the fixed footer; 100vh bottom margin is the footer's reveal window */
     /* no footer to reveal here: the page is the slider, so it ends with it */
     .pg-page { position: relative; z-index: 1; background: #efefef; min-height: 100vh; }
-    .pg-main { position: relative; display: flex; flex-direction: column; min-height: calc(100vh - 86px - 44px); padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; }
+    .pg-main { position: relative; display: flex; flex-direction: column; height: calc(100dvh - 86px); min-height: 420px; padding: 16px clamp(20px, 3vw, 40px) 0; box-sizing: border-box; }
     /* fit the viewport when it can; when the column is taller than the screen the
        page scrolls instead of starving the mockups (user allowed a scroll here) */
     @media (min-width: 768px) {
-      .pg-main { min-height: calc(100vh - 86px); }
+      .pg-main { height: calc(100dvh - 86px); }
     }
 
     /* small mono labels used across the layout */
@@ -81,7 +81,7 @@
        viewport width; --vw comes from vw.js so scrollbar-aware, falls back to 100vw
        overflow-x: clip trims the far cards' sideways bleed; overflow-y stays
        visible so each card's drop shadow can paint below it (hidden clipped it) */
-    .pg-stage { --pg-step: 320px; --pg-radius: 40px; position: relative; overflow-x: clip; overflow-y: visible; flex: 1 1 auto; min-height: min(560px, 68vh); width: var(--vw, 100vw); margin-left: calc((var(--vw, 100vw) - 100%) / -2); margin-right: calc((var(--vw, 100vw) - 100%) / -2); margin-top: clamp(6px, 1vh, 14px); display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: none; }
+    .pg-stage { --pg-step: 320px; --pg-radius: 40px; position: relative; overflow-x: clip; overflow-y: visible; flex: 1 1 auto; min-height: 0; width: var(--vw, 100vw); margin-left: calc((var(--vw, 100vw) - 100%) / -2); margin-right: calc((var(--vw, 100vw) - 100%) / -2); margin-top: clamp(6px, 1vh, 14px); display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: none; }
     .pg-slot { position: absolute; top: 50%; left: 50%; pointer-events: auto; background: transparent; border: none; padding: 0; cursor: pointer;
       transform-origin: center center;
       /* smooth ease-in-out slider transition */
@@ -93,7 +93,9 @@
     }
     /* height-driven so the card never distorts; the vw cap keeps the active card +
        both ±1 ghosts (0.55 scale) + gaps inside the now-full-vw stage */
-    .pg-slot { height: min(100%, 56vw); max-height: 860px; width: auto; aspect-ratio: 2243 / 2240; filter: grayscale(0.2) brightness(1.02); }
+    /* sized from the stage, not the viewport, so a short screen scales the
+       mockups down rather than pushing the page past its bottom edge */
+    .pg-slot { height: min(92%, 56vw); max-height: 860px; max-width: 88vw; width: auto; aspect-ratio: 2243 / 2240; filter: grayscale(0.2) brightness(1.02); }
     .pg-slot:hover { opacity: 0.5; }
     .pg-slot.is-active { filter: none; opacity: 1; cursor: zoom-in; z-index: 3; }
     .pg-slot.is-active:hover { opacity: 1; }
@@ -176,7 +178,7 @@
     /* mobile: same top-to-bottom order, just its own scrollable, non-clipped flow */
     @media (max-width: 767px) {
       html, body { overflow-y: auto !important; }
-      .pg-main { height: auto; min-height: calc(100dvh - 86px); overflow: visible; padding: 16px 20px 12px; box-sizing: border-box; }
+      .pg-main { height: calc(100dvh - 86px); overflow: visible; padding: 16px 20px 0; box-sizing: border-box; }
       /* the badge cannot sit beside the title at phone widths — it ran off the
          screen — so the top bar stacks and the badge spans the column instead */
       .pg-topbar { flex-direction: column; align-items: stretch; gap: 16px; }
@@ -192,8 +194,8 @@
       /* the side margins have to stay negative here: the stage is a viewport
          wide, so zeroing them parks it against the page gutter and pushes the
          whole carousel off centre by the width of that gutter */
-      .pg-stage { --pg-step: 215px; --pg-radius: 24px; flex: 0 0 auto; min-height: 0; height: clamp(300px, 48vh, 460px); margin: 20px calc((var(--vw, 100vw) - 100%) / -2) 8px; }
-      .pg-slot { height: clamp(150px, 44vh, 320px); max-width: 74vw; }
+      .pg-stage { --pg-step: 215px; --pg-radius: 24px; flex: 1 1 auto; min-height: 0; height: auto; margin: 12px calc((var(--vw, 100vw) - 100%) / -2) 0; }
+      .pg-slot { height: min(90%, 74vw); max-width: 74vw; }
       .pg-slot.is-far { display: none; }
 
       .pg-meta { max-width: 100%; margin-top: 8px; gap: 20px; }
@@ -208,7 +210,7 @@
 
     @media (max-width: 420px) {
       .pg-stage { --pg-step: 190px; --pg-radius: 20px; }
-      .pg-slot { height: clamp(140px, 40vh, 260px); max-width: 78vw; }
+      .pg-slot { height: min(90%, 78vw); max-width: 78vw; }
       .sk-card { padding: 12px; gap: 10px; }
     }
     /* hover: the label slides up out of view while a copy of it rises into place.
