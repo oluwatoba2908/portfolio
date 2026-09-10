@@ -101,9 +101,30 @@
     .pg-slot.is-active:hover { opacity: 1; }
 
     /* click-to-zoom lightbox, same fit-then-1:1-toggle pattern used on the Airstride tours */
-    .pg-lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(10,10,10,0.85); display: flex; align-items: center; justify-content: center; padding: clamp(20px, 5vw, 64px); opacity: 0; pointer-events: none; transition: opacity 260ms cubic-bezier(0.42,0,0.58,1); }
+    /* The drawer spring: stiffness 300, damping 30, mass 0.8, simulated and
+       written out as an easing. 608ms, decelerating hard, no bounce. Older
+       browsers keep the cubic-bezier and miss only the tail's exact shape. */
+    :root { --drawer-spring: cubic-bezier(0.16, 1, 0.3, 1); --drawer-in: 608ms; --drawer-out: 250ms; }
+    @supports (transition-timing-function: linear(0, 1)) {
+      :root { --drawer-spring: linear(0.0004, 0.0903, 0.2696, 0.4464, 0.5979, 0.7209, 0.8083, 0.8708, 0.9158, 0.9450, 0.9645, 0.9778, 0.9860, 0.9913, 0.9947, 0.9968, 0.9981, 0.9989, 0.9993, 0.9996, 0.9998, 0.9999, 0.9999, 1, 1); }
+    }
+    .pg-lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(10,10,10,0.85); display: flex; align-items: center; justify-content: center; padding: clamp(20px, 5vw, 64px); opacity: 0; pointer-events: none; transition: opacity 180ms cubic-bezier(0.42,0,0.58,1); perspective: 1200px; }
     .pg-lightbox.is-open { opacity: 1; pointer-events: auto; }
     .pg-lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; cursor: zoom-out; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+    /* the zoomed image arrives like a drawer: rises, settles, untilts */
+    /* the image is mounted at the moment it opens, and a transition cannot run
+       on a brand new element — so its entrance is a keyframe animation */
+    @keyframes lightboxIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.96) rotateX(5deg); }
+      to { opacity: 1; transform: none; }
+    }
+    .pg-lightbox.is-open img { animation: lightboxIn var(--drawer-in) var(--drawer-spring) 40ms both; }
+    .pg-lightbox__close { opacity: 0; transform: translateY(-8px); }
+    .pg-lightbox.is-open .pg-lightbox__close { opacity: 1; transform: none; transition: opacity 300ms ease-out 150ms, transform var(--drawer-in) var(--drawer-spring) 150ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .pg-lightbox img, .pg-lightbox.is-open img,
+      .pg-lightbox__close, .pg-lightbox.is-open .pg-lightbox__close { transform: none; transition: opacity 160ms linear; }
+    }
     .pg-lightbox__close { position: absolute; top: 20px; right: 24px; width: 40px; height: 40px; border-radius: 999px; border: none; background: rgba(255,255,255,0.12); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .pg-lightbox__close:hover { background: rgba(255,255,255,0.22); }
 
