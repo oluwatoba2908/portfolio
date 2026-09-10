@@ -1523,7 +1523,7 @@ const ACCORD = {
           span: true,
           alt: "Pencil sketches exploring the Accord boomerang logo",
           caption:
-            "I borrowed Alan Peters' method: build a brand-noun list, then combine recognisable symbols (Peters, 2026). Sketching in pencil kept me honest, since a mark had to survive in black and white before it earned colour. The boomerang held up best, not because it looked polished, but because it carries the one promise the product makes: “what you lend comes back”."
+            "I referenced Alan Peters' method: build a brand-noun list, then combine recognisable symbols (Peters, 2026). Sketching in pencil kept me honest, since a mark had to survive in black and white before it earned colour. The boomerang held up best, not because it looked polished, but because it carries the one promise the product makes: “what you lend comes back”."
         },
         {
           src: "assets/accord-design-style-1.webp",
