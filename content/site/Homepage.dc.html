@@ -92,10 +92,39 @@
     .btn-slide__label::after { content: attr(data-label); position: absolute; left: 0; top: 100%; width: 100%; text-align: center; }
     .btn-slide:hover .btn-slide__label, .btn-slide:focus-visible .btn-slide__label { transform: translateY(-100%); }
     @media (prefers-reduced-motion: reduce) { .btn-slide__label { transition: none; } }
+    /* Why the bat: the bat pins while the copy scrolls past it, and its wings
+       are driven by scroll position (see bat-scroll.js) */
+    .bat-section { padding: clamp(24px, 4vw, 48px) 0 0; }
+    .bat-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(40px, 5vw, 80px); }
+    .bat-row { display: flex; align-items: flex-start; justify-content: center; gap: clamp(32px, 6vw, 80px); padding-bottom: clamp(24px, 6vw, 72px); }
+    .bat-figure { flex: 0 0 auto; width: clamp(190px, 22vw, 300px); position: sticky; top: 140px; }
+    /* the lottie canvas is square but the bat only occupies y 254-709 of its
+       1024 box, so the empty top and bottom are pulled off. Percentage margins
+       resolve against the width, and the canvas is square, so these are exact.
+       Without it the box lines up with the copy while the bat sits low. */
+    .bat-figure > dotlottie-player { display: block; width: 100%; margin-top: -24.8%; margin-bottom: -30.8%; }
+    .bat-copy { flex: 0 1 416px; max-width: 416px; display: flex; flex-direction: column; gap: 22px; }
+    .bat-copy p { font-size: 1rem; line-height: 1.7; color: #a8a8a8; margin: 0; }
+    .bat-copy strong { color: #ffffff; font-weight: 600; }
+    @media (max-width: 767px) {
+      .bat-row { flex-direction: column; align-items: center; gap: 28px; }
+      .bat-figure { width: clamp(180px, 52vw, 260px); top: 96px; transition: opacity 420ms cubic-bezier(0.4, 0, 0.2, 1); }
+      /* stacked, the copy scrolls under the pinned bat — fade it back so the
+         words stay readable, and bring it up again once it lets go */
+      .bat-figure.is-pinned { opacity: 0.25; }
+      .bat-copy { flex: 1 1 auto; max-width: 100%; }
+    }
+    .btn-ico { flex: 0 0 auto; display: block; }
+    /* the animated bat, sized to sit in the same 18px slot as the line icons.
+       Its canvas is square with the artwork across the middle band, so the
+       canvas is oversized and centred, and the slot clips the empty edges. */
+    .btn-bat { position: relative; display: block; width: 18px; height: 18px; flex: 0 0 auto; overflow: hidden; }
+    .btn-bat dotlottie-player { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 27px; height: 27px; display: block; pointer-events: none; }
   </style>
   <script src="scroll-in.js"></script>
   <script src="vw.js"></script>
   <script src="link-fix.js"></script>
+  <script src="bat-scroll.js"></script>
   <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
 </helmet>
 
@@ -121,7 +150,8 @@
         <h1 class="load-in load-in-1" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; max-width: 20ch; margin-left: auto; margin-right: auto; text-wrap: balance; color: #333333; margin: 0; font-family: 'Geist', system-ui, sans-serif;"><span id="w-i">I</span>ntuitive product <span id="w-design">design</span><br class="hero-br"> for software team<span id="w-s">s</span>.</h1>
         <p class="subtext load-in load-in-2" style="margin: 24px auto 0; max-width: 672px;">Helping startups design products and build websites for over 3 years.</p>
         <div class="load-in load-in-3" style="margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center;">
-          <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span></a>
+          <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/></svg><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span></a>
+          <a href="#why-the-bat" onClick="{{ goBat }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;"><span class="btn-bat" aria-hidden="true"><dotlottie-player src="assets/bat-halloween.lottie" autoplay loop></dotlottie-player></span><span class="btn-slide__mask"><span class="btn-slide__label" data-label="Why the bat?">Why the bat?</span></span></a>
         </div>
       </div>
     </div>
@@ -232,6 +262,25 @@
     </div>
   </section>
 </main>
+
+  <section class="bat-section" id="why-the-bat" data-bat-section>
+    <div class="dark-section">
+      <div class="section-container">
+        <h2 class="bat-title load-in load-in-1">Why the bat?</h2>
+        <div class="bat-row" data-bat-content>
+          <div class="bat-figure" aria-hidden="true">
+            <dotlottie-player data-bat-scrub src="assets/bat-halloween.lottie" style="width: 100%; height: auto; display: block; pointer-events: none; filter: invert(55%);"></dotlottie-player>
+          </div>
+          <div class="bat-copy load-in load-in-2">
+            <p>Apart from black being my favourite colour, here is the real reason for the metaphor.</p>
+            <p><strong>A bat navigates places it cannot see.</strong> It sends a signal out, listens to what comes back, and builds a picture of the space from the response. It does not guess, and it does not wait for the lights to come on.</p>
+            <p><strong>That is the closest thing I have found to a description of how I design</strong>. In a startup, I am often working in the dark. Sometimes there is no product requirements document. Sometimes there are no existing users, or no competitors to benchmark against. Often it is all three at once.</p>
+            <p>The instinct in that situation is to guess. The discipline is not to. <strong>So I work in short cycles instead: design quickly from research, collaborate with the cross functional team, send something out, a prototype or a first shipped version, then listen carefully to what comes back from real users and adjust.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 <dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
 </div>
@@ -414,6 +463,24 @@ class Component extends DCLogic {
       if (getComputedStyle(el).opacity === '0') this._io.observe(el);
     });
   }
+  // eased jump used by the hero buttons
+  _scrollToSection(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const startY = window.scrollY || document.documentElement.scrollTop || 0;
+    const endY = target.getBoundingClientRect().top + startY - 96;
+    const dist = endY - startY;
+    const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
+    const t0 = performance.now();
+    const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (now) => {
+      const t = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, startY + dist * easeInOutCubic(t));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   renderVals() {
     const CDN = "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd";
     const projects = [
@@ -468,23 +535,8 @@ class Component extends DCLogic {
       imgScale: this.state.hovered ? 1.1 : 1,
       chipEnter: () => this.setState({ hovered: true }),
       chipLeave: () => this.setState({ hovered: false }),
-      goProjects: (e) => {
-        e.preventDefault();
-        const target = document.getElementById('projects');
-        if (!target) return;
-        const startY = window.scrollY || document.documentElement.scrollTop || 0;
-        const endY = target.getBoundingClientRect().top + startY - 96;
-        const dist = endY - startY;
-        const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
-        const t0 = performance.now();
-        const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        const step = (now) => {
-          const t = Math.min((now - t0) / duration, 1);
-          window.scrollTo(0, startY + dist * easeInOutCubic(t));
-          if (t < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      },
+      goProjects: (e) => { e.preventDefault(); this._scrollToSection('projects'); },
+      goBat: (e) => { e.preventDefault(); this._scrollToSection('why-the-bat'); },
       projects,
       projectTab: this.state.projectTab,
       isLive: this.state.projectTab === 'live',
