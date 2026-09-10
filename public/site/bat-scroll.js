@@ -27,6 +27,11 @@
     player.__batBound = true;
 
     var section = player.closest("[data-bat-section]") || player.parentElement;
+    // the wingbeat runs across the content, not the whole viewport pass: it
+    // starts as the copy reaches the top of the section and finishes as the
+    // last line leaves, so the beat matches the read
+    var content = section.querySelector("[data-bat-content]") || section;
+    var figure = player.parentElement;
 
     ready(player, function () {
       try { player.pause(); } catch (e) {}
@@ -41,15 +46,16 @@
 
       var draw = function () {
         queued = false;
-        var r = section.getBoundingClientRect();
+        var r = content.getBoundingClientRect();
         var vh = window.innerHeight || document.documentElement.clientHeight;
         if (r.bottom < 0 || r.top > vh) return; // off screen: nothing to drive
 
-        // 0 as the section enters from the bottom, 1 as it leaves past the top
-        var travelled = vh - r.top;
-        var total = r.height + vh;
-        var p = Math.min(1, Math.max(0, travelled / total));
-        var cycle = (p * FLAPS) % 1;
+        // 0 when the top of the content reaches the line the bat pins to,
+        // 1 when the bottom of the content gets there
+        var pinTop = parseFloat(window.getComputedStyle(figure).top) || 0;
+        var travel = Math.max(1, r.height - figure.getBoundingClientRect().height);
+        var p = Math.min(1, Math.max(0, (pinTop - r.top) / travel));
+        var cycle = p >= 1 ? 1 : (p * FLAPS) % 1;
 
         // Drive the frame directly: the player's seek() only parses whole
         // percentages, so a fractional one is silently ignored.
