@@ -44,6 +44,9 @@
     @media (max-width: 900px) { .a-split { grid-template-columns: 1fr; gap: 24px; } }
     /* dark rounded panel sections (Life beyond, Work experience) */
     .a-dark-panel { background: #1f1f1f; color: #ffffff; border-radius: 40px; margin: 0 20px; padding: 100px 20px; }
+    @media (max-width: 767px) {
+      .a-dark-panel { margin: 0 10px; padding: 64px 16px; }
+    }
     .a-dark-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(32px, 5vw, 56px); }
     .a-gal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 2.5vw, 24px); max-width: 900px; margin: 0 auto; }
     @media (max-width: 700px) { .a-gal-grid { grid-template-columns: 1fr; } }
