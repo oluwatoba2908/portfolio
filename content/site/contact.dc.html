@@ -22,14 +22,14 @@
     html, body { height: auto !important; min-height: 100%; background: #efefef; color-scheme: light only; }
     #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
     /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
-    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
     .load-in { opacity: 0; }
-    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in.in-view { animation: riseIn 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
     .load-in-1 { animation-delay: 0ms; }
-    .load-in-2 { animation-delay: 90ms; }
-    .load-in-3 { animation-delay: 180ms; }
-    .load-in-4 { animation-delay: 270ms; }
-    .load-in-5 { animation-delay: 360ms; }
+    .load-in-2 { animation-delay: 120ms; }
+    .load-in-3 { animation-delay: 240ms; }
+    .load-in-4 { animation-delay: 360ms; }
+    .load-in-5 { animation-delay: 480ms; }
     @media (prefers-reduced-motion: reduce) {
       .load-in { opacity: 1; }
       .load-in.in-view { animation: none !important; }
@@ -52,6 +52,14 @@
     .gg-dot-h { animation: ggDotH 34s ease-in-out infinite; }
     input, textarea { font-family: "Geist", system-ui, sans-serif; }
     input:focus, textarea:focus { outline: 2px solid #191919; outline-offset: 0; border-color: #191919 !important; }
+    /* hover: the label slides up out of view while a copy of it rises into place.
+       The mask is the text line itself — clipping on the button would let the
+       outgoing label sit visible in the padding. */
+    .btn-slide__mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .btn-slide__label { display: block; position: relative; will-change: transform; transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn-slide__label::after { content: attr(data-label); position: absolute; left: 0; top: 100%; width: 100%; text-align: center; }
+    .btn-slide:hover .btn-slide__label, .btn-slide:focus-visible .btn-slide__label { transform: translateY(-100%); }
+    @media (prefers-reduced-motion: reduce) { .btn-slide__label { transition: none; } }
   </style>
   <script src="scroll-in.js"></script>
   <script src="vw.js"></script>
