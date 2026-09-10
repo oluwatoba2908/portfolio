@@ -21,14 +21,14 @@
     html, body { height: auto !important; min-height: 100%; background: #efefef; color-scheme: light only; }
     #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
     /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
-    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
     .load-in { opacity: 0; }
-    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in.in-view { animation: riseIn 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
     .load-in-1 { animation-delay: 0ms; }
-    .load-in-2 { animation-delay: 90ms; }
-    .load-in-3 { animation-delay: 180ms; }
-    .load-in-4 { animation-delay: 270ms; }
-    .load-in-5 { animation-delay: 360ms; }
+    .load-in-2 { animation-delay: 120ms; }
+    .load-in-3 { animation-delay: 240ms; }
+    .load-in-4 { animation-delay: 360ms; }
+    .load-in-5 { animation-delay: 480ms; }
     @media (prefers-reduced-motion: reduce) {
       .load-in { opacity: 1; }
       .load-in.in-view { animation: none !important; }
@@ -83,6 +83,14 @@
     @media (max-width: 767px) { .a-gal-frame { aspect-ratio: auto; } .a-gal-frame img { height: auto; object-fit: contain; } }
     .exp-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto; align-items: baseline; gap: 16px 24px; padding: 24px 0; border-top: 1px solid rgba(25,25,25,0.12); }
     @media (max-width: 700px) { .exp-row { grid-template-columns: 1fr; gap: 6px; } }
+    /* hover: the label slides up out of view while a copy of it rises into place.
+       The mask is the text line itself — clipping on the button would let the
+       outgoing label sit visible in the padding. */
+    .btn-slide__mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .btn-slide__label { display: block; position: relative; will-change: transform; transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn-slide__label::after { content: attr(data-label); position: absolute; left: 0; top: 100%; width: 100%; text-align: center; }
+    .btn-slide:hover .btn-slide__label, .btn-slide:focus-visible .btn-slide__label { transform: translateY(-100%); }
+    @media (prefers-reduced-motion: reduce) { .btn-slide__label { transition: none; } }
   </style>
   <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
   <script src="scroll-in.js"></script>
@@ -100,7 +108,7 @@
       <h1 class="a-hero-h1 load-in load-in-1">Meet Toba</h1>
       <p class="a-hero-sub load-in load-in-2">With over 3 years of experience, I help startups design products and build websites.</p>
       <div class="load-in load-in-3" style="margin-top: 36px;">
-        <a class="a-btn" href="#experience" style-hover="opacity: 0.92; transform: translateY(-2px); color: #191919;">View experiences</a>
+        <a class="a-btn btn-slide" href="#experience" style-hover="opacity: 0.92; color: #191919;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View experiences">View experiences</span></span></a>
       </div>
       <div class="a-video-frame load-in load-in-4">
         <video ref="{{ videoRef }}" data-src="assets/about-toba.mp4" poster="assets/about-toba-poster.png" preload="auto" onClick="{{ toggleVideo }}" aria-label="Toba introduction video" style="cursor: pointer;"></video>

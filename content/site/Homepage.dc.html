@@ -22,14 +22,14 @@
     .subtext { font-size: clamp(16px, 1.8vw, 20px); color: #6b6b6b; line-height: 1.5; max-width: 62ch; }
     @keyframes pulseDot { 0%, 100% { transform: scale(1.1); } 50% { transform: scale(1.6); } }
     /* enter on scroll into view: 24px rise, 500ms ease-out, 90ms stagger */
-    @keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
     .load-in { opacity: 0; }
-    .load-in.in-view { animation: riseIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .load-in.in-view { animation: riseIn 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
     .load-in-1 { animation-delay: 0ms; }
-    .load-in-2 { animation-delay: 90ms; }
-    .load-in-3 { animation-delay: 180ms; }
-    .load-in-4 { animation-delay: 270ms; }
-    .load-in-5 { animation-delay: 360ms; }
+    .load-in-2 { animation-delay: 120ms; }
+    .load-in-3 { animation-delay: 240ms; }
+    .load-in-4 { animation-delay: 360ms; }
+    .load-in-5 { animation-delay: 480ms; }
     @media (prefers-reduced-motion: reduce) {
       .load-in { opacity: 1; }
       .load-in.in-view { animation: none !important; }
@@ -84,6 +84,14 @@
     .t-sticky { transition: transform 0.35s cubic-bezier(0.645,0.045,0.355,1); transform-origin: center top; }
     /* portrait chip label uses the body text class and scales down on mobile */
     .chip-label { font-size: clamp(14px, 3.4vw, 1rem); font-weight: 500; color: #191919; }
+    /* hover: the label slides up out of view while a copy of it rises into place.
+       The mask is the text line itself — clipping on the button would let the
+       outgoing label sit visible in the padding. */
+    .btn-slide__mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .btn-slide__label { display: block; position: relative; will-change: transform; transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn-slide__label::after { content: attr(data-label); position: absolute; left: 0; top: 100%; width: 100%; text-align: center; }
+    .btn-slide:hover .btn-slide__label, .btn-slide:focus-visible .btn-slide__label { transform: translateY(-100%); }
+    @media (prefers-reduced-motion: reduce) { .btn-slide__label { transition: none; } }
   </style>
   <script src="scroll-in.js"></script>
   <script src="vw.js"></script>
@@ -113,7 +121,7 @@
         <h1 class="load-in load-in-1" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; max-width: 20ch; margin-left: auto; margin-right: auto; text-wrap: balance; color: #333333; margin: 0; font-family: 'Geist', system-ui, sans-serif;"><span id="w-i">I</span>ntuitive product <span id="w-design">design</span><br class="hero-br"> for software team<span id="w-s">s</span>.</h1>
         <p class="subtext load-in load-in-2" style="margin: 24px auto 0; max-width: 672px;">Helping startups design products and build websites for over 3 years.</p>
         <div class="load-in load-in-3" style="margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center;">
-          <a href="#projects" onClick="{{ goProjects }}" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;">View projects</a>
+          <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span></a>
         </div>
       </div>
     </div>
