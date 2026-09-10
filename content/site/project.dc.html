@@ -43,6 +43,9 @@
     .cs-gallery.g-outcome .g-figimg { max-width: 100%; margin: 0; background: transparent; }
     .cs-gallery:not(.g-outcome) > figure:not(.span-2) .g-figimg { height: clamp(300px, 34vh, 460px); object-fit: cover; }
     .cs-gallery > figure.span-2 .g-figimg { height: auto; object-fit: cover; }
+    /* a card that keeps its own proportions: used where the design pairs two
+       portrait images side by side rather than cropping them to one height */
+    .cs-gallery:not(.g-outcome) > figure.fit-natural .g-figimg { height: auto; object-fit: contain; }
     .cs-gallery:not(.g-outcome) > figure:not(.span-2):last-child:nth-child(odd) { grid-column: 1 / -1; }
     .cs-gallery:not(.g-outcome) > figure:not(.span-2):last-child:nth-child(odd) .g-figimg { height: auto; }
     @media (max-width: 900px) { .cs-gallery.g-outcome { grid-template-columns: repeat(2, 1fr); } }
@@ -241,13 +244,6 @@
                   </figure>
                 </sc-for>
               </div>
-              <sc-if value="{{ s.showWalkthrough }}" hint-placeholder-val="{{ false }}">
-                <div style="text-align: center; margin: 80px 0 clamp(40px, 5vw, 56px);">
-                  <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 16px; font-weight: 500;">{{ walkthroughLabel }}</p>
-                  <span class="g-pill" style="color: #ffffff;">Walkthrough video</span>
-                </div>
-                <div class="g-walkthrough" style="max-width: 70%; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000;">{{ walkthroughFrame }}</div>
-              </sc-if>
               <sc-if value="{{ s.hasLink }}" hint-placeholder-val="{{ false }}">
                 <div style="text-align: center; margin-top: clamp(40px, 5vw, 56px);"><a class="g-cta" href="{{ s.linkHref }}" target="_blank" rel="noreferrer noopener">{{ s.linkLabel }}</a></div>
               </sc-if>
@@ -257,6 +253,18 @@
       </sc-if>
     </section>
   </sc-for>
+
+  <sc-if value="{{ walkthrough }}" hint-placeholder-val="{{ false }}">
+    <section class="g-panel" style="margin-top: clamp(48px, 6vw, 96px);">
+      <div class="section-container">
+        <div style="text-align: center; margin-bottom: clamp(40px, 5vw, 56px);">
+          <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 16px; font-weight: 500;">{{ walkthroughLabel }}</p>
+          <span class="g-pill" style="color: #ffffff;">Walkthrough video</span>
+        </div>
+        <div class="g-walkthrough" style="max-width: 70%; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000;">{{ walkthroughFrame }}</div>
+      </div>
+    </section>
+  </sc-if>
   </div>
 
   <section id="more-projects" style="position: relative; padding: clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 128px);">
@@ -426,7 +434,7 @@ class Component extends DCLogic {
       if (isOutcomeHeading) hasOutcome = true;
       let docLabel = false;
       if (hasGallery) { docNum++; docLabel = `Documentation ${docNum} of ${docTotal}`; }
-      const isOutcome = !!vid && isOutcomeHeading;
+      const isOutcome = isOutcomeHeading;
       return {
         eyebrow: s.eyebrow || false,
         heading: s.heading,
@@ -437,7 +445,6 @@ class Component extends DCLogic {
         linkLabel: (s.link && s.link.label) || '',
         anchorId: isOutcomeHeading ? 'outcome' : '',
         railId: 'sec-' + i,
-        showWalkthrough: isOutcome,
         hasProse,
         blocks,
         hasGallery,
@@ -456,7 +463,7 @@ class Component extends DCLogic {
           const slotId = this.state.slug + '-s' + i + '-g' + gi;
           return {
           caption: g.caption || false,
-          figClass: (g.span || isTour || isVig || isPair || isDuo || isCompare || isShuffle || isGlobe || isMarquee) ? 'span-2' : '',
+          figClass: ((g.span || isTour || isVig || isPair || isDuo || isCompare || isShuffle || isGlobe || isMarquee) ? 'span-2' : '') + (g.natural ? ' fit-natural' : ''),
           imgNode: isMarquee
             ? React.createElement('screen-marquee', { 'data-frames': JSON.stringify(g.frames || []), 'data-speed': String(g.speed || 38) })
             : isGlobe
@@ -515,6 +522,7 @@ class Component extends DCLogic {
               if (!boxW || !boxH) return;
               const imgA = img.naturalWidth / img.naturalHeight;
               const boxA = boxW / boxH;
+              if (fig.classList.contains('fit-natural')) return;
               if (Math.abs(imgA - boxA) / boxA > 0.12) fig.classList.add('span-2');
             }
           })

@@ -1404,6 +1404,7 @@ const ACCORD = {
       gallery: [
         {
           src: "assets/accord-context.webp",
+          span: true,
           alt: "Friends together, illustrating money lent informally between them",
           caption:
             "Rising costs of living push people to borrow from friends. But with no agreed terms and no record, lending quietly breaks friendships."
@@ -1434,12 +1435,14 @@ const ACCORD = {
       gallery: [
         {
           src: "assets/accord-research-profiles.webp",
+          span: true,
           alt: "Five participant profiles from the lending interviews",
           caption:
             "5 participant profiles mapping real lending experiences, grounding Accord's design in primary qualitative research."
         },
         {
           src: "assets/accord-research-affinity.webp",
+          span: true,
           alt: "Affinity map clustering interview quotes into themes",
           caption:
             "Affinity mapping clustered raw quotes into themes: missing terms, no records, messy partial payments and many more."
@@ -1458,6 +1461,7 @@ const ACCORD = {
       gallery: [
         {
           src: "assets/accord-competitor.webp",
+          span: true,
           alt: "Heuristic audit of the Splitwise interface",
           caption:
             "Splitwise shows who owes what, but never helps you actually collect the money back."
@@ -1480,18 +1484,21 @@ const ACCORD = {
       gallery: [
         {
           src: "assets/accord-explore-substitute.webp",
+          span: true,
           alt: "Substitute explorations: three ways to enter a loan",
           caption:
             "Substitute: three ways to enter a loan, from a standard form to an OCR screenshot to a fill-in sentence. The sentence won."
         },
         {
           src: "assets/accord-explore-reverse.webp",
+          span: true,
           alt: "Reverse explorations: who starts the loan and who decides",
           caption:
             "Reverse: variations on who starts the loan and who holds the final say. The borrower proposes, the lender decides."
         },
         {
           src: "assets/accord-explore-adapt.webp",
+          span: true,
           alt: "Adapt explorations: progress metaphors for repayment",
           caption:
             "Adapt: progress metaphors explored, from a parcel tracker to a marble jar to a developing photo. The photo won."
@@ -1513,22 +1520,26 @@ const ACCORD = {
       gallery: [
         {
           src: "assets/accord-design-logo.webp",
+          span: true,
           alt: "Pencil sketches exploring the Accord boomerang logo",
           caption:
             "I borrowed Alan Peters' method: build a brand-noun list, then combine recognisable symbols (Peters, 2026). Sketching in pencil kept me honest, since a mark had to survive in black and white before it earned colour. The boomerang held up best, not because it looked polished, but because it carries the one promise the product makes: “what you lend comes back”."
         },
         {
           src: "assets/accord-design-style-1.webp",
+          span: true,
           alt: "Accord style guide: colour palette and type scale",
           caption: "shows major style guides"
         },
         {
           src: "assets/accord-design-style-2.webp",
+          span: true,
           alt: "Accord style guide: components and usage",
           caption: "shows more style guides for Accord's design system"
         },
         {
           src: "assets/accord-design-prototypes.webp",
+          span: true,
           alt: "Figma prototype flows covering six edge cases",
           caption: "Prototypes made in Figma for 6 major edge cases"
         }
@@ -1549,24 +1560,29 @@ const ACCORD = {
       gallery: [
         {
           src: "assets/accord-testing-inperson.webp",
+          span: true,
           alt: "A tester working through the Accord flows in person",
           caption: "User 3 testing the flows on the app in person"
         },
         {
           src: "assets/accord-testing-photo-1.webp",
+          natural: true,
           alt: "Tester holding the phone during an in-person session"
         },
         {
           src: "assets/accord-testing-photo-2.webp",
+          natural: true,
           alt: "Second view of the in-person testing session"
         },
         {
           src: "assets/accord-testing-remote.webp",
+          span: true,
           alt: "A remote testing session on the Accord prototype",
           caption: "User 4 testing the flows on the app remotely"
         },
         {
           src: "assets/accord-testing-tour.webp",
+          span: true,
           alt: "Guided tour screens introducing the menu and Loan Companion",
           caption:
             "Sequential guided tour for new users to explain the hidden menu and loan companion concept."
