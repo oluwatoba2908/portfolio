@@ -1408,6 +1408,12 @@ const ACCORD = {
           alt: "Friends together, illustrating money lent informally between them",
           caption:
             "Rising costs of living push people to borrow from friends. But with no agreed terms and no record, lending quietly breaks friendships."
+        },
+        {
+          src: "assets/accord-logo-animation.webp",
+          span: true,
+          alt: "Accord's boomerang logo drawing itself and returning, on a pale blue field",
+          caption: "The animation for Accord's logo"
         }
       ]
     },
