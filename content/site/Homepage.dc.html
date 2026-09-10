@@ -43,8 +43,11 @@
     @media (max-width: 900px) { .hero-float { display: none; } }
     @media (max-width: 700px) { .hero-br { display: none; } }
     /* Rule for ALL pages: any black-background section (except footers) gets this class */
-    .dark-section { background: #191919; color: #ffffff; margin-left: 10px; margin-right: 10px; }
-    .dark-section .section-container { padding-left: 15px; padding-right: 15px; }
+    .dark-section { background: #1f1f1f; color: #ffffff; margin: 0 20px; border-radius: 40px; padding: 100px 20px; }
+    .dark-section .section-container { padding-left: 0; padding-right: 0; }
+    @media (max-width: 767px) {
+      .dark-section { margin: 0 10px; padding: 64px 16px; }
+    }
     .section-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
     /* dotted grid guides for light-background sections */
     .dotted-v { border-left: 1px dashed rgba(25,25,25,0.12); border-right: 1px dashed rgba(25,25,25,0.12); }
@@ -148,7 +151,7 @@
   </section>
 
   <section id="projects" style="width: 100%; box-sizing: border-box;">
-    <div class="dark-section" style="border-radius: 40px; padding: clamp(56px, 8vw, 96px) 0;">
+    <div class="dark-section">
       <div class="section-container">
       <div class="reveal-item" style="max-width: 672px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);">
         <div style="display: inline-flex; align-items: center; gap: 12px;">
@@ -413,7 +416,7 @@ class Component extends DCLogic {
       { title: "Dexla Design System", tab: "live", imageSrc: `${CDN}/696c0b57a4fd13b0c8e26b52_dexla_case%20study%20(5).png`, imageAlt: "Dexla Design System project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-design-system" },
       { title: "Dexla Case Study", tab: "live", imageSrc: `${CDN}/67c20c0e879a5292bc19afd3_Dexla%20Mockup%20(1).png`, imageAlt: "Dexla Case Study project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-case-study" },
       { title: "Auditory Wayfinder", tab: "personal", comingSoon: true, imageSrc: "assets/proj-wayfinder-m.png", imageAlt: "Auditory Wayfinder project card", ctaLabel: "Coming soon", ctaHref: "#" },
-      { title: "Accord", tab: "personal", comingSoon: true, imageSrc: "assets/proj-accord-trim.png", imageAlt: "Accord project card", ctaLabel: "Coming soon", ctaHref: "#" }
+      { title: "Accord", tab: "personal", imageSrc: "assets/proj-accord-trim.png", imageAlt: "Accord project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=accord" }
     ].filter((p) => !p.hidden && p.tab === this.state.projectTab).map((p, i) => ({
       ...p,
       enter: () => this.setState({ hoverProj: i }),

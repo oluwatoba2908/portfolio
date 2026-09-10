@@ -43,6 +43,9 @@
     .cs-gallery.g-outcome .g-figimg { max-width: 100%; margin: 0; background: transparent; }
     .cs-gallery:not(.g-outcome) > figure:not(.span-2) .g-figimg { height: clamp(300px, 34vh, 460px); object-fit: cover; }
     .cs-gallery > figure.span-2 .g-figimg { height: auto; object-fit: cover; }
+    /* a card that keeps its own proportions: used where the design pairs two
+       portrait images side by side rather than cropping them to one height */
+    .cs-gallery:not(.g-outcome) > figure.fit-natural .g-figimg { height: auto; object-fit: contain; }
     .cs-gallery:not(.g-outcome) > figure:not(.span-2):last-child:nth-child(odd) { grid-column: 1 / -1; }
     .cs-gallery:not(.g-outcome) > figure:not(.span-2):last-child:nth-child(odd) .g-figimg { height: auto; }
     @media (max-width: 900px) { .cs-gallery.g-outcome { grid-template-columns: repeat(2, 1fr); } }
@@ -63,9 +66,17 @@
     .section-container { width: 100%; margin: 0 auto; padding: 0 20px; box-sizing: border-box; max-width: 1440px; }
     @media (max-width: 1279px) { .section-container { max-width: 1100px; } }
     @media (max-width: 767px) { .section-container { max-width: 900px; } }
-    .g-panel { background: #191919; color: #ffffff; margin-left: 10px; margin-right: 10px; border-radius: 40px; padding: 100px 0; }
-    .g-panel .g-container, .g-panel .section-container { padding-left: 15px; padding-right: 15px; }
+    .g-panel { background: #1f1f1f; color: #ffffff; margin: 0 20px; border-radius: 40px; padding: 100px 20px; }
+    /* the panel owns the horizontal inset, so the container inside it does not add its own */
+    .g-panel .g-container, .g-panel .section-container { padding-left: 0; padding-right: 0; }
+    @media (max-width: 767px) {
+      .g-panel { margin: 0 10px; padding: 64px 16px; }
+    }
     .g-pill { display: inline-block; background: transparent; color: #191919; font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; padding: 0; margin: 0; }
+    /* the one button on this page: hero actions and the reference link that
+       closes a documentation panel all use it */
+    .g-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; padding: 17px 24px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 4.09px 2.865px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1); }
+    .g-cta:hover { opacity: 0.9; color: #191919; }
     .g-textrow { display: flex; justify-content: center; align-items: stretch; gap: clamp(40px, 6vw, 120px); position: relative; z-index: 1; }
     .grid-guides { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
     .gg-v { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(25,25,25,0.10); }
@@ -165,7 +176,7 @@
   </nav>
   <div class="toc-overlay" aria-hidden="true"></div>
   <section style="padding: 0 0 clamp(24px, 3vw, 40px);">
-    <div class="g-panel" style="text-align: center; padding: 100px 0;">
+    <div class="g-panel" style="text-align: center;">
       <div class="section-container">
         <div class="load-in load-in-1" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 24px;">
           <sc-for list="{{ badges }}" as="b">
@@ -175,10 +186,10 @@
         <h1 class="load-in load-in-2" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; color: #ffffff; margin: 0 auto; max-width: 20ch; text-wrap: balance;">{{ title }}</h1>
         <p class="load-in load-in-3" style="font-size: clamp(16px, 1.8vw, 20px); color: #cac9c9; line-height: 1.5; margin: 20px auto 0; max-width: 62ch;">{{ tagline }}</p>
         <sc-if value="{{ showOutcomeBtn }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-top: 32px;"><a href="#outcome" onClick="{{ goOutcome }}" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; padding: 17px 24px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 4.09px 2.865px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;">View outcome</a></div>
+          <div style="margin-top: 32px;"><a href="#outcome" onClick="{{ goOutcome }}" class="g-cta">View outcome</a></div>
         </sc-if>
         <sc-if value="{{ showWebsiteBtn }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-top: 32px;"><a href="{{ websiteUrl }}" target="_blank" rel="noreferrer noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; padding: 17px 24px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 4.09px 2.865px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;">{{ websiteLabel }}</a></div>
+          <div style="margin-top: 32px;"><a href="{{ websiteUrl }}" target="_blank" rel="noreferrer noopener" class="g-cta">{{ websiteLabel }}</a></div>
         </sc-if>
         <div class="hero-media" style="margin-top: clamp(48px, 8vw, 8rem); border-radius: 24px; overflow: hidden; background: transparent;">{{ heroImg }}</div>
       </div>
@@ -237,9 +248,8 @@
                   </figure>
                 </sc-for>
               </div>
-              <sc-if value="{{ s.showWalkthrough }}" hint-placeholder-val="{{ false }}">
-                <div style="text-align: center; margin: 80px 0 clamp(40px, 5vw, 56px);"><span class="g-pill" style="color: #ffffff;">Walkthrough video</span></div>
-                <div class="g-walkthrough" style="max-width: 70%; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000;">{{ walkthroughFrame }}</div>
+              <sc-if value="{{ s.hasLink }}" hint-placeholder-val="{{ false }}">
+                <div style="text-align: center; margin-top: clamp(40px, 5vw, 56px);"><a class="g-cta" href="{{ s.linkHref }}" target="_blank" rel="noreferrer noopener">{{ s.linkLabel }}</a></div>
               </sc-if>
             </div>
           </div>
@@ -247,6 +257,18 @@
       </sc-if>
     </section>
   </sc-for>
+
+  <sc-if value="{{ walkthrough }}" hint-placeholder-val="{{ false }}">
+    <section class="g-panel" style="margin-top: clamp(48px, 6vw, 96px);">
+      <div class="section-container">
+        <div style="text-align: center; margin-bottom: clamp(40px, 5vw, 56px);">
+          <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 16px; font-weight: 500;">{{ walkthroughLabel }}</p>
+          <span class="g-pill" style="color: #ffffff;">Walkthrough video</span>
+        </div>
+        <div class="g-walkthrough" style="max-width: 70%; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000;">{{ walkthroughFrame }}</div>
+      </div>
+    </section>
+  </sc-if>
   </div>
 
   <section id="more-projects" style="position: relative; padding: clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 128px);">
@@ -383,9 +405,12 @@ class Component extends DCLogic {
     const WEBSITES = { 'dexla-case-study': { url: 'https://dexla-ai.webflow.io/', label: 'View website' }, 'airstride': { url: 'https://airstride.ai/', label: 'See live platform' }, 'carmen-ai': { url: 'https://app.airstride.ai/', label: 'See Carmen live' } };
     const website = WEBSITES[this.state.slug];
     const websiteUrl = website && website.url;
-    const WALKTHROUGHS = { 'givn': 'iCTfdTCkgT8', 'wise-young-explorer': 'vHdEKs58h-0' };
+    const WALKTHROUGHS = { 'givn': 'iCTfdTCkgT8', 'wise-young-explorer': 'vHdEKs58h-0', 'accord': 'sy2g1zp1Uzc' };
     const vid = WALKTHROUGHS[this.state.slug];
     const galleryCount = cs.sections.filter((x) => (x.gallery || []).length > 0).length;
+    // the walkthrough is a documented block in its own right, so it counts
+    // towards the total and takes the last number
+    const docTotal = galleryCount + (vid ? 1 : 0);
     let docNum = 0;
     let hasOutcome = false;
     const sections = cs.sections.map((s, i) => {
@@ -412,16 +437,18 @@ class Component extends DCLogic {
       const isOutcomeHeading = (s.heading || '').toLowerCase() === 'outcome';
       if (isOutcomeHeading) hasOutcome = true;
       let docLabel = false;
-      if (hasGallery) { docNum++; docLabel = `Documentation ${docNum} of ${galleryCount}`; }
-      const isOutcome = !!vid && isOutcomeHeading;
+      if (hasGallery) { docNum++; docLabel = `Documentation ${docNum} of ${docTotal}`; }
+      const isOutcome = isOutcomeHeading;
       return {
         eyebrow: s.eyebrow || false,
         heading: s.heading,
         panelTitle: PANEL_TITLES[(s.heading || '').toLowerCase()] || s.heading,
         docLabel,
+        hasLink: !!(s.link && s.link.href),
+        linkHref: (s.link && s.link.href) || '',
+        linkLabel: (s.link && s.link.label) || '',
         anchorId: isOutcomeHeading ? 'outcome' : '',
         railId: 'sec-' + i,
-        showWalkthrough: isOutcome,
         hasProse,
         blocks,
         hasGallery,
@@ -440,7 +467,7 @@ class Component extends DCLogic {
           const slotId = this.state.slug + '-s' + i + '-g' + gi;
           return {
           caption: g.caption || false,
-          figClass: (g.span || isTour || isVig || isPair || isDuo || isCompare || isShuffle || isGlobe || isMarquee) ? 'span-2' : '',
+          figClass: ((g.span || isTour || isVig || isPair || isDuo || isCompare || isShuffle || isGlobe || isMarquee) ? 'span-2' : '') + (g.natural ? ' fit-natural' : ''),
           imgNode: isMarquee
             ? React.createElement('screen-marquee', { 'data-frames': JSON.stringify(g.frames || []), 'data-speed': String(g.speed || 38) })
             : isGlobe
@@ -499,6 +526,7 @@ class Component extends DCLogic {
               if (!boxW || !boxH) return;
               const imgA = img.naturalWidth / img.naturalHeight;
               const boxA = boxW / boxH;
+              if (fig.classList.contains('fit-natural')) return;
               if (Math.abs(imgA - boxA) / boxA > 0.12) fig.classList.add('span-2');
             }
           })
@@ -560,6 +588,7 @@ class Component extends DCLogic {
         requestAnimationFrame(step);
       },
       walkthrough: !!vid,
+      walkthroughLabel: vid ? `Documentation ${docTotal} of ${docTotal}` : '',
       walkthroughFrame: vid ? React.createElement('iframe', { src: `https://www.youtube.com/embed/${vid}`, title: 'Walkthrough video', frameBorder: '0', allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', referrerPolicy: 'strict-origin-when-cross-origin', allowFullScreen: true, style: { width: '100%', height: '100%', border: 'none', display: 'block' } }) : null,
       related: this.state.related.map((r) => ({
         title: r.title, href: r.href,

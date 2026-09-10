@@ -1368,4 +1368,285 @@ const CARMEN_AI = {
   ]
 };
 
-export const CASE_STUDIES = { [AIRSTRIDE.slug]: AIRSTRIDE, [CARMEN_AI.slug]: CARMEN_AI, [GIVN.slug]: GIVN, [WISE_YOUNG_EXPLORER.slug]: WISE_YOUNG_EXPLORER, [DEXLA_DESIGN_SYSTEM.slug]: DEXLA_DESIGN_SYSTEM, [DEXLA_CASE_STUDY.slug]: DEXLA_CASE_STUDY };
+/**
+ * Accord case study — source: Figma "Portfolio website Current", frame 1738:23284.
+ * Text VERBATIM. Do not paraphrase.
+ */
+const ACCORD = {
+  slug: "accord",
+  title: "Accord",
+  tagline: "making a loan between friends feel safe",
+  meta: [
+    {
+      label: "Disciplines",
+      value: "UX research, Prototype, Strategy, Animations, UX/UI design"
+    },
+    { label: "Year", value: "2026" }
+  ],
+  hero: {
+    src: "assets/accord-hero.webp",
+    alt: "Accord shown on two phones beside polaroids of a loan that develops as it is repaid"
+  },
+  sections: [
+    {
+      heading: "Context",
+      link: { label: "View project proposal", href: "https://drive.google.com/file/d/1tXDXB_y-8tWaEPXZObVyX7wt9sFyJQ-M/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "I set out to answer one thing: how can design make lending to a friend feel safe, so a late payment never costs the friendship?"
+        },
+        {
+          type: "paragraph",
+          text: "Informal lending is huge and almost invisible. A third of UK adults are owed money by friends or family (Starling Bank, 2023), and one in five people have borrowed to cover essential bills (Money and Pensions Service, 2023). Yet almost none of it is written down."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/accord-context.webp",
+          span: true,
+          alt: "Friends together, illustrating money lent informally between them",
+          caption:
+            "Rising costs of living push people to borrow from friends. But with no agreed terms and no record, lending quietly breaks friendships."
+        },
+        {
+          src: "assets/accord-logo-animation.webp",
+          span: true,
+          alt: "Accord's boomerang logo drawing itself and returning, on a pale blue field",
+          caption: "The animation for Accord's logo"
+        }
+      ]
+    },
+    {
+      heading: "Research",
+      link: { label: "View full research", href: "https://drive.google.com/file/d/1apq62ee0-r6gquQDBTBMBhBGJvblJ_ui/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "I ran qualitative interviews with 5 people who had lent or borrowed within friends and family, then used affinity mapping to turn their words into insights."
+        },
+        {
+          type: "paragraph",
+          text: "The core finding reshaped the project: the pain is shame, not bookkeeping. As one person put it, \"constantly reminding them feels awkward and embarrassing.\" The lender ends up looking like the villain for wanting their own money back, and borrowers go quiet from embarrassment, not bad faith."
+        },
+        {
+          type: "paragraph",
+          text: "The research also killed 3 of my own assumptions. I expected up-front terms to feel too formal. Instead, people blamed vague terms for breakdowns and wanted everything agreed at the start. I assumed a mutual friend should mediate disputes. People rejected that and wanted the platform to handle it, not a person. And I assumed tracking the money was the job. People wanted the money to come back without a conversation, reaching for a subscription as the model themselves."
+        },
+        {
+          type: "paragraph",
+          text: "Lenders also wanted real consequences, not just a record. When repayment failed, they demanded accountability and consequences."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/accord-research-profiles.webp",
+          span: true,
+          alt: "Five participant profiles from the lending interviews",
+          caption:
+            "5 participant profiles mapping real lending experiences, grounding Accord's design in primary qualitative research."
+        },
+        {
+          src: "assets/accord-research-affinity.webp",
+          span: true,
+          alt: "Affinity map clustering interview quotes into themes",
+          caption:
+            "Affinity mapping clustered raw quotes into themes: missing terms, no records, messy partial payments and many more."
+        }
+      ]
+    },
+    {
+      heading: "The competitor gap",
+      link: { label: "View live case study", href: "https://toba-task-3.figma.site/" },
+      content: [
+        {
+          type: "paragraph",
+          text: "A heuristic audit of Splitwise showed a tool built to display who owes whom, and little more. It crams owed and owing into one figure, hides its main actions, and never ties an action to a clear amount. Even a clear balance still leaves one friend to chase another."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/accord-competitor.webp",
+          span: true,
+          alt: "Heuristic audit of the Splitwise interface",
+          caption:
+            "Splitwise shows who owes what, but never helps you actually collect the money back."
+        }
+      ]
+    },
+    {
+      heading: "Explorations",
+      link: { label: "View full SCAMPER", href: "https://drive.google.com/file/d/18Vrxi9oesA9MIxAd2ps9pNAg4L9ftLMU/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "These findings set the direction for Accord: agree terms before any money moves, let the platform do the chasing, and give failure a real consequence. To turn that direction into screens, I used SCAMPER to explore alternatives at each key moment."
+        },
+        {
+          type: "paragraph",
+          text: "Substitute replaced the form with a fill-in sentence (\"Lending Sam £200, paid back by 5 August\"), so the loan reads like a message. Reverse let the borrower propose the plan, while the lender keeps the final call, so a request never becomes a demand. Adapt produced the Loan Companion, a photo that develops with each repayment, so progress is something to look forward to."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/accord-explore-substitute.webp",
+          span: true,
+          alt: "Substitute explorations: three ways to enter a loan",
+          caption:
+            "Substitute: three ways to enter a loan, from a standard form to an OCR screenshot to a fill-in sentence. The sentence won."
+        },
+        {
+          src: "assets/accord-explore-reverse.webp",
+          span: true,
+          alt: "Reverse explorations: who starts the loan and who decides",
+          caption:
+            "Reverse: variations on who starts the loan and who holds the final say. The borrower proposes, the lender decides."
+        },
+        {
+          src: "assets/accord-explore-adapt.webp",
+          span: true,
+          alt: "Adapt explorations: progress metaphors for repayment",
+          caption:
+            "Adapt: progress metaphors explored, from a parcel tracker to a marble jar to a developing photo. The photo won."
+        }
+      ]
+    },
+    {
+      heading: "Designs",
+      content: [
+        {
+          type: "paragraph",
+          text: "I built a design system to keep the product consistent and calm: a warm, simple palette, a clear type scale, and reusable components, so every screen felt like one product. The logo followed the same discipline. I sketched in pencil first, so a mark had to work in black and white before it earned colour, and the boomerang held up best because it carries the one promise the product makes, that what you lend comes back."
+        },
+        {
+          type: "paragraph",
+          text: "On these foundations, terms are agreed and signed before money moves, the money flows through the app so a successful transfer is the receipt, and every reminder comes from the platform, never the friend. When repayment fails, the app drafts a Letter Before Action from the loan's own facts, which the lender reviews and sends. This is the one place AI appears. Informed by Dietvorst's work on algorithm aversion, I set a boundary that AI acts on facts, never on judgment (Dietvorst et al., 2015)."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/accord-design-logo.webp",
+          span: true,
+          alt: "Pencil sketches exploring the Accord boomerang logo",
+          caption:
+            "I referenced Alan Peters' method: build a brand-noun list, then combine recognisable symbols (Peters, 2026). Sketching in pencil kept me honest, since a mark had to survive in black and white before it earned colour. The boomerang held up best, not because it looked polished, but because it carries the one promise the product makes: “what you lend comes back”."
+        },
+        {
+          src: "assets/accord-design-style-1.webp",
+          span: true,
+          alt: "Accord style guide: colour palette and type scale",
+          caption: "shows major style guides"
+        },
+        {
+          src: "assets/accord-design-style-2.webp",
+          span: true,
+          alt: "Accord style guide: components and usage",
+          caption: "shows more style guides for Accord's design system"
+        },
+        {
+          src: "assets/accord-design-prototypes.webp",
+          span: true,
+          alt: "Figma prototype flows covering six edge cases",
+          caption: "Prototypes made in Figma for 6 major edge cases"
+        }
+      ]
+    },
+    {
+      heading: "Testing",
+      content: [
+        {
+          type: "paragraph",
+          text: "I tested the high-fidelity prototype. Both testers missed the hidden \"…\" menu, and neither understood the Loan Companion. I had assumed both were self-explanatory."
+        },
+        {
+          type: "paragraph",
+          text: "I added a guided tour and short animations, and both testers then completed the tasks, showing the fixes resolved those specific issues."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/accord-testing-inperson.webp",
+          span: true,
+          alt: "A tester working through the Accord flows in person",
+          caption: "User 3 testing the flows on the app in person"
+        },
+        {
+          src: "assets/accord-testing-photo-1.webp",
+          natural: true,
+          alt: "Tester holding the phone during an in-person session"
+        },
+        {
+          src: "assets/accord-testing-photo-2.webp",
+          natural: true,
+          alt: "Second view of the in-person testing session"
+        },
+        {
+          src: "assets/accord-testing-remote.webp",
+          span: true,
+          alt: "A remote testing session on the Accord prototype",
+          caption: "User 4 testing the flows on the app remotely"
+        },
+        {
+          src: "assets/accord-testing-tour.webp",
+          span: true,
+          alt: "Guided tour screens introducing the menu and Loan Companion",
+          caption:
+            "Sequential guided tour for new users to explain the hidden menu and loan companion concept."
+        }
+      ]
+    },
+    {
+      heading: "Outcome",
+      link: { label: "View full scenario", href: "https://drive.google.com/file/d/1qj7ZFdZpuPBSPDzhj9lqweOco1xbzNYr/view?usp=sharing" },
+      content: [
+        { type: "subheading", text: "What works:" },
+        {
+          type: "list",
+          items: [
+            "The prototype turns social friction into quieter interactions. Terms are agreed before money moves, reminders come from the platform, and repayment stays visible as a shared record."
+          ]
+        },
+        { type: "subheading", text: "What it does not solve:" },
+        {
+          type: "list",
+          items: [
+            "The Letter Before Action is only a drafting aid. I have not verified whether it would be legally adequate."
+          ]
+        },
+        { type: "subheading", text: "What this means:" },
+        {
+          type: "list",
+          items: [
+            "The outcome is a tested design proposition, not a validated financial product."
+          ]
+        }
+      ],
+      gallery: [
+        { src: "assets/accord-outcome-1.webp", alt: "Accord home screen showing what is owed to you" },
+        { src: "assets/accord-outcome-2.webp", alt: "Setting up a new loan as a fill-in sentence" },
+        { src: "assets/accord-outcome-3.webp", alt: "Choosing the repayment plan" },
+        { src: "assets/accord-outcome-4.webp", alt: "Reviewing the agreed terms before money moves" },
+        { src: "assets/accord-outcome-5.webp", alt: "Signing the agreement before the loan starts" },
+        { src: "assets/accord-outcome-6.webp", alt: "Confirmation that the transfer has been sent" },
+        { src: "assets/accord-outcome-7.webp", alt: "Loan Companion photo developing as repayments land" },
+        { src: "assets/accord-outcome-8.webp", alt: "Platform reminder sent on the lender's behalf" },
+        { src: "assets/accord-outcome-9.webp", alt: "Letter Before Action drafted from the loan's own facts" }
+      ]
+    },
+    {
+      heading: "Reflection",
+      content: [
+        {
+          type: "paragraph",
+          text: "The biggest lesson was to design for the first-time user, not myself. What felt obvious to me was not obvious to them, and testing proved it. Talking to real users beat my assumptions and reshaped the whole product, so I learned to let research overturn ideas, even good ones. Keeping AI on the facts, never judgment, is what protects trust. And prevention beats resolution: agreeing terms up front stops disputes before they start."
+        },
+        {
+          type: "paragraph",
+          text: "Next, I would run a larger, more diverse round of testing, pressure-test the edge cases, and validate the AI-drafted letter with legal input against UK pre-action rules."
+        }
+      ]
+    }
+  ]
+};
+
+export const CASE_STUDIES = { [ACCORD.slug]: ACCORD, [AIRSTRIDE.slug]: AIRSTRIDE, [CARMEN_AI.slug]: CARMEN_AI, [GIVN.slug]: GIVN, [WISE_YOUNG_EXPLORER.slug]: WISE_YOUNG_EXPLORER, [DEXLA_DESIGN_SYSTEM.slug]: DEXLA_DESIGN_SYSTEM, [DEXLA_CASE_STUDY.slug]: DEXLA_CASE_STUDY };
