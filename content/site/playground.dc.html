@@ -333,14 +333,16 @@ class Component extends DCLogic {
       this._touchStartX = t.clientX;
       this._touchStartY = t.clientY;
     };
-    // swipe: only horizontal swipes change slides; vertical swipes scroll the page
+    // swipe: either axis moves the slider. The stage sets touch-action: none,
+    // so a vertical drag here never scrolled the page anyway — it was a dead
+    // gesture. Swiping left or up goes forward, right or down goes back.
     this._onTouchEnd = (e) => {
       const t = e.changedTouches[0];
       const dx = this._touchStartX - t.clientX;
       const dy = this._touchStartY - t.clientY;
-      if (Math.abs(dx) <= Math.abs(dy)) return;
-      if (Math.abs(dx) < 40) return;
-      const dir = dx > 0 ? 1 : -1;
+      const delta = Math.abs(dx) >= Math.abs(dy) ? dx : dy;
+      if (Math.abs(delta) < 40) return;
+      const dir = delta > 0 ? 1 : -1;
       const total = this.ITEMS.length;
       const next = Math.min(Math.max(this.state.activeIdx + dir, 0), total - 1);
       if (next !== this.state.activeIdx) this._pickSlot(next);

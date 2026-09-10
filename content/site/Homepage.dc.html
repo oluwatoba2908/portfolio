@@ -97,7 +97,7 @@
     .bat-section { padding: clamp(24px, 4vw, 48px) 0 0; }
     .bat-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(40px, 5vw, 80px); }
     .bat-row { display: flex; align-items: flex-start; justify-content: center; gap: clamp(32px, 6vw, 80px); padding-bottom: clamp(24px, 6vw, 72px); }
-    .bat-figure { flex: 0 0 auto; width: clamp(190px, 22vw, 300px); position: sticky; top: 140px; transform: rotate(-15deg); }
+    .bat-figure { flex: 0 0 auto; width: clamp(190px, 22vw, 300px); position: sticky; top: 140px; }
     .bat-copy { flex: 0 1 416px; max-width: 416px; display: flex; flex-direction: column; gap: 22px; }
     .bat-copy p { font-size: 1rem; line-height: 1.7; color: #a8a8a8; margin: 0; }
     .bat-copy strong { color: #ffffff; font-weight: 600; }
@@ -137,6 +137,7 @@
         <p class="subtext load-in load-in-2" style="margin: 24px auto 0; max-width: 672px;">Helping startups design products and build websites for over 3 years.</p>
         <div class="load-in load-in-3" style="margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center;">
           <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04), 0 4.09px 2.865px rgba(0,0,0,0.03), 0 2.16px 1.51px rgba(0,0,0,0.03), 0 0.888px 0.615px rgba(0,0,0,0.03); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span></a>
+          <a href="#why-the-bat" onClick="{{ goBat }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 45px 31.5px rgba(0,0,0,0.10), 0 22.77px 15.94px rgba(0,0,0,0.07), 0 12.43px 8.705px rgba(0,0,0,0.05), 0 7.14px 5px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="Why the bat?">Why the bat?</span></span></a>
         </div>
       </div>
     </div>
@@ -248,7 +249,7 @@
   </section>
 </main>
 
-  <section class="bat-section" data-bat-section>
+  <section class="bat-section" id="why-the-bat" data-bat-section>
     <div class="dark-section">
       <div class="section-container">
         <h2 class="bat-title load-in load-in-1">Why the bat?</h2>
@@ -448,6 +449,24 @@ class Component extends DCLogic {
       if (getComputedStyle(el).opacity === '0') this._io.observe(el);
     });
   }
+  // eased jump used by the hero buttons
+  _scrollToSection(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const startY = window.scrollY || document.documentElement.scrollTop || 0;
+    const endY = target.getBoundingClientRect().top + startY - 96;
+    const dist = endY - startY;
+    const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
+    const t0 = performance.now();
+    const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (now) => {
+      const t = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, startY + dist * easeInOutCubic(t));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   renderVals() {
     const CDN = "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd";
     const projects = [
@@ -502,23 +521,8 @@ class Component extends DCLogic {
       imgScale: this.state.hovered ? 1.1 : 1,
       chipEnter: () => this.setState({ hovered: true }),
       chipLeave: () => this.setState({ hovered: false }),
-      goProjects: (e) => {
-        e.preventDefault();
-        const target = document.getElementById('projects');
-        if (!target) return;
-        const startY = window.scrollY || document.documentElement.scrollTop || 0;
-        const endY = target.getBoundingClientRect().top + startY - 96;
-        const dist = endY - startY;
-        const duration = Math.min(1400, Math.max(600, Math.abs(dist) * 0.6));
-        const t0 = performance.now();
-        const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        const step = (now) => {
-          const t = Math.min((now - t0) / duration, 1);
-          window.scrollTo(0, startY + dist * easeInOutCubic(t));
-          if (t < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      },
+      goProjects: (e) => { e.preventDefault(); this._scrollToSection('projects'); },
+      goBat: (e) => { e.preventDefault(); this._scrollToSection('why-the-bat'); },
       projects,
       projectTab: this.state.projectTab,
       isLive: this.state.projectTab === 'live',
