@@ -17,7 +17,8 @@ export const FOOTER_LINK_GROUPS = [
     links: [
       { label: "Home", href: "/" },
       { label: "About me", href: "/about" },
-      { label: "Contact", href: "/contact" }
+      { label: "Contact", href: "/contact" },
+      { label: "Playground", href: "/playground" }
     ]
   },
   {
