@@ -92,10 +92,25 @@
     .btn-slide__label::after { content: attr(data-label); position: absolute; left: 0; top: 100%; width: 100%; text-align: center; }
     .btn-slide:hover .btn-slide__label, .btn-slide:focus-visible .btn-slide__label { transform: translateY(-100%); }
     @media (prefers-reduced-motion: reduce) { .btn-slide__label { transition: none; } }
+    /* Why the bat: the bat pins while the copy scrolls past it, and its wings
+       are driven by scroll position (see bat-scroll.js) */
+    .bat-section { padding: clamp(24px, 4vw, 48px) 0 0; }
+    .bat-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(40px, 5vw, 80px); }
+    .bat-row { display: flex; align-items: flex-start; justify-content: center; gap: clamp(32px, 6vw, 80px); padding-bottom: clamp(24px, 6vw, 72px); }
+    .bat-figure { flex: 0 0 auto; width: clamp(190px, 22vw, 300px); position: sticky; top: 140px; transform: rotate(-15deg); }
+    .bat-copy { flex: 0 1 416px; max-width: 416px; display: flex; flex-direction: column; gap: 22px; }
+    .bat-copy p { font-size: 1rem; line-height: 1.7; color: #a8a8a8; margin: 0; }
+    .bat-copy strong { color: #ffffff; font-weight: 600; }
+    @media (max-width: 767px) {
+      .bat-row { flex-direction: column; align-items: center; gap: 28px; }
+      .bat-figure { width: clamp(180px, 52vw, 260px); top: 96px; }
+      .bat-copy { flex: 1 1 auto; max-width: 100%; }
+    }
   </style>
   <script src="scroll-in.js"></script>
   <script src="vw.js"></script>
   <script src="link-fix.js"></script>
+  <script src="bat-scroll.js"></script>
   <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
 </helmet>
 
@@ -232,6 +247,25 @@
     </div>
   </section>
 </main>
+
+  <section class="bat-section" data-bat-section>
+    <div class="dark-section">
+      <div class="section-container">
+        <h2 class="bat-title load-in load-in-1">Why the bat?</h2>
+        <div class="bat-row">
+          <div class="bat-figure" aria-hidden="true">
+            <dotlottie-player data-bat-scrub src="assets/bat-halloween.lottie" style="width: 100%; height: auto; display: block; pointer-events: none; filter: invert(55%);"></dotlottie-player>
+          </div>
+          <div class="bat-copy load-in load-in-2">
+            <p>Apart from black being my favourite colour, here is the real reason for the metaphor.</p>
+            <p><strong>A bat navigates places it cannot see.</strong> It sends a signal out, listens to what comes back, and builds a picture of the space from the response. It does not guess, and it does not wait for the lights to come on.</p>
+            <p><strong>That is the closest thing I have found to a description of how I design</strong>. In a startup, I am often working in the dark. Sometimes there is no product requirements document. Sometimes there are no existing users, or no competitors to benchmark against. Often it is all three at once.</p>
+            <p>The instinct in that situation is to guess. The discipline is not to. <strong>So I work in short cycles instead: design quickly from research, collaborate with the cross functional team, send something out, a prototype or a first shipped version, then listen carefully to what comes back from real users and adjust.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 <dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
 </div>
