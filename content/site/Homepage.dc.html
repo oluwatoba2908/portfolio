@@ -409,14 +409,14 @@ class Component extends DCLogic {
   renderVals() {
     const CDN = "https://cdn.prod.website-files.com/67bcf543dcefdae851c539cd";
     const projects = [
-      { title: "Carmen AI", tab: "live", imageSrc: "assets/carmen-cover-m.png", imageAlt: "Carmen AI project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=carmen-ai" },
-      { title: "Airstride", tab: "live", imageSrc: "assets/airstride-cover.png", imageAlt: "Airstride platform project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=airstride" },
-      { title: "Givn", tab: "personal", imageSrc: `${CDN}/696419408ae9c71635102bb8_Frame%20(3).png`, imageAlt: "Givn project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=givn" },
-      { title: "Wise-Young Explorer", tab: "personal", imageSrc: `${CDN}/696814aed97d34d6fb202662_Frame%203.png`, imageAlt: "Wise-Young Explorer project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=wise-young-explorer" },
-      { title: "Dexla Design System", tab: "live", imageSrc: `${CDN}/696c0b57a4fd13b0c8e26b52_dexla_case%20study%20(5).png`, imageAlt: "Dexla Design System project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-design-system" },
-      { title: "Dexla Case Study", tab: "live", imageSrc: `${CDN}/67c20c0e879a5292bc19afd3_Dexla%20Mockup%20(1).png`, imageAlt: "Dexla Case Study project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-case-study" },
-      { title: "Auditory Wayfinder", tab: "personal", comingSoon: true, imageSrc: "assets/proj-wayfinder-m.png", imageAlt: "Auditory Wayfinder project card", ctaLabel: "Coming soon", ctaHref: "#" },
-      { title: "Accord", tab: "personal", imageSrc: "assets/proj-accord-trim.png", imageAlt: "Accord project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=accord" }
+      { title: "Carmen AI", tab: "live", imageSrc: "assets/proj-card-carmen-ai.webp", imageAlt: "Carmen AI project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=carmen-ai" },
+      { title: "Airstride", tab: "live", imageSrc: "assets/proj-card-airstride.webp", imageAlt: "Airstride platform project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=airstride" },
+      { title: "Accord", tab: "personal", imageSrc: "assets/proj-card-accord.webp", imageAlt: "Accord project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=accord" },
+      { title: "Givn", tab: "personal", imageSrc: "assets/proj-card-givn.webp", imageAlt: "Givn project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=givn" },
+      { title: "Wise-Young Explorer", tab: "personal", imageSrc: "assets/proj-card-wise-young-explorer.webp", imageAlt: "Wise-Young Explorer project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=wise-young-explorer" },
+      { title: "Dexla Design System", tab: "live", imageSrc: "assets/proj-card-dexla-design-system.webp", imageAlt: "Dexla Design System project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-design-system" },
+      { title: "Dexla Case Study", tab: "live", imageSrc: "assets/proj-card-dexla-case-study.webp", imageAlt: "Dexla Case Study project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-case-study" },
+      { title: "Auditory Wayfinder", tab: "personal", comingSoon: true, imageSrc: "assets/proj-card-auditory-wayfinder.webp", imageAlt: "Auditory Wayfinder project card", ctaLabel: "Coming soon", ctaHref: "#" },
     ].filter((p) => !p.hidden && p.tab === this.state.projectTab).map((p, i) => ({
       ...p,
       enter: () => this.setState({ hoverProj: i }),
