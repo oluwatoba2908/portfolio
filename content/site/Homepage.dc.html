@@ -98,12 +98,20 @@
     .bat-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: 0rem; text-align: center; color: #ffffff; margin: 0 0 clamp(40px, 5vw, 80px); }
     .bat-row { display: flex; align-items: flex-start; justify-content: center; gap: clamp(32px, 6vw, 80px); padding-bottom: clamp(24px, 6vw, 72px); }
     .bat-figure { flex: 0 0 auto; width: clamp(190px, 22vw, 300px); position: sticky; top: 140px; }
+    /* the lottie canvas is square but the bat only occupies y 254-709 of its
+       1024 box, so the empty top and bottom are pulled off. Percentage margins
+       resolve against the width, and the canvas is square, so these are exact.
+       Without it the box lines up with the copy while the bat sits low. */
+    .bat-figure > dotlottie-player { display: block; width: 100%; margin-top: -24.8%; margin-bottom: -30.8%; }
     .bat-copy { flex: 0 1 416px; max-width: 416px; display: flex; flex-direction: column; gap: 22px; }
     .bat-copy p { font-size: 1rem; line-height: 1.7; color: #a8a8a8; margin: 0; }
     .bat-copy strong { color: #ffffff; font-weight: 600; }
     @media (max-width: 767px) {
       .bat-row { flex-direction: column; align-items: center; gap: 28px; }
-      .bat-figure { width: clamp(180px, 52vw, 260px); top: 96px; }
+      .bat-figure { width: clamp(180px, 52vw, 260px); top: 96px; transition: opacity 420ms cubic-bezier(0.4, 0, 0.2, 1); }
+      /* stacked, the copy scrolls under the pinned bat — fade it back so the
+         words stay readable, and bring it up again once it lets go */
+      .bat-figure.is-pinned { opacity: 0.25; }
       .bat-copy { flex: 1 1 auto; max-width: 100%; }
     }
     .btn-ico { flex: 0 0 auto; display: block; }
@@ -137,8 +145,8 @@
         <h1 class="load-in load-in-1" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(44px, 7vw, 96px); line-height: 1.05; max-width: 20ch; margin-left: auto; margin-right: auto; text-wrap: balance; color: #333333; margin: 0; font-family: 'Geist', system-ui, sans-serif;"><span id="w-i">I</span>ntuitive product <span id="w-design">design</span><br class="hero-br"> for software team<span id="w-s">s</span>.</h1>
         <p class="subtext load-in load-in-2" style="margin: 24px auto 0; max-width: 672px;">Helping startups design products and build websites for over 3 years.</p>
         <div class="load-in load-in-3" style="margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center;">
-          <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5l0 14"/><path d="M18 13l-6 6"/><path d="M6 13l6 6"/></svg></a>
-          <a href="#why-the-bat" onClick="{{ goBat }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;"><span class="btn-slide__mask"><span class="btn-slide__label" data-label="Why the bat?">Why the bat?</span></span><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5l0 14"/><path d="M18 13l-6 6"/><path d="M6 13l6 6"/></svg></a>
+          <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/></svg><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span></a>
+          <a href="#why-the-bat" onClick="{{ goBat }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;"><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 16c.74 -2.286 2.778 -3.762 5 -3c-.173 -2.595 .13 -5.314 -2 -7.5c-1.708 2.648 -3.358 2.557 -5 2.5v-4l-3 2l-3 -2v4c-1.642 .057 -3.292 .148 -5 -2.5c-2.13 2.186 -1.827 4.905 -2 7.5c2.222 -.762 4.26 .714 5 3c2.593 0 3.889 .952 5 4c1.111 -3.048 2.407 -4 5 -4"/><path d="M9 8a3 3 0 0 0 6 0"/></svg><span class="btn-slide__mask"><span class="btn-slide__label" data-label="Why the bat?">Why the bat?</span></span></a>
         </div>
       </div>
     </div>

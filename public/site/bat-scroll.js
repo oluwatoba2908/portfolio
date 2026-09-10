@@ -48,13 +48,20 @@
         queued = false;
         var r = content.getBoundingClientRect();
         var vh = window.innerHeight || document.documentElement.clientHeight;
-        if (r.bottom < 0 || r.top > vh) return; // off screen: nothing to drive
 
         // 0 when the top of the content reaches the line the bat pins to,
         // 1 when the bottom of the content gets there
         var pinTop = parseFloat(window.getComputedStyle(figure).top) || 0;
         var travel = Math.max(1, r.height - figure.getBoundingClientRect().height);
         var p = Math.min(1, Math.max(0, (pinTop - r.top) / travel));
+
+        // stacked layouts scroll the copy under the bat, so mark the pinned
+        // stretch and let the stylesheet fade it back there. This is set before
+        // the off-screen bail, or the bat stays faded after the section leaves.
+        figure.classList.toggle("is-pinned", p > 0 && p < 1);
+
+        if (r.bottom < 0 || r.top > vh) return; // off screen: no frames to set
+
         var cycle = p >= 1 ? 1 : (p * FLAPS) % 1;
 
         // Drive the frame directly: the player's seek() only parses whole
