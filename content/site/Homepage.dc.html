@@ -115,6 +115,11 @@
       .bat-copy { flex: 1 1 auto; max-width: 100%; }
     }
     .btn-ico { flex: 0 0 auto; display: block; }
+    /* the animated bat, sized to sit in the same 18px slot as the line icons.
+       Its canvas is square with the artwork across the middle band, so the
+       canvas is oversized and centred, and the slot clips the empty edges. */
+    .btn-bat { position: relative; display: block; width: 18px; height: 18px; flex: 0 0 auto; overflow: hidden; }
+    .btn-bat dotlottie-player { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 27px; height: 27px; display: block; pointer-events: none; }
   </style>
   <script src="scroll-in.js"></script>
   <script src="vw.js"></script>
@@ -146,7 +151,7 @@
         <p class="subtext load-in load-in-2" style="margin: 24px auto 0; max-width: 672px;">Helping startups design products and build websites for over 3 years.</p>
         <div class="load-in load-in-3" style="margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center;">
           <a href="#projects" onClick="{{ goProjects }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #191919; color: #ffffff; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #ffffff;"><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/></svg><span class="btn-slide__mask"><span class="btn-slide__label" data-label="View projects">View projects</span></span></a>
-          <a href="#why-the-bat" onClick="{{ goBat }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;"><svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 16c.74 -2.286 2.778 -3.762 5 -3c-.173 -2.595 .13 -5.314 -2 -7.5c-1.708 2.648 -3.358 2.557 -5 2.5v-4l-3 2l-3 -2v4c-1.642 .057 -3.292 .148 -5 -2.5c-2.13 2.186 -1.827 4.905 -2 7.5c2.222 -.762 4.26 .714 5 3c2.593 0 3.889 .952 5 4c1.111 -3.048 2.407 -4 5 -4"/><path d="M9 8a3 3 0 0 0 6 0"/></svg><span class="btn-slide__mask"><span class="btn-slide__label" data-label="Why the bat?">Why the bat?</span></span></a>
+          <a href="#why-the-bat" onClick="{{ goBat }}" class="btn-slide" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; font-size: 16px; padding: 17px 20px; border-radius: 600px; background: #ffffff; color: #191919; box-shadow: 0 10px 16px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04); transition: opacity 150ms cubic-bezier(0.4,0,0.2,1);" style-hover="opacity: 0.9; color: #191919;"><span class="btn-bat" aria-hidden="true"><dotlottie-player src="assets/bat-halloween.lottie" autoplay loop></dotlottie-player></span><span class="btn-slide__mask"><span class="btn-slide__label" data-label="Why the bat?">Why the bat?</span></span></a>
         </div>
       </div>
     </div>

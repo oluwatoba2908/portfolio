@@ -315,16 +315,20 @@ class Component extends DCLogic {
     this._wheelLock = false;
     // horizontal-only: vertical wheel/scroll always passes through to the page
     this._onWheel = (e) => {
-      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      // either axis moves the slider: a trackpad swipe sideways or a wheel down
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) < 12) return;
+      const dir = delta > 0 ? 1 : -1;
+      const total = this.ITEMS.length;
+      const next = this.state.activeIdx + dir;
+      // past the first or last mockup the page takes the scroll back, so the
+      // section can always be scrolled out of rather than trapping the reader
+      if (next < 0 || next > total - 1) return;
       e.preventDefault();
       if (this._wheelLock) return;
-      if (Math.abs(e.deltaX) < 12) return;
       this._wheelLock = true;
       setTimeout(() => { this._wheelLock = false; }, 380);
-      const dir = e.deltaX > 0 ? 1 : -1;
-      const total = this.ITEMS.length;
-      const next = Math.min(Math.max(this.state.activeIdx + dir, 0), total - 1);
-      if (next !== this.state.activeIdx) this._pickSlot(next);
+      this._pickSlot(next);
     };
     this._touchStartX = 0;
     this._touchStartY = 0;
