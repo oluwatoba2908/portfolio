@@ -35,7 +35,8 @@
     #dc-root, #dc-root > .sc-host { height: auto !important; min-height: 100% !important; }
 
     /* opaque page layer above the fixed footer; 100vh bottom margin is the footer's reveal window */
-    .pg-page { position: relative; z-index: 1; background: #efefef; margin-bottom: 100vh; min-height: 100vh; }
+    /* no footer to reveal here: the page is the slider, so it ends with it */
+    .pg-page { position: relative; z-index: 1; background: #efefef; min-height: 100vh; }
     .pg-main { position: relative; display: flex; flex-direction: column; min-height: calc(100vh - 86px - 44px); padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; }
     /* fit the viewport when it can; when the column is taller than the screen the
        page scrolls instead of starving the mockups (user allowed a scroll here) */
@@ -175,7 +176,7 @@
     /* mobile: same top-to-bottom order, just its own scrollable, non-clipped flow */
     @media (max-width: 767px) {
       html, body { overflow-y: auto !important; }
-      .pg-main { height: auto; min-height: calc(100vh - 86px - 44px); overflow: visible; padding: 16px 20px 32px; }
+      .pg-main { height: auto; min-height: calc(100dvh - 86px); overflow: visible; padding: 16px 20px 12px; box-sizing: border-box; }
       /* the badge cannot sit beside the title at phone widths — it ran off the
          screen — so the top bar stacks and the badge spans the column instead */
       .pg-topbar { flex-direction: column; align-items: stretch; gap: 16px; }
@@ -280,7 +281,6 @@
     </sc-for>
   </div>
 </main>
-<dc-import name="PreFooterCTA" hint-size="100%,520px"></dc-import>
 
 <div class="pg-lightbox {{ lightboxCls }}" onClick="{{ closeLightbox }}">
   <button class="pg-lightbox__close" onClick="{{ closeLightbox }}" aria-label="Close preview">&times;</button>
@@ -292,7 +292,6 @@
 
 
 </div>
-<dc-import name="Footer" hint-size="100%,0px" style="display:block; height:0; overflow:visible;"></dc-import>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 }
