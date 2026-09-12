@@ -9,6 +9,9 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="preconnect" href="https://calendly.com">
+  <link rel="preconnect" href="https://assets.calendly.com" crossorigin>
+  <link rel="dns-prefetch" href="https://calendly.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
@@ -77,7 +80,7 @@
       <div class="gg-v" style="left: 75%;"></div>
       <div class="gg-h" style="top: 50%;"></div>
       </div>
-    <div class="cs-container" style="max-width: 900px; position: relative; z-index: 1;">
+    <div class="cs-container" style="max-width: 1100px; position: relative; z-index: 1;">
       <p class="load-in load-in-1" style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #9a9a9a; margin: 0 0 24px; font-weight: 500;">Get in touch</p>
       <h1 class="load-in load-in-2" style="font-weight: 800; letter-spacing: 0rem; font-size: clamp(36px, 5vw, 72px); line-height: 1.12; color: #333333; margin: 0;">Let's build something together.</h1>
       <p class="load-in load-in-3" style="font-size: clamp(18px, 2vw, 22px); color: #6b6b6b; line-height: 1.5; margin: 24px 0 0; max-width: 640px;">Have a product in mind, a role to fill, or just want to chat? Book a time below and we can talk it through.</p>
@@ -87,7 +90,7 @@
   <section style="padding-bottom: clamp(64px, 8vw, 128px);">
     <div class="cs-container" style="max-width: 1100px;">
       <div style="border-radius: 24px; overflow: hidden; background: #ffffff; border: 1px solid rgba(25,25,25,0.08);">
-        <iframe class="cal-frame" src="https://calendly.com/tofomiyonwon/30min?hide_gdpr_banner=1&amp;hide_landing_page_details=1&amp;background_color=ffffff&amp;text_color=191919&amp;primary_color=191919&amp;embed_domain=portfolio&amp;embed_type=Inline" title="Book a 30-minute call with Toba" loading="lazy" scrolling="no"></iframe>
+        <iframe class="cal-frame" src="https://calendly.com/tofomiyonwon/30min?hide_gdpr_banner=1&amp;hide_landing_page_details=1&amp;background_color=ffffff&amp;text_color=191919&amp;primary_color=191919&amp;embed_domain=portfolio&amp;embed_type=Inline" title="Book a 30-minute call with Toba" loading="eager" fetchpriority="high" scrolling="no"></iframe>
       </div>
       <p style="font-size: 15px; color: #9a9a9a; margin: 24px 0 0;">Prefer email? Reach me at <a href="mailto:tofomiyonwon@gmail.com" style="text-decoration: underline; color: #191919;">tofomiyonwon@gmail.com</a></p>
     </div>
