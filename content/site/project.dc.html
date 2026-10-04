@@ -351,6 +351,24 @@ class Component extends DCLogic {
       });
     };
     window.addEventListener('scroll', this._onScroll, { passive: true });
+
+    // A gallery card left alone on its row has to fill the row. The CSS rule
+    // below only widens a trailing odd card, which misses any card whose row is
+    // emptied by a full-width sibling — that card kept half the width with dead
+    // space beside it. Measure the rows instead of counting children.
+    this._balance = () => this.balanceGalleries();
+    this._balanceSoon = () => {
+      clearTimeout(this._balanceTimer);
+      this._balanceTimer = setTimeout(this._balance, 120);
+    };
+    window.addEventListener('resize', this._balanceSoon, { passive: true });
+    // images settle after the markup does, so re-measure as each one lands
+    this._onImgLoad = (e) => {
+      if (e.target && e.target.classList && e.target.classList.contains('g-figimg')) this._balanceSoon();
+    };
+    document.addEventListener('load', this._onImgLoad, true);
+    this._balanceSoon();
+
     import('./case-studies.js').then((mod) => {
       const all = mod.CASE_STUDIES;
       const slug = new URLSearchParams(window.location.search).get('slug') || 'givn';
@@ -367,6 +385,51 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
     if (this._railTimer) clearTimeout(this._railTimer);
+    if (this._balanceSoon) window.removeEventListener('resize', this._balanceSoon);
+    if (this._onImgLoad) document.removeEventListener('load', this._onImgLoad, true);
+    if (this._balanceTimer) clearTimeout(this._balanceTimer);
+  }
+
+  /**
+   * Widen any gallery card that ends up alone on its row so it fills the
+   * container. Rows are read from measured offsets, so a card orphaned by a
+   * full-width sibling is caught as well as a trailing odd one. Single-column
+   * layouts are skipped: every row holds one card there by definition, and the
+   * class is never removed once added.
+   */
+  balanceGalleries() {
+    document.querySelectorAll('main .cs-gallery:not(.g-outcome)').forEach((grid) => {
+      const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+      if (cols < 2) return;
+      // promoting a card reflows the grid, so settle over a few passes
+      for (let pass = 0; pass < 4; pass++) {
+        const figs = [...grid.querySelectorAll(':scope > figure')];
+        if (figs.length < 2) return;
+        const rows = new Map();
+        figs.forEach((fig) => {
+          const top = Math.round(fig.offsetTop);
+          if (!rows.has(top)) rows.set(top, []);
+          rows.get(top).push(fig);
+        });
+        let changed = false;
+        rows.forEach((row) => {
+          const fig = row[0];
+          if (row.length !== 1 || fig.classList.contains('span-2')) return;
+          fig.classList.add('span-2');
+          const img = fig.querySelector('img.g-figimg');
+          if (img) {
+            // match the full-width treatment the load handler applies
+            img.style.maxWidth = '100%';
+            img.style.width = '100%';
+            img.style.height = 'auto';
+            img.style.objectFit = 'contain';
+            img.style.margin = '0 auto';
+          }
+          changed = true;
+        });
+        if (!changed) return;
+      }
+    });
   }
 
   easedScrollTo(endY) {
@@ -408,13 +471,17 @@ class Component extends DCLogic {
 
   renderVals() {
     const SMALL_COVERS = ["assets/s-carmen-cover.png"];
-    const PANEL_TITLES = { "the problem": "Artifacts", "my approach": "Artifacts" };
+    // Every dark gallery panel is titled "Artifacts" — the panel shows the
+    // evidence behind the section, while the section's own name stays on the
+    // prose heading and in the outline rail. The walkthrough panel keeps its
+    // own title and is rendered separately.
+    const PANEL_TITLE = "Artifacts";
     const cs = this.state.cs;
     if (!cs) return { ready: false, title: '', tagline: '', meta: [], sections: [], related: [], heroSrc: '', heroAlt: '', walkthrough: false, showOutcomeBtn: false, showWebsiteBtn: false };
     const WEBSITES = { 'dexla-case-study': { url: 'https://dexla-ai.webflow.io/', label: 'View website' }, 'airstride': { url: 'https://airstride.ai/', label: 'See live platform' }, 'carmen-ai': { url: 'https://app.airstride.ai/', label: 'See Carmen live' } };
     const website = WEBSITES[this.state.slug];
     const websiteUrl = website && website.url;
-    const WALKTHROUGHS = { 'givn': 'iCTfdTCkgT8', 'wise-young-explorer': 'vHdEKs58h-0', 'accord': 'sy2g1zp1Uzc' };
+    const WALKTHROUGHS = { 'givn': 'iCTfdTCkgT8', 'wise-young-explorer': 'vHdEKs58h-0', 'accord': 'sy2g1zp1Uzc', 'auditory-museum-guide': 'A1QIlwNTHoQ' };
     const vid = WALKTHROUGHS[this.state.slug];
     const galleryCount = cs.sections.filter((x) => (x.gallery || []).length > 0).length;
     // the walkthrough is a documented block in its own right, so it counts
@@ -451,7 +518,7 @@ class Component extends DCLogic {
       return {
         eyebrow: s.eyebrow || false,
         heading: s.heading,
-        panelTitle: PANEL_TITLES[(s.heading || '').toLowerCase()] || s.heading,
+        panelTitle: PANEL_TITLE,
         docLabel,
         hasLink: !!(s.link && s.link.href),
         linkHref: (s.link && s.link.href) || '',

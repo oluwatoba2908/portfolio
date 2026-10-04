@@ -1649,4 +1649,230 @@ const ACCORD = {
   ]
 };
 
-export const CASE_STUDIES = { [ACCORD.slug]: ACCORD, [AIRSTRIDE.slug]: AIRSTRIDE, [CARMEN_AI.slug]: CARMEN_AI, [GIVN.slug]: GIVN, [WISE_YOUNG_EXPLORER.slug]: WISE_YOUNG_EXPLORER, [DEXLA_DESIGN_SYSTEM.slug]: DEXLA_DESIGN_SYSTEM, [DEXLA_CASE_STUDY.slug]: DEXLA_CASE_STUDY };
+/**
+ * Auditory Museum Guide case study — source: Figma "Portfolio website Current",
+ * frame 1790:24145. Text VERBATIM. Do not paraphrase.
+ */
+const AUDITORY_MUSEUM_GUIDE = {
+  slug: "auditory-museum-guide",
+  title: "Auditory Museum Guide",
+  tagline: "Helping museum visitors navigate without relying on signs",
+  meta: [
+    {
+      label: "Disciplines",
+      value: "UX research, Prototype, Strategy, Animations, UX/UI design"
+    },
+    { label: "Type", value: "Academic project" },
+    { label: "Year", value: "2026" }
+  ],
+  hero: {
+    src: "assets/amg-hero.webp",
+    alt: "The Auditory Museum Guide app on a phone, showing the floors a visitor can explore"
+  },
+  sections: [
+    {
+      heading: "Context",
+      content: [
+        {
+          type: "paragraph",
+          text: "The Auditory Museum Guide is a hybrid wayfinding system designed for the Science Museum, London. It combines a mobile app with Bluetooth beacons to guide visitors through the museum using sound. The project started with a simple problem: visitors could see signs but still struggled to know whether they were going in the right direction. My role in a team of 4 was to lead design and research. I designed the mobile application, conducted visitor interviews and user testing, co-designed a 3D case on Fusion, co-wrote the Arduino code, and helped coordinate the team."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-context-museum.webp",
+          span: true,
+          alt: "The Science Museum's five floors of galleries",
+          caption:
+            "The Science Museum's five-floor layout and repetitive architecture make it a relevant environment for testing hybrid wayfinding solutions."
+        },
+        {
+          src: "assets/amg-context-shadow.webp",
+          span: true,
+          alt: "Shadowing a visit to the Natural History Museum",
+          caption:
+            "A team member shadowed my visit to the Natural History Museum to test if its wayfinding issues mirrored those found in other museums."
+        }
+      ]
+    },
+    {
+      heading: "Research",
+      link: { label: "View full research", href: "https://drive.google.com/file/d/1TLmT_R15FilPgpDkar7hA9KjwLYbPF5u/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "Before the main project, I carried out a wayfinding study in Aldershot. I observed a participant trying to find a police station using existing signage, without my help or Google Maps. The main issue was not missing signs, but the lack of feedback that confirmed she was on the right path, forcing her to guess and retrace her steps. This led to my “How Might We question”: How might we help users confirm they are on the right path during long routes? I then researched wayfinding at the Science Museum through 3 visitor interviews. Every visitor entered without a clear navigation strategy and only sought help after becoming lost. I identified two core issues: vertical confusion (wrong floor) and horizontal confusion (wrong end of a floor). These stemmed from signage being missed, misunderstood, or untrusted, compounded by English terminology barriers and an uncoloured, unillustrated map that was difficult to read at a glance."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-research-emotions.webp",
+          span: true,
+          alt: "The participant pausing at a signpost during the Aldershot wayfinding study",
+          caption:
+            "She had a lot of emotions, but she was mostly confused as to where she should go but the signage were not helping."
+        },
+        {
+          src: "assets/amg-research-friction.webp",
+          span: true,
+          alt: "Hand-drawn friction map of the participant's route",
+          caption:
+            "The friction map I drew while tracking the participant on her mission to find the police station"
+        }
+      ]
+    },
+    {
+      heading: "Concept",
+      content: [
+        {
+          type: "paragraph",
+          text: "Research shifted the focus from giving visitors more information to giving them reassurance. The core idea became an invisible system that guides visitors through sound rather than signs. Music plays through headphones while on the correct route and stops when moving away from it. Music carried the main cue, so visitors did not need to read or understand English. Instead of personal playlists, the system plays calming instrumental music visitors follow without wanting to skip or control. This keeps visitors present and focused on the exhibits rather than distracted by their phone. The system also offered 2 route types: a quick route and an exploratory route, responding to research showing visitors move through spaces with different intentions. The navigation screen only needed to give the first direction, then disappear while the visitor focused on navigating."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-concept-stickies.webp",
+          span: true,
+          alt: "Research insights organised into sticky notes",
+          caption:
+            "Organising research insights into sticky notes helped me see patterns in visitor frustrations across all three interviews."
+        }
+      ]
+    },
+    {
+      heading: "Prototype",
+      content: [
+        {
+          type: "paragraph",
+          text: "I began with scenario frames sketches and low-fidelity screens to make the idea tangible. The scenario frames showed 2 moments my screens did not support well: connecting headphones and receiving the first directional cue. The headphone screen was trying to explain the whole concept instead of prompting a simple action, so I reduced the text to essentials. The navigation screen showed music metadata and album art that added no navigational value, so I stripped it back to a route summary and a single directional nudge. Both changes followed the same principle: show only what the visitor needs at that moment and let the design disappear when they are navigating."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-proto-storytribe.webp",
+          span: true,
+          alt: "Scenario frames of the visitor journey illustrated in StoryTribe",
+          caption:
+            "I learned StoryTribe through trial and error to visualise the user journey as illustrated scenes, making the concept easier to communicate."
+        },
+        {
+          src: "assets/amg-proto-sketches.webp",
+          span: true,
+          alt: "First sketches of the navigation and headset screens",
+          caption:
+            "Framing the idea statement from these insights prompted my first sketches. They were rough, but they made the user flow tangible."
+        },
+        {
+          src: "assets/amg-proto-lowfi.webp",
+          span: true,
+          alt: "Low fidelity screens for the navigation flow",
+          caption: "A few major low fidelity UI"
+        }
+      ]
+    },
+    {
+      heading: "Designs",
+      content: [
+        {
+          type: "paragraph",
+          text: "To help visualise the idea better, I used Story tribe to map the full visitor's journey. Once the scenario frames were confirmed, I developed the high-fidelity app using the Science Museum's brand colours and Inter typeface to maintain a similar visual tone. I also created a typography and colour system in Figma to keep the interface consistent. I also contributed in designing a 3D-printed casing on Fusion. This casing conceals the beacon hardware and doubles as lift signage, with an illuminated lift name to support visitors with accessibility needs. The final prototype used ESP32 Bluetooth beacons at critical decision points to detect the visitor's position and trigger the correct audio cues through the visitor's headphones."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-designs-storytribe.webp",
+          span: true,
+          alt: "The full visitor journey mapped as illustrated scenes",
+          caption:
+            "I learned StoryTribe through trial and error to visualise the user journey as illustrated scenes, making the concept easier for me to stress test various edge cases and communicate."
+        },
+        {
+          src: "assets/amg-designs-arduino.webp",
+          span: true,
+          alt: "ESP32 beacon hardware and the Arduino code driving it",
+          caption:
+            "I co-wrote the Arduino code with 2 other team members to send Bluetooth signals to the ESP32 and also synchronise its functionalities with the UI I created"
+        },
+        {
+          src: "assets/amg-designs-highfi.webp",
+          span: true,
+          alt: "High fidelity app screens from the first iteration",
+          caption: "A few major high fidelity designs for my first iteration"
+        },
+        {
+          src: "assets/amg-designs-colours.webp",
+          span: true,
+          alt: "Colour styles created for the project",
+          caption: "Colour styles I created for the project"
+        }
+      ]
+    },
+    {
+      heading: "Testing",
+      link: { label: "Read more testing insights", href: "https://drive.google.com/file/d/1-PMaMcm4OiNeDZC1h7bkT9JmLfGfQ-LH/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "I planned 6 testing sessions across UI, hardware and wayfinding, and ran the 2 UI sessions myself. My first UI testing was for Navigation. Version B, my lighter flow, allowed users to move backwards at every stage. Version A used a breadcrumb UI component and did not provide visible back navigation, which trapped users on some screens. My second UI test focused on cognitive load. I compared 3 versions of the navigation screen using A/B/C testing. Version C removed the non-essential content and focused on the route summary and controls, which users preferred over the other versions. For Version B, I had defended the colours as being on-brand, but testing showed they were too overwhelming and distracted users rather than helping them. This changed my approach across the interface. Instead of adding more content, I removed elements so the screen could do less."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-testing-inperson.webp",
+          span: true,
+          alt: "Navigation versions compared side by side during user testing",
+          caption: "User 3 testing the flows on the app in person"
+        }
+      ]
+    },
+    {
+      heading: "Outcome",
+      link: { label: "View full scenario", href: "https://drive.google.com/file/d/1lUQJtlejEzFAdK3xzGd5i-MFX711ek9C/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "The Auditory Museum Guide answered the How Might We question by replacing constant visual confirmation with an audio cue that reassures visitors when they are on the correct route and signals when they have gone the wrong way. The solution addressed the original wayfinding problem through ESP32 Bluetooth beacons, music and voice prompts, allowing visitors to navigate without continuously checking signs or their phone. The quick and exploratory routes also gave visitors different ways to reach a destination based on their intentions. The tested prototype showed that sound could help a visitor recover from a wrong turn, while the simplified interface allowed the phone to become secondary to the museum experience."
+        }
+      ],
+      gallery: [
+        { src: "assets/amg-outcome-1.webp", alt: "Choosing a destination in the Auditory Museum Guide" },
+        { src: "assets/amg-outcome-2.webp", alt: "Picking between the quick route and the exploratory route" },
+        { src: "assets/amg-outcome-3.webp", alt: "Connecting a headset before navigation starts" },
+        { src: "assets/amg-outcome-4.webp", alt: "The first directional cue on the navigation screen" },
+        { src: "assets/amg-outcome-5.webp", alt: "Route summary while music confirms the correct path" },
+        { src: "assets/amg-outcome-6.webp", alt: "Sound stopping as the visitor moves off the route" },
+        { src: "assets/amg-outcome-7.webp", alt: "Floors to explore on the exploratory route" },
+        { src: "assets/amg-outcome-8.webp", alt: "Arriving at the Information Age gallery" },
+        { src: "assets/amg-outcome-9.webp", alt: "Cancelling a journey mid-route" }
+      ]
+    },
+    {
+      heading: "Reflection",
+      link: { label: "View AI declaration", href: "https://drive.google.com/file/d/1769y1izw3aT_9G0e-7HBvPFmsNzK81EW/view?usp=sharing" },
+      content: [
+        {
+          type: "paragraph",
+          text: "The project taught me that testing can challenge decisions that feel correct during design. It also showed me that simplicity is difficult. Removing elements initially felt like losing work, but produced a cleaner experience. The project also exposed an important accessibility gap. Auditory guidance can help visitors who struggle with text or language, but it excludes visitors with hearing impairments. I also used AI generative tools throughout the project to help with the code, and mockups."
+        }
+      ],
+      gallery: [
+        {
+          src: "assets/amg-reflection.webp",
+          span: true,
+          alt: "The finished beacon casing and prototype used in the project"
+        }
+      ]
+    },
+    {
+      heading: "Next steps",
+      content: [
+        {
+          type: "paragraph",
+          text: "The prototype was tested on 2 routes, quick and exploratory, to the Information Age. The next stage would be to test the system with more visitors across different destinations in the Museum. A haptic-only mode is also planned for visitors with hearing impairments."
+        }
+      ]
+    }
+  ]
+};
+
+export const CASE_STUDIES = { [AUDITORY_MUSEUM_GUIDE.slug]: AUDITORY_MUSEUM_GUIDE, [ACCORD.slug]: ACCORD, [AIRSTRIDE.slug]: AIRSTRIDE, [CARMEN_AI.slug]: CARMEN_AI, [GIVN.slug]: GIVN, [WISE_YOUNG_EXPLORER.slug]: WISE_YOUNG_EXPLORER, [DEXLA_DESIGN_SYSTEM.slug]: DEXLA_DESIGN_SYSTEM, [DEXLA_CASE_STUDY.slug]: DEXLA_CASE_STUDY };
