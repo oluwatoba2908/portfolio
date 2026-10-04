@@ -491,7 +491,7 @@ class Component extends DCLogic {
       { title: "Wise-Young Explorer", tab: "personal", imageSrc: "assets/proj-card-wise-young-explorer.webp", imageAlt: "Wise-Young Explorer project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=wise-young-explorer" },
       { title: "Dexla Design System", tab: "live", imageSrc: "assets/proj-card-dexla-design-system.webp", imageAlt: "Dexla Design System project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-design-system" },
       { title: "Dexla Case Study", tab: "live", imageSrc: "assets/proj-card-dexla-case-study.webp", imageAlt: "Dexla Case Study project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=dexla-case-study" },
-      { title: "Auditory Wayfinder", tab: "personal", comingSoon: true, imageSrc: "assets/proj-card-auditory-wayfinder.webp", imageAlt: "Auditory Wayfinder project card", ctaLabel: "Coming soon", ctaHref: "#" },
+      { title: "Auditory Museum Guide", tab: "personal", imageSrc: "assets/proj-card-auditory-wayfinder.webp", imageAlt: "Auditory Museum Guide project card", ctaLabel: "View project", ctaHref: "project.dc.html?slug=auditory-museum-guide" },
     ].filter((p) => !p.hidden && p.tab === this.state.projectTab).map((p, i) => ({
       ...p,
       enter: () => this.setState({ hoverProj: i }),
